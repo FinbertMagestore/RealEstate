@@ -1,0 +1,466 @@
+﻿.sidebar-default {
+    background-color: #fff;
+}
+
+.header-logo .view-storefront {
+    color: #999;
+    font-size: 16px;
+    position: absolute;
+    right: 26px;
+    top: 12px;
+}
+
+.sidebar-default a:focus, .sidebar-default a:hover {
+    background-color: transparent;
+    color: #000;
+}
+
+.sidebar {
+    min-height: 100%;
+    position: fixed !important;
+    overflow: auto;
+}
+
+.nav-user {
+    background-color: #eeefef;
+    bottom: 0;
+    padding: 10px 10px 10px 20px;
+    position: fixed;
+    width: 240px;
+}
+
+.page-content {
+    background-color: #e6e8ea;
+    border-top: none;
+}
+
+.alert {
+    border-radius: 4px;
+    margin-bottom: 18px;
+    padding: 8px;
+}
+
+.alert-danger {
+    background-color: #d95043;
+    border-color: #d52e3b;
+    color: #fff;
+}
+
+.container-fluid-md {
+    margin-top: 60px !important;
+}
+
+.page-heading, .page-subheading {
+    margin-bottom: 0px;
+}
+
+.nav-tabs > li.active > a {
+    border-style: none !important;
+}
+
+.text-muted {
+    color: #999;
+}
+
+.note {
+    color: #798c9c;
+    font-weight: normal;
+    text-transform: none;
+}
+
+.product-image-is-blank, .image-is-blank {
+    background: #d3dbe2 none repeat scroll 0 0;
+}
+
+.product-thumb {
+    border-radius: 3px;
+    margin: 0 auto;
+    max-width: 50px;
+}
+
+.table.vert-align tbody > tr > td {
+    vertical-align: middle;
+}
+
+.panel-default.panel-full {
+    background-color: #f5f5f5;
+}
+
+label.strong {
+    font-weight: 700;
+}
+
+.dropdown > a:hover, .dropdown > a:focus {
+    color: rgb(23,163,221) !important;
+}
+
+.sidebar-default .nav > li.active > a, .sidebar-default .nav > li.active > a:focus, .sidebar-default .nav > li.active > a:hover {
+    background-color: #428bca;
+}
+
+.header-logo {
+    margin-bottom: 5px;
+    border-bottom: 4px solid #eff0f2;
+    padding-bottom: 5px;
+}
+
+.navbar-logo {
+    margin-left: 20px;
+}
+
+.page-heading {
+    border-bottom: 4px solid #eff0f2;
+    left: 241px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 10;
+    padding: 7px 25px;
+}
+
+body {
+    min-height: 100%;
+    position: relative;
+    padding-top: 0px;
+    font-family: "Roboto",Helvetica Neue,Helvetica,Arial,sans-serif;
+    background-color: #e6e8ea;
+    color: #46484a;
+    line-height: 1.42857;
+    font-size: 1.34em;
+}
+
+.page-wrapper {
+    /*height: 100%;*/
+    min-height: 618px;
+    overflow: hidden;
+    position: relative;
+}
+
+.title {
+    font-size: 20px;
+}
+
+.page-body {
+    background-color: #e6e8ea;
+    border-left: 1px solid #ddd;
+}
+
+.box {
+    background-color: white;
+    border: 1px solid #d3dbe2;
+    margin-bottom: 20px;
+    padding: 0px;
+    position: relative;
+    transition: background 0.5s ease 0s;
+}
+
+.box-header {
+    background-color: #fafcfc;
+    border-bottom: 1px solid #e9eff3;
+    border-radius: 3px 3px 0 0;
+    color: #96a7b6;
+    padding-bottom: 30px;
+    padding-top: 10px;
+    position: relative;
+}
+
+.collection-rule {
+    border-bottom: 1px solid #e9eff3;
+}
+
+.pagination {
+    margin: 5px 0px !important;
+}
+
+.input-group-btn .btn {
+    line-height: 20px;
+}
+
+.form-bordered .form-group {
+    border-bottom: 1px solid #eff2f7;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+
+    .form-bordered .form-group:last-of-type {
+        border-bottom: medium none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+
+.option1 .label-info {
+    background: #29bc94;
+}
+
+.option2 .label-info {
+    background: #763eaf;
+}
+
+.option3 .label-info {
+    background: #ff9517;
+}
+
+.option-value1 {
+    color: #29bc94;
+}
+
+.option-value2 {
+    color: #763eaf;
+}
+
+.option-value3 {
+    color: #ff9517;
+}
+
+.table th {
+    color: #36383a;
+    font-weight: 600;
+}
+
+.current-variant {
+    border-bottom: 1px solid;
+    box-sizing: border-box;
+    width: 100%;
+    background: #f5f6f7 none repeat scroll 0 0;
+}
+
+.list-variant > li {
+    border-bottom: 1px solid rgb(230,232,234);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+
+.square-box-image {
+    border: 1px solid rgba(195, 207, 216, 0.3);
+    width: 50px;
+    height: 50px;
+    bottom: 0;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.image-middle {
+    padding: 8px 8px;
+    fill: #c3cfd8;
+    position: absolute;
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.image-text {
+    padding: 10px;
+}
+
+.next-media__blank-slate {
+    background: #f5f6f7 none repeat scroll 0 0;
+    width: 190px;
+    height: 190px;
+    bottom: 1px;
+    display: flex;
+    left: 1px;
+    position: absolute;
+    right: 1px;
+    top: 1px;
+}
+
+.next-media__blank-slate__content {
+    align-self: center;
+    flex: 1 1 0;
+    justify-content: center;
+    text-align: center;
+}
+
+.next-media--square-aspect-ratio {
+    bottom: 0;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.aspect-ratio__content {
+    bottom: 0;
+    display: block;
+    left: 0;
+    margin: auto;
+    max-height: 100%;
+    max-width: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.variant-options input[type="text"], .variant-options input[type="number"] {
+    background: transparent none repeat scroll 0 0;
+    border-color: transparent;
+    cursor: pointer;
+}
+
+    .variant-options input[type="text"]:hover, .variant-options input[type="number"]:hover {
+        background: #fff none repeat scroll 0 0;
+        border-color: #479ccf;
+    }
+
+.list-option-value {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+    .list-option-value li {
+        border-radius: 3px;
+        display: block;
+        flex: 0 0 auto;
+        float: left;
+        line-height: 1.2;
+        margin-right: 3px;
+        margin-top: 4px;
+    }
+
+.subdued {
+    color: #798c9c;
+}
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    border-top: 1px solid #e0e2e4;
+}
+
+.table tr:first-of-type td {
+    border-top: medium none;
+}
+
+.next-icon--blue {
+    fill: #479ccf;
+}
+
+.next-icon--24 {
+    height: 24px;
+    width: 24px;
+}
+
+.next-icon--no-nudge {
+    top: 0;
+}
+
+.next-icon {
+    vertical-align: middle;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: relative;
+    top: -0.15em;
+}
+
+.gravatar--size-30 {
+    height: 30px;
+    width: 30px;
+}
+
+.gravatar {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.next-icon--16 {
+    height: 16px;
+    width: 16px;
+}
+
+.next-icon--20 {
+    height: 20px;
+    width: 20px;
+}
+
+.next-icon--slate-lighter {
+    fill: #798c9c;
+}
+
+.next-icon--blue {
+    fill: #479ccf;
+}
+
+.next-icon--green {
+    fill: #96bf48;
+}
+
+.next-icon--no-nudge {
+    top: 0;
+}
+
+.ui-modal__body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    transition: box-shadow 260ms ease-in-out 0s;
+}
+
+/* sugget in tagsinput */
+
+.bootstrap-tagsinput {
+    width: 100%;
+}
+
+.accordion {
+    margin-bottom: -3px;
+}
+
+.accordion-group {
+    border: none;
+}
+
+.twitter-typeahead .tt-query,
+.twitter-typeahead .tt-hint {
+    margin-bottom: 0;
+}
+
+.twitter-typeahead .tt-hint {
+    display: none;
+}
+
+.tt-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    list-style: none;
+    font-size: 14px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+    cursor: pointer;
+}
+
+.tt-suggestion {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.428571429;
+    color: #333333;
+    white-space: nowrap;
+}
+
+    .tt-suggestion:hover,
+    .tt-suggestion:focus {
+        color: #ffffff;
+        text-decoration: none;
+        outline: 0;
+        background-color: #428bca;
+    }

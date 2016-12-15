@@ -1,0 +1,13 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.TblRule
+@using RealEstateWebUI.Areas.admin.Models;
+<tr class="collection-rule" id="rules_@ViewBag.index">
+    <td class="form-inline" style="padding: 10px 0px 10px 10px;">
+        @Html.DropDownList("TblRules[].ColumnName", new SelectList(Common.ListFilterConditionColumn, "Value", "Text", 1), new { @class = "form-control", @style = "width:200px" })
+        @Html.DropDownList("TblRules[].Relation", new SelectList(Common.ListFilterConditionRelation, "Value", "Text", 1), new { @class = "form-control", @style = "width:200px" })
+        @Html.TextBox("TblRules[].ConditionValue", null, new { @class = "form-control", @style = "width:200px" })
+        @Html.ValidationMessageFor(m => m.ConditionValue)
+    </td>
+    <td>
+        <a onclick="removeRule(@ViewBag.index)"><i class="fa fa-trash-o fa-2x"></i></a>
+    </td>
+</tr>

@@ -1,0 +1,144 @@
+﻿@using RealEstateWebUI.Areas.admin.Models;
+
+@{
+    ViewBag.Title = Common.StoreName + " | Liên hệ";
+    Layout = "~/Areas/client/Views/Shared/MasterPageClient.cshtml";
+}
+
+@Html.Partial("~/Areas/client/Views/Shared/_TopBarWhite.cshtml")
+
+<div class="header-page" style="background-image: url('/assets/images/home/slide/back-ground.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <h4>Liên hệ</h4>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 header-page-right" style="margin: 10px 0;">
+                    <i class="fa fa-home"></i>
+                    <a href="/">Trang chủ</a> / Liên hệ
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="map-google">
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtca4WhzVbhvY1gcLwHIXOYtpHxVX7Ir0&callback=initMap"
+            type="text/javascript"></script>
+    <script src='https://maps.googleapis.com/maps/api/js?v=3.exp'></script><div style='overflow:hidden;height:400px;width:100%;'>
+        <div id='gmap_canvas' style='height:400px;width:100%;'></div><div><small><a href="http://embedgooglemaps.com">                 embed google maps             </a></small></div><div><small><a href="https://top10geeks.com/top-10-best-running-shoes-men-2016/">best running shoes for men 2016</a></small></div>
+        <style>
+            #gmap_canvas img {
+                max-width: none !important;
+                background: none !important;
+            }
+        </style>
+    </div>
+    <script type='text/javascript'>function init_map() { var myOptions = { zoom: 10, center: new google.maps.LatLng(20.985999198628793, 105.90496131367198), mapTypeId: google.maps.MapTypeId.ROADMAP }; map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions); marker = new google.maps.Marker({ map: map, position: new google.maps.LatLng(20.985999198628793, 105.90496131367198) }); infowindow = new google.maps.InfoWindow({ content: '<strong>Title</strong><br>Bách Khoa,Hà Nội, Việt Nam<br>' }); google.maps.event.addListener(marker, 'click', function () { infowindow.open(map, marker); }); infowindow.open(map, marker); } google.maps.event.addDomListener(window, 'load', init_map);</script>
+</div>
+
+<div class="contact-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            Họ tên *
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                            <input class="form-control none-border" type="text" name="name" value="" style="width: 100%" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            Email *
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                            <input class="form-control none-border" type="password" name="email" value="" style="width: 100%" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            Tiêu đề *
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                            <input class="form-control none-border" type="text" name="tittle" value="" style="width: 100%" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            Nhận xét *
+                        </div>
+                        <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                            <textarea class="form-control none-border" name="comment" value="" style="width: 100%; height: 95px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            <a href="#" class="btn btn-default none-border" style="background-color: black; color: white;">GỬI NHẬN XÉT</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <img src="/assets/images/product_list/logo-black.jpg" alt="" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p>
+                                Furure thành lập năm 1968 bởi Mr. Win Lee. Là tập đoàn bán lẻ hàng đầu Châu Á. Có mặt trên 20 quốc gia...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <ul class="list-unstyled">
+                    <li>
+                        <p>
+                            <i class="glyphicon glyphicon-map-marker"></i>
+                            442 Đội Cấn, Ba Đình Hà Nội, VN
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <i class="fa fa-phone"></i>
+                            012345578
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <i class="fa fa-envelope-o"></i>
+                            support@bizweb.vn
+                        </p>
+                    </li>
+                </ul>
+                <div class="social">
+                    <ul class="list-unstyled">
+                        <li><button class="btn btn-default none-border"><i class="fa fa-facebook"></i></button></li>
+                        <li><button class="btn btn-default none-border"><i class="fa fa-twitter"></i></button></li>
+                        <li><button class="btn btn-default none-border"><i class="fa fa-dribbble"></i></button></li>
+                        <li><button class="btn btn-default none-border"><i class="fa fa-pinterest"></i></button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

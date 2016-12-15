@@ -1,0 +1,842 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>skin</title>
+    <meta charset="utf-8" />
+    <link href="../../../../Content/veneto-admin.min.css" rel="stylesheet" />
+    <link href="../../../../Content/font-awesome.css" rel="stylesheet" />
+    <link href="../../../../Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../../../assets/css/client/myScssClient.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+</head>
+<body>
+    <div class="skin">
+        <div class="container">
+            <div class="top_bar row">
+                <div class="col-xs-12">
+                    <div class="col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                        <img src="/assets/images/Huong/logo.png" alt="Alternate Text" />
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-xs-12 col-sm-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <ul>
+                                        <li><a href="#">Dang nhap</a></li>
+                                        <li><a href="#">Dang ky</a></li>
+                                        <li><a href="#">Tai khoan cua toi</a></li>
+                                        <li><a href="#">Quan ly don hang</a></li>
+                                        <li><a href="#">Lien he</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-right">
+                                <span class="strong bold" style="font-weight: 700;">
+                                    <span style="margin:0 10px;"> Huong dan mua hang </span>
+                                    |
+                                    <span style="margin:0 10px;"> Ho tro truc tuyen </span>
+                                </span>
+                                <img src="/assets/images/Huong/yahoo.png" style="margin-right:10px;" alt="Alternate Text" />
+                                <img style="margin-right:15px;" src="/assets/images/Huong/skype.png" alt="Alternate Text" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu_search">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-xs-8">
+                            <i class="fa fa-home fa-2x" style="color: white; float: left"></i>
+                            <span style="color: white; margin: 0 10px; float: left; margin: 5px 10px 0 30px">Nâng cao</span>
+                            <div class="input-group">
+                                <input class="form-control" type="text" name="search_key" value="" style="height: 35px;" />
+                                <span class="input-group-btn">
+                                    <button id="btnSearch" class="btn btn-default" type="button" onclick="searchRedirect();">
+                                        <span class="fa fa-search"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 text-right" style="margin-top:3px;">
+                            <a href="#" style="color: white; margin: 0 10px;">Nâng cao</a>
+                            <a href="#" class="btn btn-default">
+                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                Giỏ hàng
+                            </a>
+                            <a href="#" class="btn btn-default">
+                                <i class="fa fa-star"></i>
+                                Ua thich
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="main">
+                <div class="row">
+                    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <div class="collection_product">
+                                        <div class="border_blue">
+                                            <ul id="nav" class="has_border_blue list-unstyled" style="padding-bottom: 0px;">
+                                                <li class="header_border_black">
+                                                    Danh muc san pham
+                                                </li>
+                                                <li>
+                                                    <a href="#">Do so sinh</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Thuc pham dinh duong</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Do dung cho be</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Thoi trang cho be</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Do choi cho be</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">San pham tien ich </a>
+                                                    <a class="fa fa-angle-double-right pull-right" style="margin-right: 10px;"></a>
+                                                    <ul class="list-unstyled">
+                                                        <li><a href="#">Thoi trang nu</a></li>
+                                                        <li><a href="#">Thoi trang nam</a></li>
+                                                        <li>
+                                                            <a href="#">Phu kien</a>
+                                                            <a class="fa fa-angle-double-right pull-right" style="margin-right: 10px;"></a>
+                                                            <ul class="list-unstyled">
+                                                                <li>Thoi trang cong so</li>
+                                                                <li>Thoi trang dao pho</li>
+                                                                <li>Do boi</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Do dung gia dinh</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-9 row">
+                                    <img src="~/assets/images/Huong/sale25.png" alt="Alternate Text" style="width: 100%;  height: 261px" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="product_title">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <span style="padding-right: 20px">
+                                                    <span style="font-size: 1.2em">o</span>
+                                                    <span>Do dung so sinh</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row products">
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 product">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="row text-center">
+                                                <img class="product_image" src="~/assets/images/Huong/group1/product0.png" alt="Alternate Text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>
+                                                            <a href="#">
+                                                                Sua SMA Gold so 3 (12m+) - 900gr
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>Gia :</span>
+                                                        <span class="price">7.000.000 VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <a href="#" class="btn btn-default">
+                                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                                Mua hang
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 product">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="row text-center">
+                                                <img class="product_image" src="~/assets/images/Huong/group1/product1.png" alt="Alternate Text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>
+                                                            <a href="#">
+                                                                Sua SMA Gold so 3 (12m+) - 900gr
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>Gia :</span>
+                                                        <span class="price">7.000.000 VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <a href="#" class="btn btn-default">
+                                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                                Mua hang
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 product">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="row text-center">
+                                                <img class="product_image" src="~/assets/images/Huong/group1/product2.png" alt="Alternate Text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>
+                                                            <a href="#">
+                                                                Sua SMA Gold so 3 (12m+) - 900gr
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>Gia :</span>
+                                                        <span class="price">7.000.000 VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <a href="#" class="btn btn-default">
+                                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                                Mua hang
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 product">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="row text-center">
+                                                <img class="product_image" src="~/assets/images/Huong/group1/product3.png" alt="Alternate Text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>
+                                                            <a href="#">
+                                                                Sua SMA Gold so 3 (12m+) - 900gr
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>Gia :</span>
+                                                        <span class="price">7.000.000 VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <a href="#" class="btn btn-default">
+                                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                                Mua hang
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="product_title">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <span style="padding-right: 20px">
+                                                    <span style="font-size: 1.2em">o</span>
+                                                    <span>Sua cho be</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row products">
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 product">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="row text-center">
+                                                <img class="product_image" src="~/assets/images/Huong/group1/product0.png" alt="Alternate Text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>
+                                                            <a href="#">
+                                                                Sua SMA Gold so 3 (12m+) - 900gr
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>Gia :</span>
+                                                        <span class="price">7.000.000 VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <a href="#" class="btn btn-default">
+                                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                                Mua hang
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 product">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="row text-center">
+                                                <img class="product_image" src="~/assets/images/Huong/group1/product1.png" alt="Alternate Text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>
+                                                            <a href="#">
+                                                                Sua SMA Gold so 3 (12m+) - 900gr
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>Gia :</span>
+                                                        <span class="price">7.000.000 VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <a href="#" class="btn btn-default">
+                                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                                Mua hang
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 product">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="row text-center">
+                                                <img class="product_image" src="~/assets/images/Huong/group1/product2.png" alt="Alternate Text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>
+                                                            <a href="#">
+                                                                Sua SMA Gold so 3 (12m+) - 900gr
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>Gia :</span>
+                                                        <span class="price">7.000.000 VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <a href="#" class="btn btn-default">
+                                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                                Mua hang
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 product">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="row text-center">
+                                                <img class="product_image" src="~/assets/images/Huong/group1/product3.png" alt="Alternate Text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>
+                                                            <a href="#">
+                                                                Sua SMA Gold so 3 (12m+) - 900gr
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>Gia :</span>
+                                                        <span class="price">7.000.000 VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <a href="#" class="btn btn-default">
+                                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                                Mua hang
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="product_title">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="row">
+                                                <span style="padding-right: 20px">
+                                                    <span style="font-size: 1.2em">o</span>
+                                                    <span>San pham moi</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row products">
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 product">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="row text-center">
+                                                <img class="product_image" src="~/assets/images/Huong/group1/product0.png" alt="Alternate Text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>
+                                                            <a href="#">
+                                                                Sua SMA Gold so 3 (12m+) - 900gr
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>Gia :</span>
+                                                        <span class="price">7.000.000 VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <a href="#" class="btn btn-default">
+                                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                                Mua hang
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 product">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="row text-center">
+                                                <img class="product_image" src="~/assets/images/Huong/group1/product1.png" alt="Alternate Text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>
+                                                            <a href="#">
+                                                                Sua SMA Gold so 3 (12m+) - 900gr
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>Gia :</span>
+                                                        <span class="price">7.000.000 VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <a href="#" class="btn btn-default">
+                                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                                Mua hang
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 product">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="row text-center">
+                                                <img class="product_image" src="~/assets/images/Huong/group1/product2.png" alt="Alternate Text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>
+                                                            <a href="#">
+                                                                Sua SMA Gold so 3 (12m+) - 900gr
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>Gia :</span>
+                                                        <span class="price">7.000.000 VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <a href="#" class="btn btn-default">
+                                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                                Mua hang
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 product">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="row text-center">
+                                                <img class="product_image" src="~/assets/images/Huong/group1/product3.png" alt="Alternate Text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>
+                                                            <a href="#">
+                                                                Sua SMA Gold so 3 (12m+) - 900gr
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-xs-12 text-center">
+                                                        <span>Gia :</span>
+                                                        <span class="price">7.000.000 VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center">
+                                            <a href="#" class="btn btn-default">
+                                                <img src="~/assets/images/Huong/cart.png" alt="Alternate Text" />
+                                                Mua hang
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 hidden-sm hidden-xs row">
+                        <div class="form-group">
+                            <div class="row">
+                                <img src="~/assets/images/Huong/shipping_everywhere.png" alt="Alternate Text" style="width: 100%" />
+                            </div>
+                            <div class="row">
+                                <img src="~/assets/images/Huong/pay_after_recieve.png" alt="Alternate Text" style="width: 100%" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="hot_pr">
+                                <div class="border_blue">
+                                    <ul id="nav" class="has_border_blue list-unstyled" style="padding-bottom: 0px;">
+                                        <li class="header_border_black">
+                                            Ban chay nhat
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="product_top pull-left">
+                                                        <div class="fill" style="background-image: url('/assets/images/Huong/hot_pr/image0.png')">
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <span>
+                                                                    <a href="#">Xe day combi cho be</a>
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-xs-12">
+                                                                <span>Gia :</span>
+                                                                <span class="price">7.000.000 VND</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="product_other">
+                                                        <div class="col-xs-3">
+                                                            <img src="~/assets/images/Huong/hot_pr/image1.png" alt="Alternate Text" />
+                                                        </div>
+                                                        <div class="col-xs-9">
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <span>
+                                                                        <a href="#">Xe day combi cho be</a>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-xs-12">
+                                                                    <span>Gia :</span>
+                                                                    <span class="price">7.000.000 VND</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="product_other">
+                                                        <div class="col-xs-3">
+                                                            <img src="~/assets/images/Huong/hot_pr/image2.png" alt="Alternate Text" />
+                                                        </div>
+                                                        <div class="col-xs-9">
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <span>
+                                                                        <a href="#">Xe day combi cho be</a>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-xs-12">
+                                                                    <span>Gia :</span>
+                                                                    <span class="price">7.000.000 VND</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="product_other">
+                                                        <div class="col-xs-3">
+                                                            <img src="~/assets/images/Huong/hot_pr/image3.png" alt="Alternate Text" />
+                                                        </div>
+                                                        <div class="col-xs-9">
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <span>
+                                                                        <a href="#">Xe day combi cho be</a>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-xs-12">
+                                                                    <span>Gia :</span>
+                                                                    <span class="price">7.000.000 VND</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="product_other">
+                                                        <div class="col-xs-3">
+                                                            <img src="~/assets/images/Huong/hot_pr/image4.png" alt="Alternate Text" />
+                                                        </div>
+                                                        <div class="col-xs-9">
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <span>
+                                                                        <a href="#">Xe day combi cho be</a>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-xs-12">
+                                                                    <span>Gia :</span>
+                                                                    <span class="price">7.000.000 VND</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="product_new">
+                                <div class="product_title">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <span style="padding-right: 20px">
+                                                <span style="font-size: 1.2em">o</span>
+                                                <span>Tu van cho ban</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-4">
+                                                        <img src="~/assets/images/Huong/new/new1.png" alt="Alternate Text" />
+                                                    </div>
+                                                    <div class="row col-xs-8 strong bold" style="line-height: 1.5">
+                                                        Hang tram mat hang gia re tai BigC
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-4">
+                                                        <img src="~/assets/images/Huong/new/new2.png" alt="Alternate Text" />
+                                                    </div>
+                                                    <div class="row col-xs-8 strong bold" style="line-height: 1.5">
+                                                        Hang tram mat hang gia re tai BigC
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-4">
+                                                        <img src="~/assets/images/Huong/new/new3.png" alt="Alternate Text" />
+                                                    </div>
+                                                    <div class="row col-xs-8 strong bold" style="line-height: 1.5">
+                                                        Hang tram mat hang gia re tai BigC
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <a href="#" class="go-top">
+                    <i class="fa fa-angle-up"></i>
+                </a>
+                <div class="row infos">
+                    <div class="col-lg-3 col-md-2 col-sm-6 col-xs-12 info">
+                        <p class="strong bold">Gioi thieu ve Livemart.vn</p>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="#">Ve chung toi</a>
+                            </li>
+                            <li>
+                                <a href="#">Chinh sach ban hang</a>
+                            </li>
+                            <li>
+                                <a href="#">Cam ket ve dich vu va san pham</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-2 col-sm-6 col-xs-12 info">
+                        <p class="strong bold">Thong tin tro giup</p>
+                        <ul class="list-unstyled">
+                            <li><a href="#">Huong dan mua hang</a></li>
+                            <li><a href="#">Hinh thuc thanh toan</a></li>
+                            <li><a href="#">Van chuyen san pham</a></li>
+                            <li><a href="#">Bao hanh san pham</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 info">
+                        <p class="strong bold">Lien he</p>
+                        <ul class="list-unstyled">
+                            <li><a href="#">Ho tro tu van</a></li>
+                            <li><a href="#">Dien thoai: 02413713355 - Fax: 02491324123</a></li>
+                            <li><a href="#">Email: info@beemart.vn</a></li>
+                            <li><a href="#">Gui lien he truc tuyen</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom_footer">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <img src="~/assets/images/Huong/logo_footer.png" alt="Alternate Text" />
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        <p class="text-right">&copy;2012-Công ty cổ phần Babymart</p>
+                        <p class="text-right">Địa chỉ số: 357 Giải Phóng, Hoàng Mai, Hà Nội - <a href="#">Quy định sử dụng</a> - <a href="#">Chính sách sử dụng</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // Show or hide the sticky footer button
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 200) {
+                    $('.go-top').fadeIn(200);
+                } else {
+                    $('.go-top').fadeOut(200);
+                }
+            });
+
+            // Animate the scroll to top
+            $('.go-top').click(function (event) {
+                event.preventDefault();
+
+                $('html, body').animate({ scrollTop: 0 }, 300);
+            })
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,307 @@
+﻿@using RealEstateWebUI.Areas.admin.Models;
+@model OrderModel
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = Common.StoreName + " | Danh sách đơn hàng";
+    Layout = "~/Areas/admin/Views/Shared/_MasterPage.cshtml";
+}
+
+<div class="page-heading page-heading-md">
+    <span>
+        <i class="fa fa-credit-card fa-2x"></i>
+    </span>
+    <span class="title">
+        Danh sách đơn hàng
+    </span>
+    <div class="pull-right">
+        <a href="/admin/orders/create" class="btn btn-primary">Tạo đơn hàng</a>
+    </div>
+</div>
+<div class="container-fluid-md">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div id="strMessage">
+        @if (!string.IsNullOrEmpty(ViewBag.strSuccess as string))
+        {
+            <div class="alert alert-success">
+                <button class="close" data-dismiss="alert">×</button>
+                @Html.Raw(ViewBag.strSuccess)
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(ViewBag.strError as string))
+        {
+            <div class="alert alert-danger">
+                <button class="close" data-dismiss="alert">×</button>
+                @Html.Raw(ViewBag.strError)
+            </div>
+        }
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Tất cả đơn hàng</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab1" class="tab-pane active">
+            <form action="/admin/orders/" method="post">
+                <div class="row form-group">
+                    <div class="col-sm-2">
+                        Điều kiện tìm kiếm
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.txtConditionFind, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-2"> Điều kiện lọc</div>
+                    <div class="col-sm-8">
+                        @using RealEstateWebUI.Areas.admin.Models
+                        <div class="row">
+                            <div class="col-sm-3" style="width: 250px">
+                                @using System.Web.UI.WebControls;
+                                @{
+                                    var listItems = new List<ListItem>
+                                        {
+                                              new ListItem { Text = "Chọn điều kiện lọc theo...", Value="" },
+                                              new ListItem { Text = "Trạng thái", Value="OrderStatus" },
+                                              new ListItem { Text = "Trạng thái thanh toán", Value="BillingStatus" },
+                                              new ListItem { Text = "Trạng thái giao hàng", Value="ShippingStatus" },
+                                              //new ListItem { Text = "Ngày tạo", Value="Create" },
+                                              new ListItem { Text = "Khách hàng", Value="Customer" }
+                                        };
+                                }
+                                @Html.DropDownList("ddlConditionFilter", new SelectList(listItems, "Value", "Text", ViewBag.ddlConditionFilter), new { @class = "form-control", @onchange = "changeSelect()" })
+
+                            </div>
+                            <div style="display: inline" class="hide" id="cfOrderStatus">
+                                <div class="col-sm-2" style="width: 200px">
+                                    @{ var lstOrderStatus = new List<ListItem> { new ListItem { Text = "Tất cả", Value = "" }, new ListItem { Text = "Hoạt động", Value = "1" }, new ListItem { Text = "Ẩn", Value = "0" } }; }
+                                    @Html.DropDownList("ddlOrderStatus", new SelectList(lstOrderStatus, "Value", "Text", ViewBag.ddlOrderStatus), new { @class = "form-control" })
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+
+                            <div style="display: inline" id="cfBillingStatus" class="hide">
+                                <div class="col-sm-2" style="width: 200px">
+                                    @{
+                                        var lstBillingStatus = new List<ListItem>{
+                                new ListItem {Text="Tất cả", Value = ""},
+                                new ListItem {Text="Chưa thanh toán", Value = "pending"},
+                                //new ListItem {Text="Thanh toán một phần", Value = "partially_paid"},
+                                new ListItem {Text="Đã thanh toán", Value = "paid"},
+                                //new ListItem {Text="Hoàn trả một phần", Value = "partially_refunded"},
+                                //new ListItem {Text="Hoàn trả toàn bộ", Value = "refunded"}
+                            };
+                                    }
+                                    @Html.DropDownList("ddlBillingStatus", new SelectList(lstBillingStatus, "Value", "Text", ViewBag.ddlBillingStatus), new { @class = "form-control" })
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+                            <div style="display: inline" id="cfShippingStatus" class="hide">
+                                <div class="col-sm-2" style="width: 200px">
+                                    @{
+                                        var lstShippingStatus = new List<ListItem>{
+                                new ListItem {Text="Tất cả", Value = ""},
+                                new ListItem {Text="Chưa chuyển", Value = "unfulfilled"},
+                                //new ListItem {Text="Chuyển một phần", Value = "partial"},
+                                new ListItem {Text="Chuyển toàn bộ", Value = "fulfilled"}
+                            };
+                                    }
+                                    @Html.DropDownList("ddlShippingStatus", new SelectList(lstShippingStatus, "Value", "Text", ViewBag.ddlShippingStatus), new { @class = "form-control" })
+
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+                            @*<div id="cfCreate" class="hide" style="display: inline">
+                                    <div class="col-sm-2">
+                                        @{
+                                            var lstCompareDate = new List<ListItem>{
+                                        new ListItem {Text="Từ ngày này", Value = "1"},
+                                        new ListItem {Text="Từ ngày này về trước", Value = "2"},
+                                    };
+                                        }
+                                        @Html.DropDownList("ddlCompareDate", new SelectList(lstCompareDate, "Value", "Text"), new { @class = "form-control" })
+                                    </div>
+                                    <div style="width: 160px" class="col-sm-3">
+                                        <div class="input-group date">
+                                            <input id="txtDate" class="form-control" type="text" data-rel="datepicker" />
+                                            <span class="input-group-addon">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <div id="cfCustomer" class="hide" style="display: inline">
+                                <div class="col-sm-6">
+                                    @Html.TextBox("txtCustomer", ViewBag.txtCustomer as string, new { @class = "form-control" })
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="table-responsive" style="margin-top:10px">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                Đơn hàng
+                            </th>
+                            <th>
+                                Ngày đặt
+                            </th>
+                            <th>
+                                Khách hàng
+                            </th>
+                            <th>
+                                Thanh toán
+                            </th>
+                            <th>
+                                Giao hàng
+                            </th>
+                            <th>
+                                Tổng tiền (đ)
+                            </th>
+                        </tr>
+                    </thead>
+                    @using RealEstateWebUI.Areas.admin.UtilzGeneral;
+                    @using RealEstateWebUI.Areas.admin.Models;
+                    <tbody>
+                        @if (Model.lstTblOrder != null && Model.lstTblOrder.Count > 0)
+                        {
+                            foreach (var item in Model.lstTblOrder)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.ActionLink(item.OrderName, "detail", "orders", new { id = item.OrderID }, null)
+                                    </td>
+                                    <td>
+                                        @SDateTime.ToDateTime(item.CreatedDateTime)
+                                    </td>
+                                    <td>
+                                        @RealEstateWebUI.Areas.admin.Services.CustomerService.GetCustomerName(item.CustomerID)
+                                    </td>
+                                    <td>
+                                        @if (item.BillingStatus == Common.Pending)
+                                        {
+                                            <span class="label label-warning">Chưa thanh toán</span>
+                                        }
+                                        @*else if (item.BillingStatus == "partially_paid")
+                                        {
+                                            <span class="label label-default">Thanh toán một phần</span>
+                                        }*@
+                                        else if (item.BillingStatus == Common.Paid)
+                                        {
+                                            <span class="label label-success">Đã thanh toán</span>
+                                        }
+                                        @*else if (item.BillingStatus == "partially_refunded")
+                                        {
+                                            <span class="label label-default">Hoàn trả một phần</span>
+                                        }
+                                        else if (item.BillingStatus == "refunded")
+                                        {
+                                            <span class="label label-default">Hoàn trả toàn bộ</span>
+                                        }*@
+                                    </td>
+                                    <td>
+                                        @if (item.ShippingStatus == Common.Unfulfilled)
+                                        {
+                                            <span class="label label-warning">Chưa chuyển</span>
+                                        }
+                                        @*else if (item.ShippingStatus == "partial")
+                                        {
+                                            <span class="label label-default">Chuyển một phần</span>
+                                        }*@
+                                        else if (item.ShippingStatus == Common.Fulfilled)
+                                        {
+                                            <span class="label label-success">Chuyển toàn bộ</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @SNumber.ToNumber(item.TotalCount)
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    @if (!IsPost)
+                    {
+                        @Html.PagedListPager(Model.lstTblOrder, page => Url.Action("index", new { page }))
+                    }
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12 text-muted">
+                    @{
+                        var temp = 0;
+                        if (Model.lstTblOrder != null)
+                        {
+                            temp = Model.lstTblOrder.Count;
+                        }
+                    }
+                    Hiển thị @SNumber.ToNumber(temp) kết quả
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        changeSelect();
+    };
+    function changeSelect() {
+        var ddlConditionFilter = document.getElementById("ddlConditionFilter").value;
+        if (ddlConditionFilter == "OrderStatus") {
+            $("#cfOrderStatus").removeClass("hide");
+            $("#cfBillingStatus").addClass("hide");
+            $("#cfShippingStatus").addClass("hide");
+            $("#cfCreate").addClass("hide");
+            $("#cfCustomer").addClass("hide");
+        } else if (ddlConditionFilter == "BillingStatus") {
+            $("#cfOrderStatus").addClass("hide");
+            $("#cfBillingStatus").removeClass("hide");
+            $("#cfShippingStatus").addClass("hide");
+            $("#cfCreate").addClass("hide");
+            $("#cfCustomer").addClass("hide");
+        } else if (ddlConditionFilter == "ShippingStatus") {
+            $("#cfOrderStatus").addClass("hide");
+            $("#cfBillingStatus").addClass("hide");
+            $("#cfShippingStatus").removeClass("hide");
+            $("#cfCreate").addClass("hide");
+            $("#cfCustomer").addClass("hide");
+        } else if (ddlConditionFilter == "Create") {
+            $("#cfOrderStatus").addClass("hide");
+            $("#cfBillingStatus").addClass("hide");
+            $("#cfShippingStatus").addClass("hide");
+            $("#cfCreate").removeClass("hide");
+            $("#cfCustomer").addClass("hide");
+        } else if (ddlConditionFilter == "Customer") {
+            $("#cfOrderStatus").addClass("hide");
+            $("#cfBillingStatus").addClass("hide");
+            $("#cfShippingStatus").addClass("hide");
+            $("#cfCreate").addClass("hide");
+            $("#cfCustomer").removeClass("hide");
+        } else {
+            $("#cfOrderStatus").addClass("hide");
+            $("#cfBillingStatus").addClass("hide");
+            $("#cfShippingStatus").addClass("hide");
+            $("#cfCreate").addClass("hide");
+            $("#cfCustomer").addClass("hide");
+        }
+    }
+</script>

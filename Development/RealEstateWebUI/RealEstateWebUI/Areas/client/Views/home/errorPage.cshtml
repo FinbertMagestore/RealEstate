@@ -1,0 +1,71 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@using RealEstateWebUI.Areas.admin.Models;
+
+@{
+    ViewBag.Title = Common.StoreName + " | Không tìm thấy trang";
+    Layout = "~/Areas/client/Views/Shared/MasterPageClient.cshtml";
+}
+@Html.Partial("~/Areas/client/Views/Shared/_TopBarWhite.cshtml")
+
+<div class="errorPage">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group">
+                    <div class="row text-center">
+                        <div class="row">
+                            <span class="errorNumber" style="font-size: 200pt;color: #f0f0f0; font-weight: 600; font-stretch:extra-expanded">404</span>
+                        </div>
+                        <div class="row" style="margin-top: -50px">
+                            <span style="font-size:28px">Page Not Found!</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row text-center">
+                        <div class="col-xs-12">
+                            <span style="font-size: 16px;">
+                                Xin lỗi bạn, chúng tôi không thể tìm kiếm được trang web bạn yêu cầu
+                                hoặc có gì đã sai... Bạn vui lòng nhập lại tìm kiếm hoặc trở lại Trang chủ!
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <div class="row text-center">
+                                    <div class="col-xs-12">
+                                        <div class="input-group" style="width: 630px; margin: 0 auto;">
+                                            <input class="form-control none-border" type="text" placeholder="Nhập từ khoá tìm kiếm">
+                                            <span class="input-group-btn">
+                                                <a href="#" class="btn btn-inverse none-border" type="button" style="line-height: 20px">
+                                                    <img src="~/assets/images/home/menu/search-header.png" alt="" />
+                                                </a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 40px">
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <a href="#" class="btn btn-inverse none-border" type="button">TRANG CHỦ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
+                <div class="row">
+                    <div class="col-xs-12" style="height:555px; width: 598px; top: 60px;">
+                        <div class="fill" style="background-image: url('/assets/images/404 error/12_404-page.jpg')"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

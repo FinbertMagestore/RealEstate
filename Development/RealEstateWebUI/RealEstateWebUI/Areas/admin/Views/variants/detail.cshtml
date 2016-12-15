@@ -1,0 +1,288 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.Variant
+@using RealEstateWebUI.Areas.admin.Models;
+@{
+    ViewBag.Title = Common.StoreName + "|" + @Model.VariantTittle;
+    Layout = "~/Areas/admin/Views/Shared/_MasterPage.cshtml";
+}
+<svg class="hide" xmlns="http://www.w3.org/2000/svg">
+    <symbol viewBox="-20 -7 40 40" id="products-no-photo-icon">
+        <path d="M20 3.3v26.3c0 1.4-1.1 2.4-2.5 2.4h-22c-1.4 0-2.5-1.1-2.5-2.4v-2.1l-3.5.9-.4.1c-1.1 0-2.1-.7-2.4-1.8l-6.5-25.2c-.4-1.2.4-2.6 1.7-2.9l21.1-5.5c1.2-.3 2.6.4 2.9 1.7l1.6 6.2h10c1.4 0 2.5 1 2.5 2.3zm-2.5-.3h-22c-.2 0-.5.1-.5.3v19.7h23v-19.7c0-.2-.3-.3-.5-.3zm-24.5 14.9v-14.9c0-1.4 1.1-2 2.5-2h10l-1.6-5.7c0-.2-.2-.1-.3-.1l-21.3 5.4c-.2.1-.3.3-.3.4l4.8 18.6 6.2-1.7zm0 7.5v-5.4l-5.7 1.6 1.4 4.7c.1.2.2.3.3.2l4-1.1zm25 4.3v-4.7h-23v4.7c0 .2.3.3.5.3h22.1c.1 0 .4-.1.4-.3z" />
+    </symbol>
+
+    <symbol viewBox="0 0 24 24" id="next-checkmark">
+        <path d="M23.6,5L22,3.4c-0.5-0.4-1.2-0.4-1.7,0L8.5,15l-4.8-4.7c-0.5-0.4-1.2-0.4-1.7,0l-1.7,1.6 c-0.5,0.4-0.5,1.2,0,1.6l7.3,7.1c0.5,0.4,1.2,0.4,1.7,0l14.3-14C24.1,6.2,24.1,5.5,23.6,5z" />
+    </symbol>
+
+</svg>
+<form method="post" autocomplete="off" id="variantForm" action="/admin/products/@Model.ProductID/variants/@Model.VariantID" novalidate="novalidate" enctype="multipart/form-data">
+    <div class="page-heading page-heading-md">
+        <span>
+            <i class="fa fa-tag fa-2x"></i>
+        </span><span class="title">
+            <a href="/admin/products">Sản phẩm</a> /
+            <a href="/admin/products/@Model.ProductID">@Model.Product.ProductName</a>
+            /  @Model.VariantTittle
+        </span>
+        <div class="pull-right" style="margin-right: 5px">
+            <a href="javascript: void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteVariant">Xóa</a>
+            <input type="submit" id="btnSave" class="btn btn-primary" value="Lưu" />
+        </div>
+    </div>
+
+    <div class="container-fluid-md">
+        <div class="row">
+            <div class="col-sm-12">
+                @if (!string.IsNullOrEmpty(ViewBag.strSuccess as string))
+            {
+                    <div class="alert alert-success">
+                        <button class="close" data-dismiss="alert">×</button>
+                        @Html.Raw(ViewBag.strSuccess)
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(ViewBag.strError as string))
+            {
+                    <div class="alert alert-danger">
+                        <button class="close" data-dismiss="alert">×</button>
+                        @Html.Raw(ViewBag.strError)
+                    </div>
+                }
+            </div>
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+        </div>
+        <div class="row">
+            @Html.HiddenFor(model => model.ProductID)
+            @Html.HiddenFor(model => model.VariantID)
+            @Html.HiddenFor(m => m.ImageID)
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-sm-4">
+                                    <a href="/admin/products/@Model.ProductID">
+                                        @if (Model.Product.Images != null && Model.Product.Images.Count > 0 && !string.IsNullOrEmpty(Model.Product.Images[0].ImageUrl))
+                                        {
+                                            <img src="@Model.Product.Images[0].ImageUrl" alt="" width="70" height="70" />
+                                        }
+                                        else
+                                        {
+                                            <img class="product-thumb product-image-is-blank" width="70" height="70" src="/assets/images/no-image-50-50.png">
+                                        }
+                                    </a>
+                                </div>
+                                <div class="col-sm-8">
+                                    <p>@Html.Raw(Model.Product.ProductName)</p>
+                                    <p class="text-muted">@Html.Raw(Model.Product.Variants.Count) phiên bản</p>
+                                    <a href="/admin/products/@Model.ProductID">Trở lại sản phẩm</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-sm-12">
+                                    <ul class="list-unstyled list-variant">
+                                        @if (Model.Product.Variants != null && Model.Product.Variants.Count > 0)
+                                        {
+                                            foreach (var item in Model.Product.Variants)
+                                            {
+                                                <li id="variant-@item.VariantID" class="form-inline" style="height: 50px; width: 100%">
+                                                    <a href="/admin/products/@Model.ProductID/variants/@item.VariantID">
+                                                        <div class="col-sm-2">
+                                                            <div class="square-box-image">
+                                                                @if (item.Image != null && !string.IsNullOrEmpty(item.Image.ImageUrl))
+                                                                {
+                                                                    <img class="aspect-ratio__content" src="@item.Image.ImageUrl" alt="" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <svg class="image-middle">
+                                                                        <use xlink:href="#products-no-photo-icon" role="presentation" />
+                                                                    </svg>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-10 image-text">
+                                                            @Html.Raw(item.VariantTittle)
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4><label class="control-label strong"> Phiên bản </label></h4>
+                                </div>
+                                <div class="col-sm-8">
+                                    @if (Model.Product.Options != null && Model.Product.Options.Count > 0)
+                                    {
+                                        for (int i = 0; i < Model.Product.Options.Count; i++)
+                                        {
+                                            <label>@Model.Product.Options[i].OptionName</label>
+                                            if (i == 0)
+                                            {
+                                                @Html.TextBoxFor(m => m.Option1, new { @class = "form-control", @style = "margin-bottom:5px" })
+                                                @Html.ValidationMessageFor(m => m.Option1)
+                                            }
+                                            else if (i == 1)
+                                            {
+                                                @Html.TextBoxFor(m => m.Option2, new { @class = "form-control", @style = "margin-bottom:5px" })
+                                                @Html.ValidationMessageFor(m => m.Option2)
+                                            }
+                                            else if (i == 2)
+                                            {
+                                                @Html.TextBoxFor(m => m.Option3, new { @class = "form-control", @style = "margin-bottom:5px" })
+                                                @Html.ValidationMessageFor(m => m.Option3)
+                                            }
+                                        }
+                                    }
+                                </div>
+                                <div class="col-sm-4" style="width:190px; height:190px">
+                                    <div class="next-media--square-aspect-ratio" style="padding:10px; width:100%; height:100%">
+                                        <a class="next-media__blank-slate" href="javascript: void(0)" onclick="uploadImageVariant()">
+                                            @if (Model.Image == null)
+                                            {
+                                                <div class="next-media__blank-slate__content">
+                                                    <p>Chọn ảnh</p>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <img src="@Model.Image.ImageUrl" alt="Chọn ảnh" width="100%" />
+                                            }
+                                        </a>
+                                    </div>
+                                </div>
+                                <input class="hide" type="file" name="imageVariant" id="imageVariant" accept="image/*" onchange="UploadFileVariantDetail(@Model.VariantID, @Model.ProductID)" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <h4><b>Đặt giá</b></h4>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                @Html.LabelFor(model => model.VariantPrice, new { @class = "control-label" })
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">đ</span>
+                                                    @Html.TextBoxFor(model => model.VariantPrice, new { @class = "form-control", @type = "number" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.VariantPrice)
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @Html.LabelFor(model => model.CompareWithPrice, new { @class = "control-label" })
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">đ</span>
+                                                    @Html.TextBoxFor(model => model.CompareWithPrice, new { @class = "form-control", @type = "number" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.CompareWithPrice)
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="checkbox checkbox-inline">
+                                                    @Html.CheckBoxFor(model => model.Textable)
+                                                    @Html.LabelFor(model => model.Textable, new { @class = "control-label" })
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.Textable)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <h4><b>Kho hàng</b></h4>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                @Html.LabelFor(model => model.VariantSKU, new { @class = "control-label" })
+                                                @Html.TextBoxFor(model => model.VariantSKU, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.VariantSKU)
+                                            </div>
+                                            <div class="col-sm-6">
+                                                @Html.LabelFor(model => model.VariantBarcode, new { @class = "control-label" })
+                                                @Html.TextBoxFor(model => model.VariantBarcode, new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.VariantBarcode)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <h4><b>Vận chuyển</b></h4>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                @Html.LabelFor(model => model.VariantWeight, new { @class = "control-label" })
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(model => model.VariantWeight, new { @class = "form-control", @type = "number" })
+                                                    @Html.HiddenFor(model => model.WeightUnit)
+                                                    <div class="input-group-btn">
+                                                        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
+                                                            <span id="weight-unit">@Model.WeightUnit</span>
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            @foreach (var item in Model.Units)
+                                                            {
+                                                                <li><a href="javascript:void(0)" onclick="changeWeightUnit('@item')">@item</a></li>
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.VariantWeight)
+                                        </div>
+                                        <div class="checkbox checkbox-inline">
+                                            @Html.CheckBoxFor(model => model.RequireShipping)
+                                            @Html.LabelFor(model => model.RequireShipping, new { @class = "control-label" })
+                                            @Html.ValidationMessageFor(model => model.RequireShipping)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</form>
+
+<div class="modal fade" id="deleteVariant">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Bạn có muốn xóa phiên bản này ?</h4>
+            </div>
+            <div class="modal-body">
+                Thao tác này sẽ xóa phiên bản @Model.VariantTittle của bạn. Thao tác này không thể khôi phục.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary" onclick="submitDeleteVariant()"> Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    if (typeof VariantDetail == "undefined" || typeof VariantDetail != "object") {
+        VariantDetail = {};
+    }
+    VariantDetail.variantID = @Model.VariantID;
+    VariantDetail.productID = @Model.ProductID;
+
+    window.onload = function(){
+        $('#variant-@Model.VariantID').addClass('current-variant');
+    };
+</script>
+<script src="~/assets/js/admin/variant.js"></script>

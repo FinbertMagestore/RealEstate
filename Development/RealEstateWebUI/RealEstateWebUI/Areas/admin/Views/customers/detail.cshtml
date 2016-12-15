@@ -1,0 +1,326 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.Customer
+@using RealEstateWebUI.Areas.admin.Models;
+@{
+    ViewBag.Title = Common.StoreName + "|" + @Model.CustomerFirstName + " " + @Model.CustomerLastName;
+    Layout = "~/Areas/admin/Views/Shared/_MasterPage.cshtml";
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formCustomerDetail" }))
+{
+    <div class="page-heading page-heading-md">
+        <span>
+            <i class="fa fa-users fa-2x"></i>
+        </span>
+        <a href="/admin/customers"><span class="title">Khách hàng</span></a> <span class="title"> / @RealEstateWebUI.Areas.admin.Services.CustomerService.GetCustomerName(Model.CustomerID)</span>
+        <div class="pull-right">
+            @using RealEstateWebUI.Areas.admin.Models;
+            @using RealEstateWebUI.Areas.admin.UtilzGeneral;
+            @if (Model.CustomerState == Common.InActive)
+                {
+                <a href="javascript: void(0)" class="btn btn-default" data-toggle="modal" data-target="#bizweb-modal" onclick="showModalActiveAccount(@Model.CustomerID)">Kích hoạt tài khoản</a>
+
+            }
+            else
+            {
+                <a href="javascript: void(0)" class="btn btn-default" data-toggle="modal" data-target="#bizweb-modal" onclick="showModalDisableAccount(@Model.CustomerID)">Vô hiệu hóa tài khoản</a>
+
+            }
+            <a href="javascript: void(0)" class="btn btn-danger" data-toggle="modal" data-target="#bizweb-modal" onclick="showModalDeleteCustomer(@Model.CustomerID)">Xóa tài khoản</a>
+        </div>
+    </div>
+    <div class="container-fluid-md">
+        <div class="row">
+            <div class="col-sm-12">
+                @Html.HiddenFor(x => Model.CustomerID)
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div id="strMessage">
+                    @if (!string.IsNullOrEmpty(ViewBag.strSuccess as string))
+                    {
+                        <div class="alert alert-success">
+                            <button class="close" data-dismiss="alert">×</button>
+                            @Html.Raw(ViewBag.strSuccess)
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(ViewBag.strError as string))
+                    {
+                        <div class="alert alert-danger">
+                            <button class="close" data-dismiss="alert">×</button>
+                            @Html.Raw(ViewBag.strError)
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="">
+                                <h4>Đơn hàng</h4>
+                                @if (Model.TblOrders == null || Model.TblOrders.Count == 0)
+                                {
+                                    <div class="col-sm-12 text-center fa-5x text-muted">
+                                        <i class="fa fa-fw fa-suitcase"></i>
+                                        <h4 class="text-muted">Khách hàng này chưa có đơn đặt hàng nào.</h4>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table vert-align">
+                                            <thead>
+                                                <tr>
+                                                    <th>Đơn hàng</th>
+                                                    <th>Ngày tạo</th>
+                                                    <th>TT thanh toán</th>
+                                                    <th>TT giao hàng</th>
+                                                    <th>Tổng tiền(đ)</th>
+                                                </tr>
+                                            </thead>
+                                            @foreach (var item in Model.TblOrders)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @Html.ActionLink(item.OrderName, "detail", "orders", new { id = item.OrderID }, null)
+                                                    </td>
+                                                    <td>@SDateTime.ToDateTime(item.CreatedDateTime)</td>
+                                                    <td>
+                                                        @if (item.BillingStatus == Common.Pending)
+                                                        {
+                                                            <span class="label label-warning">Chưa thanh toán</span>
+                                                        }
+                                                        @*else if (item.BillingStatus == "partially_paid")
+                                                        {
+                                                            <span class="label label-default">Thanh toán một phần</span>
+                                                        }*@
+                                                        else if (item.BillingStatus == Common.Paid)
+                                                        {
+                                                            <span class="label label-success">Đã thanh toán</span>
+                                                        }
+                                                        @*else if (item.BillingStatus == "partially_refunded")
+                                                        {
+                                                            <span class="label label-default">Hoàn trả một phần</span>
+                                                        }
+                                                        else if (item.BillingStatus == "refunded")
+                                                        {
+                                                            <span class="label label-default">Hoàn trả toàn bộ</span>
+                                                        }*@
+                                                    </td>
+                                                    <td>
+                                                        @if (item.ShippingStatus == Common.Unfulfilled)
+                                                        {
+                                                            <span class="label label-warning">Chưa chuyển</span>
+                                                        }
+                                                        @*else if (item.ShippingStatus == "partial")
+                                                        {
+                                                            <span class="label label-default">Chuyển một phần</span>
+                                                        }*@
+                                                        else if (item.ShippingStatus == Common.Fulfilled)
+                                                        {
+                                                            <span class="label label-success">Chuyển toàn bộ</span>
+                                                        }
+                                                    </td>
+                                                    <td>@item.TotalCount</td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <h4>Thông tin khác</h4>
+                                @Html.LabelFor(model => model.CustomerNote, new { @class = "control-label" })
+                                @Html.TextAreaFor(model => model.CustomerNote, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h4>@Html.LabelFor(m => m.Tags, new { @class = "control-label" })</h4>
+                                        <input class="taginput" name="Tags" type="text" data-role="tagsinput" value="@Model.Tags" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label>Bạn có thể chọn những tag đã được sử dụng</label>
+                                        @if (Model.ListTag != null && Model.ListTag.Count > 0)
+                                        {
+                                            <div class="col-button-colors">
+                                                @foreach (var item in Model.ListTag)
+                                                {
+                                                    <a class="btn btn-info" onclick="addTag(this)">@item.TagName</a>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="text-right">
+                                    <input type="submit" name="btnSave" value="Lưu" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="">
+                    <div class="panel panel-default panel-full">
+                        <div class="panel-body">
+                            <div class="col-sm-12">
+                                <div>
+                                    <h4>Thông tin khách hàng</h4>
+                                    <a href="javascript: void(0)" class="pull-right" data-toggle="modal" data-target="#bizweb-modal" onclick="showModalEditCustomer(@Model.CustomerID)">Sửa</a>
+                                </div>
+                                <div class="">
+                                    <i class="fa fa-envelope fa-fw"></i>
+                                    @Model.CustomerEmail
+                                </div>
+                                <div class="">
+                                    <i class="fa fa-bullhorn fa-fw"></i>
+                                    @if (Model.AcceptsMarketing)
+                                    {
+                                        @Html.Label("Đồng ý nhận tiếp thị")
+                                    }
+                                    else
+                                    {
+                                        @Html.Label("Không đồng ý nhận tiếp thị")
+                                    }
+                                </div>
+                                <div class="">
+                                    <i class="fa fa-user fa-fw"></i>
+                                    @if (Model.CustomerState == (int)Common.Active)
+                                    {
+                                        @Html.Label("Đã có tài khoản")
+                                    }
+                                    else
+                                    {
+                                        @Html.Label("Chưa có tài khoản");
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="panel panel-default panel-full">
+                        <div class="panel-body">
+                            <div class="col-sm-12">
+                                <div>
+                                    <h4>Sổ địa chỉ</h4>
+                                    <a href="javascript: void(0)" class="pull-right" data-toggle="modal" data-target="#bizweb-modal" onclick="showModalAddAddressBook(@Model.CustomerID)">Thêm địa chỉ</a>
+
+                                    <p class="text-muted">Địa chỉ nhận hàng mặc định</p>
+                                </div>
+                            </div>
+                            @using RealEstateWebUI.Areas.admin.Services;
+                            @{
+                                var addressBookService = new AddressBookService();
+                                var addressBookDefault = addressBookService.SelectDefaultAddressOfCustomer(SNumber.ToNumber(Model.CustomerID));
+                            }
+                            @if (addressBookDefault != null)
+                            {
+                                <div class="">
+                                    <div class="col-sm-8">
+                                        <div>
+                                            @addressBookDefault.AddressBookFirstName @addressBookDefault.AddressBookLastName
+                                        </div>
+                                        <div>
+                                            @addressBookDefault.CompanyName
+                                        </div>
+                                        <div>
+                                            @addressBookDefault.Phone
+                                        </div>
+                                        <div>
+                                            @addressBookDefault.HomeAddress
+                                        </div>
+                                        <div>
+                                            @addressBookDefault.ProvinceName
+                                        </div>
+                                        <div>
+                                            @addressBookDefault.Postal
+                                        </div>
+                                        <div>
+                                            @if (addressBookDefault.CountryID != null)
+                                            {
+                                                CountryService.GetCountryName(addressBookDefault.CountryID.Value);
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 pull-right">
+                                        <a href="javascript: void(0)" class="pull-right" data-toggle="modal" data-target="#bizweb-modal" onclick="showModalEditAddressBook(@addressBookDefault.AddressBookID)">Sửa</a>
+                                    </div>
+                                </div>
+                            }
+                            @{
+                                var lstAddressBookCustomer = addressBookService.SelectByCustomerID(Model.CustomerID);
+                                var countAddressBookNotDefault = addressBookService.CountByCustomerIDNotDefault(Model.CustomerID);
+                            }
+                            @if (countAddressBookNotDefault > 0)
+                            {
+                                <div class="col-sm-12">
+                                    <hr />
+                                    <a href="javascript: void(0)" id="displayShowMore" onclick="displayShowMore()">Hiển thị @countAddressBookNotDefault các địa chỉ khác</a>
+                                </div>
+                            }
+                            <div class="hide col-sm-12" id="showMore">
+                                <p class="text-muted">Các địa chỉ khác</p>
+                                @foreach (var item in lstAddressBookCustomer)
+                                {
+                                    if (!item.IsDefault)
+                                    {
+                                        <div class="row" style="margin-top: 10px">
+                                            <div class="col-sm-8">
+                                                <div>
+                                                    @item.AddressBookFirstName @item.AddressBookLastName
+                                                </div>
+                                                <div>
+                                                    @item.CompanyName
+                                                </div>
+                                                <div>
+                                                    @item.Phone
+                                                </div>
+                                                <div>
+                                                    @item.HomeAddress
+                                                </div>
+                                                <div>
+                                                    @item.ProvinceName
+                                                </div>
+                                                <div>
+                                                    @item.Postal
+                                                </div>
+                                                <div>
+                                                    @CountryService.GetCountryName(item.CountryID.Value)
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4 pull-right">
+                                                <a href="javascript: void(0)" class="pull-right" data-toggle="modal" data-target="#bizweb-modal" onclick="showModalEditAddressBook(@item.AddressBookID)">Sửa</a>
+
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+                                }
+<div class="modal fade" id="bizweb-modal">
+</div>
+<script src="~/assets/js/admin/customer.js"></script>

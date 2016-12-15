@@ -1,0 +1,80 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.OptionsOfProduct
+
+@Html.HiddenFor(m => m.ProductID)
+@if (Model.Options != null && Model.Options.Count > 0)
+{
+    for (int i = 0; i < Model.Options.Count; i++)
+    {
+        <div class="form-group">
+            <div class="row option@(i+1)">
+                @Html.HiddenFor(m => Model.Options[i].OptionID)
+                @Html.HiddenFor(m => Model.Options[i].ProductID)
+                @Html.HiddenFor(m => Model.Options[i].OptionValue)
+                <div class="col-sm-4">@Html.TextBoxFor(m => Model.Options[i].OptionName, new { @class = "form-control optionName" })</div>
+                <div class="col-sm-6">
+                    @if (i == 0)
+                    {
+                        <ul class="clearfix option-value1 list-option-value">
+                            @if (Model.Option1Values != null && Model.Option1Values.Length > 0)
+                        {
+                            foreach (var item in Model.Option1Values)
+                            {
+                                    <li class="option1">
+                                        <span class="tag label label-info"> @item </span>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    }
+                    else if (i == 1)
+                    {
+                        <ul class="clearfix option-value2 list-option-value">
+                            @if (Model.Option2Values != null && Model.Option2Values.Length > 0)
+                        {
+                            foreach (var item in Model.Option2Values)
+                            {
+                                    <li class="option2">
+                                        <span class="tag label label-info"> @item </span>
+
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    }
+                    else if (i == 2)
+                    {
+                        <ul class="clearfix option-value3 list-option-value">
+                            @if (Model.Option3Values != null && Model.Option3Values.Length > 0)
+                        {
+                            foreach (var item in Model.Option3Values)
+                            {
+                                    <li class="option3">
+                                        <span class="tag label label-info"> @item </span>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    }
+                </div>
+                @*<div class="col-sm-2 text-right">
+                    <a class="btn btn-white" href="javascript:void(0)" onclick="deleteOption(@Model.Options[i].OptionID)" style="color:#357ebd;">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </div>*@
+            </div>
+        </div>
+    }
+    @*<a class="btn btn-default addNewOption" onclick="addNewOption_DetailProduct(@Model.Options.Count" href="javascript:void(0)">Thêm option</a>*@
+}
+@*<script>
+    window.onload = function () {
+        if (@Model.Options.Count == 3) {
+            $(".addNewOption").addClass("hide");
+        }
+        if (typeof ProductDetail == "undefined" || typeof ProductDetail != "object") {
+            ProductDetail = {};
+        }
+        ProductDetail.Options = [];
+        ProductDetail.Options.push(@Model.Options);
+    };
+</script>*@

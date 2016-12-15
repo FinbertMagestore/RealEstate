@@ -1,0 +1,34 @@
+﻿@model List<RealEstateWebUI.Areas.admin.Models.Collection>
+<div class="category-body">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12" style="text-align: center">
+                <h3>DANH SÁCH SẢN PHẨM</h3>
+                <p> Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut od</p>
+            </div>
+        </div>
+        <div class="row">
+            @if (Model != null && Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {
+                    if (item != null)
+                    {
+                        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-6">
+                            @{
+                                var urlImage = "";
+                                if (item != null && !string.IsNullOrEmpty(item.CollectionImage))
+                                {
+                                    urlImage = item.CollectionImage;
+                                }
+                            }
+                            <img src="@urlImage" alt="" width="164" height="140" />
+                            <p>@item.CollectionName</p>
+                            <p class="text-muted">(@RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(item.CollectionProducts.Count) sản phẩm)</p>
+                        </div>
+                                        }
+                                    }
+                                }
+        </div>
+    </div>
+</div>

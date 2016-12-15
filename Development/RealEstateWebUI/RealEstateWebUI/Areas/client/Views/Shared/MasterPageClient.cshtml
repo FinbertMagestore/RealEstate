@@ -1,0 +1,181 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link href="~/assets/admin/favicon.ico" rel="shortcut icon">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/font-awesome.css")
+    @Styles.Render("~/Content/veneto-admin.min.css")
+    @Styles.Render("~/assets/css/client/myScssClient.min.css")
+    <link href="/assets/owl-carousel/owl.carousel.css" rel="stylesheet">
+    <link href="/assets/owl-carousel/owl.theme.css" rel="stylesheet">
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+    @RenderBody()
+
+    <footer class="footer_page">
+        <a href="#" class="go-top">
+            <i class="fa fa-angle-up"></i>
+        </a>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <div class="row">
+                            <h2>
+                                <img src="~/assets/images/home/menu/logo.png" alt="" />
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <p>
+                                Furure thành lập năm 1968 bởi Mr. Win Lee. Là tập đoàn bán lẻ hàng đầu Châu Á. Có mặt trên 20 quốc gia...
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="input-group">
+                                <input class="form-control" type="text" placeholder="Email của bạn">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-inverse" type="button"><i class="fa fa-envelope-o"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <h2>THÔNG TIN</h2>
+                    <ul>
+                        <li><p><a href="">Về chúng tôi</a></p></li>
+                        <li><p><a href="">Giới thiệu</a></p></li>
+                        <li><p><a href="">Chính sách riêng tư</a></p></li>
+                        <li><p><a href="">Điều khoản & Điều kiện</a></p></li>
+                        <li><p><a href="/client/home/contact">Liên hệ</a></p></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h2>TÀI KHOẢN</h2>
+                    <ul>
+                        <li><p><a href="">Tài khoản của tôi</a></p></li>
+                        <li><p><a href="">Giỏ hàng</a></p></li>
+                        <li><p><a href="">Theo dõi đơn hàng</a></p></li>
+                        <li><p><a href="">Đăng ký</a></p></li>
+                        <li><p><a href="">Đăng nhập</a></p></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h2>HỖ TRỢ</h2>
+                    <ul>
+                        <li><p><a href="">Hỗ trợ trực tuyến</a></p></li>
+                        <li><p><a href="">Thanh toán an toàn</a></p></li>
+                        <li><p><a href="">Chính sách hoàn trả</a></p></li>
+                        <li><p><a href="">Giao hàng</a></p></li>
+                        <li><p><a href="">Tìm kiếm nhanh</a></p></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h2>LIÊN HỆ</h2>
+                    <ul class="list-unstyled">
+                        <li>
+                            <p>
+                                <i class="glyphicon glyphicon-map-marker"></i>
+                                442 Đội Cấn, Ba Đình Hà Nội, VN
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <i class="fa fa-phone"></i>
+                                012345578
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <i class="fa fa-envelope-o"></i>
+                                support@bizweb.vn
+                            </p>
+                        </li>
+                    </ul>
+                    <div class="social">
+                        <ul class="list-unstyled">
+                            <li><button class="btn btn-inverse none-border"><i class="fa fa-facebook"></i></button></li>
+                            <li><button class="btn btn-inverse none-border"><i class="fa fa-twitter"></i></button></li>
+                            <li><button class="btn btn-inverse none-border"><i class="fa fa-dribbble"></i></button></li>
+                            <li><button class="btn btn-inverse none-border"><i class="fa fa-pinterest"></i></button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="br_bottom_index"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8">
+                        © Copyright 2008-2015 DKT Techntology JSC
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        <a href="">
+                            <img src="~/assets/images/home/footer/pay1.png" alt="">
+                        </a>
+                        <a href="">
+                            <img src="~/assets/images/home/footer/pay2.png" alt="">
+                        </a>
+                        <a href="">
+                            <img src="~/assets/images/home/footer/pay3.png" alt="">
+                        </a>
+                        <a href="">
+                            <img src="~/assets/images/home/footer/pay4.png" alt="">
+                        </a>
+                        <a href="">
+                            <img src="~/assets/images/home/footer/pay5.png" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        $(document).ready(function () {
+            getNumberVariantInCart();
+
+            $('.menu-header .menu_list ul li:nth-of-type(2)').hover(function () {
+                $('.menu-header .menu_list ul li:nth-of-type(2)').addClass("open");
+            }, function () {
+                //$('.menu-header .menu_list ul li:nth-of-type(2)').removeClass("open");
+            });
+
+            // Show or hide the sticky footer button
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 200) {
+                    $('.go-top').fadeIn(200);
+                } else {
+                    $('.go-top').fadeOut(200);
+                }
+            });
+
+            // Animate the scroll to top
+            $('.go-top').click(function (event) {
+                event.preventDefault();
+
+                $('html, body').animate({ scrollTop: 0 }, 300);
+            })
+        });
+    </script>
+    <script src="~/assets/js/client/client.js"></script>
+    <script src="/assets/owl-carousel/owl.carousel.js"></script>
+    <script src="~/assets/js/jquery.zoom.min.js"></script>
+</body>
+</html>

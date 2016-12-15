@@ -1,0 +1,68 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.LineItemsOfOrder
+
+<form id="lineItemForm" action="/admin/products/getLineItem" method="post">
+    @if (Model.ProductVariants != null && Model.ProductVariants.Count > 0)
+    {
+        <ul class="list-unstyled">
+            @for (int i = 0; i < Model.ProductVariants.Count; i++)
+            {
+                <li>
+                    <div class="form-group">
+                        <div class="row">
+                            @Html.HiddenFor(m => Model.ProductVariants[i].ProductID)
+                            @Html.HiddenFor(m => Model.ProductVariants[i].VariantID)
+                            @Html.HiddenFor(m => Model.ProductVariants[i].IsDefault)
+                            @Html.HiddenFor(m => Model.ProductVariants[i].Price)
+                            @Html.HiddenFor(m => Model.ProductVariants[i].SKU)
+                            @Html.HiddenFor(m => Model.ProductVariants[i].ImageUrl)
+                            <div class="col-sm-1">
+                                @if (Model.ProductVariants[i].CanChoice)
+                                {
+                                    @Html.CheckBoxFor(m => Model.ProductVariants[i].Choice)
+                                }
+                            </div>
+                            @if (Model.ProductVariants[i].IsDefault)
+                            {
+                                <div class="col-sm-1">
+                                    @if (!String.IsNullOrEmpty(Model.ProductVariants[i].ImageUrl))
+                                    {
+                                        <img src="@Model.ProductVariants[i].ImageUrl" alt="" width="40" height="40" />
+                                    }
+                                    else
+                                    {
+                                        <img class="product-thumb product-image-is-blank" width="40" height="40" src="/assets/images/no-image-50-50.png">
+                                    }
+                                </div>
+                                <div class="col-sm-6">
+                                    @Html.Label(Model.ProductVariants[i].ObjectName, new { @class = "control-label" })
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-5 col-sm-offset-2">
+                                    @Html.Label(Model.ProductVariants[i].ObjectName, new { @class = "control-label" })
+                                </div>
+                            }
+                            @if (Model.ProductVariants[i].VariantID != 0)
+                            {
+                                <div class="col-sm-2">
+                                    @Html.TextBoxFor(m => Model.ProductVariants[i].Quantity, new { @class = "form-control", @type = "number" })
+                                </div>
+                            }
+                            <div class="col-sm-2">
+                                @if (Model.ProductVariants[i].Price != -1)
+                                {
+                                    @Html.Label(Model.ProductVariants[i].Price.ToString(), new { @class = "control-label" })
+                                    @Html.Label("₫")
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+        <div class="text-muted">
+            Hiện thị @Model.ProductVariants.Count kết quả
+        </div>
+    }
+</form>

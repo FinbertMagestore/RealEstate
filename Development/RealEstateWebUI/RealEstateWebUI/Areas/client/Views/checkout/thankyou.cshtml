@@ -1,0 +1,202 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+@model RealEstateWebUI.Areas.client.Models.ThankyouViewModel
+@using RealEstateWebUI.Areas.admin.Models;
+@using RealEstateWebUI.Areas.admin.Services;
+@using RealEstateWebUI.Areas.admin.UtilzGeneral;
+<html>
+<head>
+    <link href="~/assets/admin/favicon.ico" rel="shortcut icon">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="@Common.StoreName- Thanh toán đơn hàng">
+    <title>@Common.StoreName - Cảm ơn</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/assets/css/client/myScssClient.min.css")
+    <link href="~/assets/veneto/plugins/skins/all.css" rel="stylesheet" />
+    <link href="~/assets/veneto/css/jquery-icheck.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        <div class="checkout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="shopName">
+                            <h3><a href="/">@Common.StoreName</a></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 order-info">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>
+                                    <h4>
+                                        @{
+                                            OrderService orderService = new OrderService();
+                                        }
+                                        Đơn hàng (@orderService.GetQuantityInOrder(Model.OrderID))
+                                    </h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @if (Model.LineItems != null && Model.LineItems.Count > 0)
+                                    {
+                                        <ul class="list-unstyled products-list">
+                                            @foreach (var item in Model.LineItems)
+                                            {
+                                                <li class="product product-has-image clearfix">
+                                                    <div class="product-thumbnail pull-left">
+                                                        <div class="product-thumbnail__wrapper">
+                                                            @if (item != null && !string.IsNullOrEmpty(item.ImageUrl))
+                                                            {
+                                                                <img class="product-thumbnail__image" src="@item.ImageUrl" alt="" width="38" height="50">
+                                                            }
+                                                            else
+                                                            {
+                                                                <img class="product-thumbnail__image" src="/assets/images/noimage.gif" alt="" width="50" height="50">
+                                                            }
+                                                        </div>
+                                                        <span class="product-thumbnail__quantity" aria-hidden="true">@item.Quantity</span>
+                                                    </div>
+                                                    <div class="product-info pull-left">
+                                                        <p>@item.ProductName</p>
+                                                        @if (!string.IsNullOrEmpty(item.VariantName) && item.VariantName != "Default Title")
+                                                        {
+                                                            <p class="text-muted">@item.VariantName</p>
+                                                        }
+                                                    </div>
+                                                    <span class="product-price pull-right">@SString.FormatMoneyVN(item.Price * item.Quantity) ₫</span>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="row" style="margin: 10px -20px;">
+                                        <div class="col-xs-12">
+                                            <span class="pull-left">Tạm tính</span>
+                                            <span class="pull-right">@SString.FormatMoneyVN(Model.TotalSubPrice) ₫</span>
+                                            @Html.HiddenFor(model => model.TotalSubPrice)
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin: 10px -20px;">
+                                        <div class="col-xs-12">
+                                            <span class="pull-left">Phí vận chuyển</span>
+                                            <span class="pull-right">@SString.FormatMoneyVN(Model.TotalShipping) ₫</span>
+                                            @Html.HiddenFor(model => model.TotalShipping)
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="row" style="margin: 10px -20px;">
+                                        <div class="col-xs-12">
+                                            <span class="pull-left">Tổng cộng</span>
+                                            <span class="pull-right" style="color: #369ad6; font-size: 20px">@SString.FormatMoneyVN(Model.TotalPrice) ₫</span>
+                                            @Html.HiddenFor(model => model.TotalPrice)
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-7 col-sm-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="row thankyou-message hidden-xs hidden-sm">
+                                        <div class="col-md-12">
+                                            <div class="thankyou-message-icon unprint">
+                                                <div class="icon icon--order-success svg">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="72px" height="72px">
+                                                        <g fill="none" stroke="#8EC343" stroke-width="2">
+                                                            <circle cx="36" cy="36" r="35" style="stroke-dasharray:240px, 240px; stroke-dashoffset: 480px;"></circle>
+                                                            <path d="M17.417,37.778l9.93,9.909l25.444-25.393" style="stroke-dasharray:50px, 50px; stroke-dashoffset: 0px;"></path>
+                                                        </g>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div class="thankyou-message-text">
+                                                <h3>Cảm ơn bạn đã đặt hàng</h3>
+                                                <p>
+                                                    Một email xác nhận đã được gửi tới @Model.CustomerEmail . Xin vui lòng kiểm tra email của bạn
+                                                </p>
+                                                <em>
+                                                </em>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="shipping-info form-group">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    @if (Model.ShippingAddress != null)
+                                    {
+                                        <h3>Thông tin nhận hàng</h3>
+                                        <p class="text-muted">
+                                            @Model.ShippingAddress.CustomerName
+                                        </p>
+                                        <p class="text-muted">
+                                            @Model.ShippingAddress.DistrictName
+                                        </p>
+                                        <p class="text-muted">
+                                            @Model.ShippingAddress.ProvinceName
+                                        </p>
+                                    }
+                                </div>
+                                <div class="col-xs-6">
+                                    @if (Model.BillingAddress != null)
+                                    {
+                                        <h3>Thông tin thanh toán</h3>
+                                        <p class="text-muted">
+                                            @Model.BillingAddress.CustomerName
+                                        </p>
+                                        <p class="text-muted">
+                                            @Model.BillingAddress.DistrictName
+                                        </p>
+                                        <p class="text-muted">
+                                            @Model.BillingAddress.ProvinceName
+                                        </p>
+                                    }
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <h3>Hình thức thanh toán</h3>
+                                    <p class="text-muted">Thanh toán khi giao hàng (COD)</p>
+                                </div>
+                                <div class="col-xs-6">
+                                    <h3>Hình thức vận chuyển</h3>
+                                    <p class="text-muted">Giao hàng tận nơi - 500.000₫</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-bottom">
+                            <a class="btn btn-primary" href="/"> Tiếp tục mua hàng </a>
+                            <a class="nounderline print-link" onclick="window.print()" href="javascript:void(0)"> In </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+                                            }
+    <script src="~/assets/veneto/js/icheck.js"></script>
+    <script src="~/assets/veneto/plugins/icheck.min.js"></script>
+    <script src="~/assets/js/client/client.js"></script>
+</body>
+</html>

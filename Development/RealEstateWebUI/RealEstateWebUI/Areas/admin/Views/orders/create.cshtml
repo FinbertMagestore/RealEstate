@@ -1,0 +1,438 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.CreateOrderModel
+
+@using RealEstateWebUI.Areas.admin.Models;
+@{
+    ViewBag.Title = Common.StoreName + " | Thêm mới đơn hàng";
+    Layout = "~/Areas/admin/Views/Shared/_MasterPage.cshtml";
+}
+<div id="global-icon-symbols" refresh-always="true" style="display: none;">
+    <svg xmlns="http://www.w3.org/2000/svg">
+        <symbol id="next-credit-card" class="icon-symbol--loaded">
+            <svg enable-background="new 0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                    <path d="M23.6 10H.4c-.2 0-.4.5-.4.7v7.7c0 .7.6 1.6 1.3 1.6h21.4c.7 0 1.3-.9 1.3-1.6v-7.7c0-.2-.2-.7-.4-.7zM20 16.6c0 .2-.2.4-.4.4h-4.1c-.2 0-.4-.2-.4-.4v-2.1c0-.2.2-.4.4-.4h4.1c.2 0 .4.2.4.4v2.1zM22.7 4H1.3C.6 4 0 4.9 0 5.6v1.7c0 .2.2.7.4.7h23.1c.3 0 .5-.5.5-.7V5.6c0-.7-.6-1.6-1.3-1.6z">
+                </g>
+            </svg>
+        </symbol>
+        <symbol id="next-orders-16" class="icon-symbol--loaded">
+            <svg enable-background="new 0 0 16 16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                    <path d="M13.992 0H2.1C.94 0 0 .94 0 2.1v12.244C0 15.305.785 16 1.75 16H14.34c.964 0 1.658-.694 1.658-1.658V2.1C16 .94 15.15 0 13.992 0zM14 2v8h-1.757C11.28 10 10 11.28 10 12.243v.7c0 .193.337.057.144.057H5.247c-.193 0-.247.136-.247-.057v-.7C5 11.28 4.113 10 3.148 10H2V2h12zM7.117 9.963c.167.16.437.16.603.002l5.17-5.042c.165-.16.165-.422 0-.583l-.604-.583c-.166-.16-.437-.16-.603 0L7.42 7.924 5.694 6.24c-.166-.16-.437-.16-.603 0l-.604.582c-.166.162-.166.423 0 .584l2.63 2.557z">
+                </g>
+            </svg>
+        </symbol>
+    </svg>
+</div>
+<div class="page-heading page-heading-md">
+    <span>
+        <i class="fa fa-credit-card fa-2x"></i>
+    </span>
+    <a href="/admin/orders/"><span class="title">Đơn hàng</span></a> <span class="title"> / Thêm mới đơn hàng</span>
+    <div class="pull-right">
+        <a class="btn btn-default" href="/admin/orders">Hủy</a>
+    </div>
+</div>
+<div class="container-fluid-md">
+    <form id="orderForm" action="/admin/orders/create" method="post">
+        <div class="row">
+            <div class="col-sm-12">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div id="strMessage"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4>Chi tiết đơn hàng</h4>
+                            </div>
+                        </div>
+                        <div id="listLineItemDiv" class="hide">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="tableLineItem">
+                                            <colgroup>
+                                                <col width="12%" />
+                                                <col width="40%" />
+                                                <col width="12%" />
+                                                <col width="3%" />
+                                                <col width="13%" />
+                                                <col width="15%" />
+                                                <col width="5%" />
+                                            </colgroup>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a class="btn btn-default" href="javascript: void(0)" data-id="" data-toggle="modal" data-target="#listLineItem" onclick="viewLineItems()">Chọn sản phẩm</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    @Html.LabelFor(m => Model.OrderNote, new { @class = "control-label" })
+                                    @Html.TextAreaFor(m => Model.OrderNote, new { @class = "form-control", @placeholder = "Thêm ghi chú cho đơn hàng" })
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="col-sm-6 text-right">Tổng cộng</div>
+                                    <div class="col-sm-6"><span id="totalPrice">0</span>₫</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <svg class="next-icon next-icon--24 next-icon--blue next-icon--no-nudge">
+                                        <use xlink:href="#next-credit-card" role="presentation" />
+                                    </svg>
+                                    <label>Xác nhận thanh toán</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="button-group pull-right">
+                                        <a id="submitPaid" class="btn btn-primary disabled" href="javascript: void(0);" onclick="isPaid()">Đã thanh toán</a>
+                                        <a id="submitPending" class="btn btn-primary disabled" href="javascript: void(0);" onclick="isPending()">Thanh toán sau</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div id="no_customer" class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12 form-group">
+                                    <h4>Tìm kiếm khách hàng</h4>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="button-group">
+                                        @*<a class="btn btn-default" href="javascript: void(0)" data-id="" data-toggle="modal" data-target="#addNewCustomer">Thêm mới</a>*@
+                                        <a class="btn btn-default" href="javascript: void(0)" data-id="" data-toggle="modal" data-target="#choiceCustomer" onclick="viewCustomers()">Chọn khách hàng</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div id="customer" class="col-sm-12 hide">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-10">
+                                                <h4 class="next-heading">Khách hàng</h4>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <h4 class="next-heading text-right"><a href="javascript: void(0)" onclick="removeCustomer()">x</a></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-7"></div>
+                                            <div class="col-sm-5 text-right">
+                                                <svg class="next-icon next-icon--16 next-icon--slate-lighter">
+                                                    <use xlink:href="#next-orders-16" role="presentation" />
+                                                </svg>
+                                                <span class="subdued">
+                                                    <span id="numOrder">0</span>
+                                                    đơn hàng
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <a id="link2Customer" href="#"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-9"><a id="emailCustomer" href="#"></a></div>
+                                        <div class="col-sm-3 text-right"><a href="javascript:void(0)" data-toggle="modal" data-target="#editEmail" onclick="resetOrderEmail();">Sửa</a></div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <label>Địa chỉ giao hàng</label>
+                                        </div>
+                                        <div class="col-sm-3 text-right"><a href="javascript:void(0)" data-toggle="modal" data-target="#editShippingAddress">Sửa</a></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="text-muted" id="shippingAddressName"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="text-muted" id="shippingAddressHomeAddress"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="text-muted" id="shippingAddressProvince"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="text-muted" id="shippingAddressCountry"></label>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-sm-9"><label>Địa chỉ thanh toán</label></div>
+                                        <div class="col-sm-3 text-right"><a href="javascript:void(0)" data-target="#editBillingAddress" data-toggle="modal">Sửa</a></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="text-muted" id="billingAddressName"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="text-muted" id="billingAddressAddress"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="text-muted" id="billingAddressProvince"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="text-muted" id="billingAddressCountry"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="listLineItem">
+    <div class="modal-dialog" role="document" style="width: 700px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Danh sách sản phẩm</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input class="form-control" id="ConditionFindLineItem" name="ConditionFindLineItem" onkeyup="suggestLineItem()" placeholder="Nhập từ khóa tìm kiếm" type="text" value="">
+                </div>
+                <div id="lineItems" class="ui-modal__body">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="pull-right text-right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button class="btn btn-primary" onclick="choiceLineItem()" type="button">Chọn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addNewCustomer">
+    <div class="modal-dialog" role="document" style="width: 700px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Thêm khách hàng</h4>
+            </div>
+            <div class="modal-body">
+                <div id="customerDetail">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="pull-right text-right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button class="btn btn-primary" onclick="choiceProductVariant()" type="button">Chọn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="choiceCustomer">
+    <div class="modal-dialog" role="document" style="width: 400px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Danh sách khách hàng</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input class="form-control" id="ConditionFindCustomer" name="ConditionFindCustomer" onkeyup="suggestCustomer()" placeholder="Nhập từ khóa tìm kiếm" type="text" value="">
+                </div>
+                <div id="listCustomer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editEmail">
+    <div class="modal-dialog" role="document" style="width: 400px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Sửa email đơn hàng</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="control-label strong" for="Email">Email</label>
+                            <div class="controls">
+                                <input id="order_email" class="form-control" type="text" name="email_tmp">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-5 pull-right text-right">
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Hủy</button>
+                    <button class="btn btn-primary" onclick="updateEmail()" type="button">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editShippingAddress">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" data-dismiss="modal" type="button">X</button>
+                <h4 class="modal-title">Sửa địa chỉ thanh toán</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="control-label strong" for="editShippingAddressName">Tên</label>
+                        <input id="editShippingAddressName" class="form-control" type="text" name="editShippingAddressName">
+                        <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="editShippingAddressName"></span>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label strong" for="editShippingAddressPhone">Điện thoại</label>
+                        <input id="editShippingAddressPhone" class="form-control" type="text" name="editShippingAddressPhone">
+                        <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="editShippingAddressPhone"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12" style="margin-top: 10px">
+                        <div class="" style="margin-top: 10px">
+                            <label class="control-label strong" for="editShippingAddressHomeAddress">Địa chỉ</label>
+                        </div>
+                        <div class="">
+                            <input id="editShippingAddressHomeAddress" class="form-control" type="text" name="editShippingAddressHomeAddress">
+                            <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="editShippingAddressHomeAddress"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6" style="margin-top: 10px">
+                        <div>
+                            <label class="control-label strong" for="editShippingAddressProvinceName">Tỉnh / Thành phố</label>
+                        </div>
+                        <div class="">
+                            <input id="editShippingAddressProvinceName" class="form-control" type="text" name="editShippingAddressProvinceName">
+                            <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="editShippingAddressProvinceName"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" style="margin-top: 10px">
+                        <label class="control-label strong" for="CountryID">Quốc gia</label>
+                        @Html.DropDownListFor(model => model.ShippingAddress.CountryID, new SelectList(Model.ShippingAddress.Countries, "CountryID", "CountryName"), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ShippingAddress.CountryID)
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" type="button">Đóng</button>
+                <button class="btn btn-primary" onclick="updateShippingAddress()" type="button"> Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="editBillingAddress">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" aria-hidden="true" data-dismiss="modal" type="button">X</button>
+                <h4 class="modal-title">Sửa địa chỉ thanh toán</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="control-label strong" for="editBillingAddressName">Tên</label>
+                        <input id="editBillingAddressName" class="form-control" type="text" name="editBillingAddressName">
+                        <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="editBillingAddressName"></span>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label strong" for="editBillingAddressPhone">Điện thoại</label>
+                        <input id="editBillingAddressPhone" class="form-control" type="text" name="editBillingAddressPhone">
+                        <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="editBillingAddressPhone"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12" style="margin-top: 10px">
+                        <div class="" style="margin-top: 10px">
+                            <label class="control-label strong" for="editBillingAddressHomeAddress">Địa chỉ</label>
+                        </div>
+                        <div class="">
+                            <input id="editBillingAddressHomeAddress" class="form-control" type="text" name="editBillingAddressHomeAddress">
+                            <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="editBillingAddressHomeAddress"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6" style="margin-top: 10px">
+                        <div>
+                            <label class="control-label strong" for="editBillingAddressProvinceName">Tỉnh / Thành phố</label>
+                        </div>
+                        <div class="">
+                            <input id="editBillingAddressProvinceName" class="form-control" type="text" name="editBillingAddressProvinceName">
+                            <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="editBillingAddressProvinceName"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" style="margin-top: 10px">
+                        <label class="control-label strong" for="CountryID">Quốc gia</label>
+                        @Html.DropDownListFor(model => model.BillingAddress.CountryID, new SelectList(Model.BillingAddress.Countries, "CountryID", "CountryName"), new { @class = "form-control"})
+                        @Html.ValidationMessageFor(model => model.BillingAddress.CountryID)
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" type="button">Đóng</button>
+                <button class="btn btn-primary" onclick="updateBillingAddress()" type="button"> Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/admin/order.js"></script>
+<script src="~/assets/js/admin/customer.js"></script>
+<style>
+    .tableLineItem td {
+        padding: 10px 5px;
+    }
+</style>

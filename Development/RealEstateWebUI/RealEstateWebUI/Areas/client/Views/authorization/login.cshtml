@@ -1,0 +1,115 @@
+﻿@using RealEstateWebUI.Areas.admin.Models;
+
+@{
+    ViewBag.Title = Common.StoreName + " | Đăng nhập";
+    Layout = "~/Areas/client/Views/Shared/MasterPageClient.cshtml";
+}
+
+@Html.Partial("~/Areas/client/Views/Shared/_TopBarWhite.cshtml")
+
+<div class="header-page" style="background-image: url('/assets/images/home/slide/back-ground.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <h4>Đăng nhập</h4>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 header-page-right" style="margin: 10px 0;">
+                    <i class="fa fa-home"></i>
+                    <a href="/">Trang chủ</a> / Đăng nhập
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="login">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                <div class="form-content">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4>ĐĂNG NHẬP</h4>
+                                <p>
+                                    Nếu bạn có 1 tài khoản, vui lòng đăng nhập.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                Email *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="text" name="email" value="" style="width: 100%" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                Password *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="password" name="password" value="" style="width: 100%" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <a href="#">Quên mật khẩu?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                <a href="#" class="btn btn-default none-border" style="background-color: black; color: white;">ĐĂNG NHẬP</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                <div class="form-content">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4>KHÁCH HÀNG MỚI</h4>
+                                <p>
+                                    Đăng ký tài khoản!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                Đăng ký tài khoản để mua hàng nhanh hơn. Theo dõi đơn đặt hàng, vận chuyển. Cập nhật
+                                các tin tức sự kiện và các chương trình giảm giá của chúng tôi.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <a href="/client/authorization/register" class="btn btn-default none-border" style="background-color: black; color: white">ĐĂNG KÝ</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

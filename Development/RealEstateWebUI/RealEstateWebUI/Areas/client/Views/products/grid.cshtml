@@ -1,0 +1,145 @@
+﻿@model RealEstateWebUI.Areas.client.Models.ProductClientViewModel
+@using PagedList.Mvc;
+@using RealEstateWebUI.Areas.admin.Models;
+
+@{
+    ViewBag.Title = Common.StoreName + " | Danh sách sản phẩm";
+    Layout = "~/Areas/client/Views/Shared/MasterPageClient.cshtml";
+}
+
+@Html.Partial("~/Areas/client/Views/Shared/_TopBarWhite.cshtml")
+
+<div class="header-page" style="background-image: url('/assets/images/home/slide/back-ground.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                <h4>Danh sách sản phẩm</h4>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 header-page-right" style="margin: 10px 0;">
+                <i class="fa fa-home"></i>
+                <a href="/">Trang chủ</a> / Sản phẩm
+            </div>
+        </div>
+    </div>
+</div>
+
+@{Html.RenderAction("getAll", new { controller = "collections", area = "client" }); }
+
+@using (Html.BeginForm("index", "products", new { view = "grid" }))
+{
+    <div class="order-display-product">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
+                    <div class="btn btn-group">
+                        <a href="/client/products?view=grid" class="btn btn-default"><i class="fa fa-th-large text-muted styleViewIsGrid"></i></a>
+                        <a href="/client/products?view=list" class="btn btn-default"><i class="fa fa-th-list text-muted styleViewIsList"></i></a>
+                    </div>
+                    <span style="display: inline-block; margin-left: 13px;">Hiển thị @Model.Products.FirstItemOnPage - @Model.Products.LastItemOnPage của @(Model.CountProduct) sản phẩm (@Model.Products.PageCount trang)</span>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12 order-display-product-content">
+                    <div class="col-xs-12">
+                        <span>Sắp xếp</span>
+                        <select id="sortListProduct_Grid" onchange="changeSortListProduct('grid')" style="height: 40px;">
+                            <option value="">Thứ tự</option>
+                            <option value="name-asc">Theo tên từ a-z</option>
+                            <option value="name-desc">Theo tên từ z-a</option>
+                            <option value="create-desc">Mới nhất</option>
+                            <option value="best-selling">Bán chạy</option>
+                        </select>
+                        <span style="margin-left: 20px">Hiển thị</span>
+                        <input id="numberView" type="text" name="9" value="@Model.numberView" style="height: 40px;width: 40px" onchange="changeSortListProduct('grid')" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="products-body" style="padding: 10px 0;">
+        <div class="products">
+            <div class="row">
+                <div class="container">
+                    @if (Model.Products != null && Model.Products.Count > 0)
+                {
+                    foreach (var item in Model.Products)
+                    {
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                <div class="product">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            @{
+                                                var urlImage = "";
+                                                if (item != null && item.Images != null && item.Images.Count > 0)
+                                                {
+                                                    urlImage = item.Images[0].ImageUrl;
+                                                }
+                                            }
+                                            <a href="/client/products/@item.ProductID">
+                                                <img class="image-product" src="@urlImage" alt="" height="183" />
+                                                <p>@item.ProductName</p>
+                                            </a>
+                                            <img class="number-star" src="~/assets/images/home/body/product/number-star.jpg" alt="" />
+                                            <p>
+                                                @if (item.Variants != null && item.Variants.Count > 0)
+                                                {
+                                                    <span class="price">
+                                                        @RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(item.Variants[0].VariantPrice) ₫
+                                                    </span>
+                                                }
+                                                <span class="price-product">
+                                                    @RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(item.Variants[0].CompareWithPrice) ₫
+                                                </span>
+                                            </p>
+                                            @if (item.Variants != null && item.Variants.Count > 0)
+                                            {
+                                                <div class="buttons">
+                                                    <button class="btn btn-default" type="button">
+                                                        <i class="fa fa-heart"></i>
+                                                    </button>
+                                                    <button class="btn btn-default" type="button" onclick="buyProduct(@item.Variants[0].VariantID, 1)">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                        MUA HÀNG
+                                                    </button>
+                                                    <button class="btn btn-default" type="button">
+                                                        <i class="fa fa-retweet"></i>
+                                                    </button>
+                                                </div>
+                                            }
+
+                                            <div class="overlay-product">
+                                                <div class="search-product">
+                                                    <a href="/client/products/@item.ProductID"><i class="fa fa-search"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                    }
+                                                }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="paging-product">
+        <div class="container">
+            <div class="row">
+                <div class="text-center">
+                    @Html.PagedListPager(Model.Products, pageNumber => Url.Action("index", new
+               {
+                   view = "grid",
+                   pageNumber,
+                   numberView = Model.numberView,
+                   sortOrder = Model.sortOrder
+               }))
+                </div>
+            </div>
+        </div>
+    </div>
+                                                }
+<script>
+    $(document).ready(function () {
+        var view = "@Model.view";
+        viewOrderProducts(view);
+    });
+</script>

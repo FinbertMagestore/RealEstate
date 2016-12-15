@@ -1,0 +1,211 @@
+﻿@model ProductModel
+@using PagedList.Mvc;
+@using RealEstateWebUI.Areas.admin.Models;
+@{
+    ViewBag.Title = Common.StoreName + " | Danh sách sản phẩm";
+    Layout = "~/Areas/admin/Views/Shared/_MasterPage.cshtml";
+}
+
+@Html.ValidationSummary(true)
+<div class="page-heading page-heading-md">
+    <span>
+        <i class="fa fa-tag fa-2x"></i>
+    </span>
+    <span class="title">
+        Danh sách sản phẩm
+    </span>
+    <div class="pull-right">
+        <a href="/admin/products/create" class="btn btn-primary">Tạo sản phẩm</a>
+    </div>
+</div>
+<div class="container-fluid-md">
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    <div id="strMessage">
+        @if (!string.IsNullOrEmpty(ViewBag.strSuccess as string))
+            {
+            <div class="alert alert-success">
+                <button class="close" data-dismiss="alert">×</button>
+                @Html.Raw(ViewBag.strSuccess)
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(ViewBag.strError as string))
+            {
+            <div class="alert alert-danger">
+                <button class="close" data-dismiss="alert">×</button>
+                @Html.Raw(ViewBag.strError)
+            </div>
+        }
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Tất cả sản phẩm</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab1" class="tab-pane active">
+            <form action="/admin/products/" method="post">
+                <div class="row form-group">
+                    <div class="col-sm-2">
+                        Điều kiện tìm kiếm
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.TextBox("txtConditionFind", null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-2"> Điều kiện lọc</div>
+                    <div class="col-sm-8">
+                        @using RealEstateWebUI.Areas.admin.Models
+                        <div class="row">
+                            <div class="col-sm-3" style="width: 250px">
+                                @using System.Web.UI.WebControls;
+                                @{
+                                    var listItems = new List<ListItem>
+                                        {
+                                              new ListItem { Text = "Chọn điều kiện lọc theo...", Value="" },
+                                              new ListItem { Text = "Hiển thị", Value="ddlDisplayStatus" },
+                                              new ListItem { Text = "Loại sản phẩm", Value="ddlProductStyle" },
+                                              new ListItem { Text = "Nhà cung cấp", Value="ddlSupplier" }
+                                        };
+                                }
+                                @Html.DropDownList("ddlConditionFilter", new SelectList(listItems, "Value", "Text", ViewBag.ddlConditionFilter), new { @class = "form-control", @onchange = "changeSelect()" })
+
+                            </div>
+
+                            <div style="display: inline" id="cfDisplayStatus" class="hide">
+                                <div class="col-sm-3">
+                                    @{
+                                        var lstDisplayStatus = new List<ListItem>{
+                                                new ListItem {Text="Tất cả", Value = ""},
+                                                new ListItem {Text="Hiển thị", Value = "1"},
+                                                new ListItem {Text="Ẩn", Value = "0"},
+                                            };
+                                    }
+                                    @Html.DropDownList("ddlDisplayStatus", new SelectList(lstDisplayStatus, "Value", "Text", ViewBag.ddlDisplayStatus), new { @class = "form-control" })
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+                            <div style="display: inline" id="cfProductStyle" class="hide">
+                                <div class="col-sm-3">
+                                    @Html.DropDownList("ddlProductStyle", ViewBag.ddlProductStyle as SelectList, new { @class = "form-control" })
+
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+                            <div style="display: inline" id="cfSupplier" class="hide">
+                                <div class="col-sm-4">
+                                    @Html.DropDownList("ddlSupplier", ViewBag.ddlSupplier as SelectList, new { @class = "form-control" })
+
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="table-responsive" style="margin-top:10px">
+                <table class="table table-hover vert-align">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px"></th>
+                            <th>
+                                Sản phẩm
+                            </th>
+                            <th>
+                                Loại sản phẩm
+                            </th>
+                            <th>
+                                Nhà cung cấp
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.lstProduct != null && Model.lstProduct.Count > 0)
+                        {
+                            foreach (var item in Model.lstProduct)
+                            {
+                                <tr>
+                                    <td>
+                                        @{ var thumb = RealEstateWebUI.Areas.admin.Services.ImageService.GetPathImageFirstOfProduct(item.ProductID);}
+                                        @if (!string.IsNullOrEmpty(thumb))
+                                        {
+                                            <img src="@thumb" width="50" height="50" />
+                                        }
+                                        else
+                                        {
+                                            <img src="/assets/images/no-image-50-50.png" class="product-thumb product-image-is-blank" width="50" height="50" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.ProductName))
+                                        {
+                                            @Html.ActionLink(item.ProductName, "detail", "products", new { id = item.ProductID }, null)
+                                        }
+                                    </td>
+                                    <td>
+                                        @RealEstateWebUI.Areas.admin.Services.ProductStyleService.GetProductStyleName(item.ProductStyleID)
+                                    </td>
+                                    <td>
+                                        @RealEstateWebUI.Areas.admin.Services.SupplierService.GetSupplierName(item.SupplierID)
+                                    </td>
+                                </tr>
+                                                }
+                                            }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    @if (!IsPost)
+                    {
+                        @Html.PagedListPager(Model.lstProduct, page => Url.Action("index", new { page }))
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-muted">
+                    @{
+                        var temp = 0;
+                        if (Model.lstProduct != null)
+                        {
+                            temp = Model.lstProduct.Count;
+                        }
+                    }
+                    Hiển thị @RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(temp) kết quả
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        changeSelect();
+    };
+    function changeSelect() {
+        var ddlConditionFilter = document.getElementById("ddlConditionFilter").value;
+        if (ddlConditionFilter == "ddlDisplayStatus") {
+            $("#cfDisplayStatus").removeClass("hide");
+            $("#cfProductStyle").addClass("hide");
+            $("#cfSupplier").addClass("hide");
+        } else if (ddlConditionFilter == "ddlProductStyle") {
+            $("#cfDisplayStatus").addClass("hide");
+            $("#cfProductStyle").removeClass("hide");
+            $("#cfSupplier").addClass("hide");
+        } else if (ddlConditionFilter == "ddlSupplier") {
+            $("#cfDisplayStatus").addClass("hide");
+            $("#cfProductStyle").addClass("hide");
+            $("#cfSupplier").removeClass("hide");
+        } else {
+            $("#cfDisplayStatus").addClass("hide");
+            $("#cfProductStyle").addClass("hide");
+            $("#cfSupplier").addClass("hide");
+        }
+    }
+</script>

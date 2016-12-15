@@ -1,0 +1,25 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.Customer
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formDeleteCustomer", novalidate = "novalidate", autocomplete = "off" }))
+{
+    @Html.HiddenFor(x => Model.CustomerID)
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Bạn chắc chắn muốn xóa những khách hàng này?</h4>
+            </div>
+            <div class="modal-body product-option-edit">
+                <p>Tất cả đơn hàng sẽ bị xoá</p>
+                <p>Thao tác này sẽ xóa khách hàng bạn đã chọn. Thao tác này không thể khôi phục.</p>
+                <form class="form-delete-items" novalidate="novalidate"></form>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-5 pull-right text-right">
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Hủy</button>
+                    <button class="btn btn-danger" onclick="submitDeleteCustomer(@Model.CustomerID)" type="button">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/assets/js/admin/customer.js"></script>
+}

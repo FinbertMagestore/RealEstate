@@ -1,0 +1,153 @@
+﻿@model IEnumerable<TblLog>
+@using RealEstateWebUI.Areas.admin.Models;
+@{
+    ViewBag.Title = Common.StoreName + " | Trang chủ";
+    Layout = "~/Areas/admin/Views/Shared/_MasterPage.cshtml";
+}
+<div class="page-heading page-heading-md">
+    @Html.AntiForgeryToken()
+    <span>
+        <i class="fa fa-home fa-2x"></i>
+    </span>
+    <span class="title">
+        Trang chủ
+    </span>
+</div>
+<div class="container-fluid-md" style="margin-left:-15px">
+    <div class="col-sm-6 col-lg-3">
+        <div class="panel panel-metric panel-metric-sm">
+            <div class="panel-body panel-body-primary">
+                <a class="metric-content metric-icon" style="display: block" href="/admin/orders/">
+                    <div class="value"> @OrderService.CountAll() </div>
+                    <div class="icon">
+                        <i class="fa fa-file"></i>
+                    </div>
+                    <header>
+                        <h3 class="thin">Đơn hàng</h3>
+                    </header>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="panel panel-metric panel-metric-sm">
+            <div class="panel-body panel-body-primary" style="background-color: #22ad5c !important">
+                <a class="metric-content metric-icon" style="display: block" href="/admin/customers/">
+                    <div class="value"> @CustomerService.CountAll() </div>
+                    <div class="icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <header>
+                        <h3 class="thin">Khách hàng</h3>
+                    </header>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="panel panel-metric panel-metric-sm">
+            <div class="panel-body panel-body-primary" style="background-color: #1c2a3c !important">
+                <a class="metric-content metric-icon" style="display: block" href="/admin/products/">
+                    <div class="value"> @ProductService.CountAll() </div>
+                    <div class="icon">
+                        <i class="fa fa-tag"></i>
+                    </div>
+                    <header>
+                        <h3 class="thin">Sản phẩm</h3>
+                    </header>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="margin-left:10px; margin-right: 20px">
+    <div class="col-sm-8">
+        <div class="panel">
+            <div class="panel-body">
+                <h4 class="thin no-margin-top">Nhật ký hoạt động</h4>
+                <div class="table-responsive">
+                    <table class="table vert-align">
+                        <colgroup>
+                            <col>
+                            <col style="width:100px;">
+                            <col>
+                            <col style="width:150px;">
+                        </colgroup>
+                        <tbody>
+                            @using RealEstateWebUI.Areas.admin.UtilzGeneral;
+                            @using RealEstateWebUI.Areas.admin.Models;
+                            @using RealEstateWebUI.Areas.admin.Services;
+                            @{
+                                var i = 1;
+                                var tblLogService = new LogService();
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@(i++)</td>
+                                    <td>@item.AppUser.Username</td>
+                                    @if (item.ActionID == (int)Common.ActionID.Delete)
+                                    {
+                                        <td>
+                                            @General.GetEnumDescription((Common.ActionID)item.ActionID)@General.GetEnumDescription((Common.TableName)item.TableNameID): @item.ObjectValue
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>@General.GetEnumDescription((Common.ActionID)item.ActionID)@General.GetEnumDescription((Common.TableName)item.TableNameID): <a href="@item.Href2Object">@item.ObjectValue</a></td>
+                                    }
+                                    <td>
+                                        @SDateTime.ToDateTime(item.DataTimeLog)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="panel">
+            <div class="panel-body">
+                <h4 class="thin no-margin-top">CHI TIẾT ĐƠN HÀNG</h4>
+                <div class="table-responsive">
+                    <table class="table vert-align">
+                        <colgroup>
+                            <col>
+                            <col style="width:50px;">
+                        </colgroup>
+                        @{
+                            var strWhere = "";
+                            var tblOrderService = new OrderService();
+                        }
+                        <tbody>
+                            <tr>
+                                @{strWhere = "BillingStatus like N'pending'";}
+                                <td>Đơn hàng chưa thanh toán</td>
+                                <td>@tblOrderService.CounByWhere(strWhere)</td>
+                            </tr>
+                            <tr>
+                                @{strWhere = "BillingStatus like N'paid'";}
+                                <td>Đơn hàng đã thanh toán chờ gửi hàng</td>
+                                <td>@tblOrderService.CounByWhere(strWhere)</td>
+                            </tr>
+                            @*<tr>
+                                @{strWhere = "BillingStatus like N'partially_refunded' or BillingStatus like N'refunded'";}
+                                <td>Đơn hàng bị hoàn trả</td>
+                                <td>@tblOrderService.CounByWhere(strWhere)</td>
+                            </tr>*@
+                            <tr>
+                                @{strWhere = "OrderStatus = " + (int)Common.InActive;}
+                                <td>Đơn hàng bị hủy</td>
+                                <td>@tblOrderService.CounByWhere(strWhere)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

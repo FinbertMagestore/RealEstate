@@ -1,0 +1,206 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.TblCart
+@using RealEstateWebUI.Areas.admin.UtilzGeneral;
+@using RealEstateWebUI.Areas.admin.Models;
+
+@{
+    ViewBag.Title = Common.StoreName + " | Chi tiết đơn hàng";
+    Layout = "~/Areas/client/Views/Shared/MasterPageClient.cshtml";
+}
+
+@Html.Partial("~/Areas/client/Views/Shared/_TopBarWhite.cshtml")
+
+<div class="header-page" style="background-image: url('/assets/images/home/slide/back-ground.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <h4>Giỏ hàng</h4>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 header-page-right" style="margin: 10px 0;">
+                <i class="fa fa-home"></i>
+                <a href="/">Trang chủ</a> / Giỏ hàng
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row" style="margin: 10px 0;">
+        <div class="col-sm-12">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div id="message">
+                @if (!string.IsNullOrEmpty(ViewBag.success as string))
+            {
+                    <div class="alert alert-success">
+                        <button class="close" data-dismiss="alert">×</button>
+                        @Html.Raw(ViewBag.success)
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(ViewBag.error as string))
+            {
+                    <div class="alert alert-danger">
+                        <button class="close" data-dismiss="alert">×</button>
+                        @Html.Raw(ViewBag.error)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.CartID)
+    @Html.HiddenFor(model => model.CookieID)
+    <div class="order-products">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div style="overflow-x:auto;">
+                        @if (Model != null && Model.CartItems != null && Model.CartItems.Count > 0)
+                        {
+                            <table class="table vert-align">
+                                <colgroup>
+                                    <col width="170" />
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <td>HÌNH ẢNH</td>
+                                        <td>TÊN SẢN PHẨM</td>
+                                        <td>ĐƠN GIÁ</td>
+                                        <td>SỐ LƯỢNG</td>
+                                        <td>THÀNH TIỀN</td>
+                                        <td>XOÁ</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.CartItems.Count; i++)
+                                    {
+                                        <tr>
+                                            @Html.HiddenFor(model => model.CartItems[i].VariantID)
+                                            <td class="image-product">
+                                                @{
+                                                    var srcImage = "";
+                                                    if (Model.CartItems[i] != null && Model.CartItems[i].Variant != null && Model.CartItems[i].Variant.Product != null)
+                                                    {
+                                                        srcImage = Model.CartItems[i].Variant.Product.Images[0].ImageUrl;
+                                                    }
+                                                }
+                                                <a href="/client/products/@Model.CartItems[i].Variant.ProductID">
+                                                    <img src="@srcImage" alt="" style="width: 130px; height: 130px;" />
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @{
+                                                    if (Model.CartItems[i] != null && Model.CartItems[i].Variant != null && Model.CartItems[i].Variant.Product != null)
+                                                    {
+                                                        @*<p class="text-left">@Model.CartItems[i].Variant.Product.ProductName</p>*@
+                                                        <a href="/client/products/@Model.CartItems[i].Variant.ProductID">@Model.CartItems[i].Variant.Product.ProductName</a>
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+
+                                                @if (Model.CartItems[i] != null && Model.CartItems[i].Variant != null)
+                                                {
+                                                    <span id="price-product-@i" class="price">
+                                                        @SString.FormatMoneyVN(SNumber.ToNumber(Model.CartItems[i].Variant.VariantPrice)) ₫
+                                                    </span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(model => model.CartItems[i].NumberVariant, new { style = "height: 35px;width: 50px;", type = "number" })
+                                                @*<input type="number" name="numberVariant-@i " value="@Model.CartItems[i].NumberVariant" style="width: 40px;" />*@
+                                            </td>
+
+                                            <td>
+                                                <span id="total-price-product-@i" class="price">
+                                                    @SString.FormatMoneyVN(SNumber.ToNumber(Model.CartItems[i].Variant.VariantPrice * Model.CartItems[i].NumberVariant)) ₫
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a href="javascript:void(0)" onclick="removeVariantInCart(@Model.CartItems[i].CartItemID)">
+                                                    <span class="text-muted">
+                                                        <i class="fa fa-2x fa-trash-o"></i>
+                                                    </span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                                    }
+                                </tbody>
+                            </table>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h1>Không có sản phẩm nào trong giỏ hàng</h1>
+                                                    }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="order-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                    <div class="form-group" style="padding: 5px 0;">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a class="btn btn-default none-border" href="/client/products">MUA HÀNG TIẾP</a>
+                                @if (Model != null && Model.CartItems != null && Model.CartItems.Count > 0)
+                                {
+                                    <button class="btn btn-default none-border" type="submit">CẬP NHẬT</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 text-right">
+                    @if (Model != null && Model.CartItems != null && Model.CartItems.Count > 0)
+                    {
+                        <div class="form-group" style="padding: 5px 0;">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="pull-right table table-bordered" style="width: auto;">
+                                        <colgroup>
+                                            <col width="150" />
+                                            <col width="200" />
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-right">Sub-Total:</td>
+                                                <td>
+                                                    <span class="sub-total-price-order">@SString.FormatMoneyVN(Model.TotalPrice)</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right">VAT(10%):</td>
+                                                <td>
+                                                    <span class="vat-order">@SString.FormatMoneyVN(Model.TotalPrice / 10)</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right">Total:</td>
+                                                <td>
+                                                    <span class="total-price-order">@SString.FormatMoneyVN(Model.TotalPriceAddVAT)</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12 text-right">
+                                    <a class="btn btn-default none-border" href="/client/checkout/@Model.CookieID">THANH TOÁN</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+                                                    }

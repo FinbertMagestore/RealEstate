@@ -1,0 +1,446 @@
+﻿@using RealEstateWebUI.Areas.admin.Models;
+
+@{
+    ViewBag.Title = Common.StoreName + " | Danh sách tin tức";
+    Layout = "~/Areas/client/Views/Shared/MasterPageClient.cshtml";
+}
+
+@Html.Partial("~/Areas/client/Views/Shared/_TopBarWhite.cshtml")
+
+<div class="header-page" style="background-image: url('/assets/images/home/slide/back-ground.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <h4>Tin tức</h4>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 header-page-right" style="margin: 10px 0;">
+                <i class="fa fa-home"></i>
+                <a href="/">Trang chủ</a> / Tin tức
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="blog-list">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-lg-3 col-md-3 hidden-sm hidden-xs" style="padding: 20px 0;">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h4 class="border-bottom">
+                                    <span>TIN TỨC</span>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="new-blog">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <img src="~/assets/images/blog/new/news1.jpg" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>Thiết kế nội thất phòng khách đơn giản cho ngôi nhà nhỏ</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="border-bottom"></p>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="new-blog">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <img src="~/assets/images/blog/new/news2.jpg" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>Phòng ngủ với không gian xanh và ánh sáng hợp lý</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="border-bottom"></p>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="new-blog">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <img src="~/assets/images/blog/new/news3.jpg" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>Bộ sưu tập nội thất quầy bar phong cách cổ điển Châu Âu</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h4 class="border-bottom">
+                                    <span>BLOG TAGS</span>
+                                </h4>
+                                <span class="border-bottom"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <button class="btn btn-default none-border margin-5">XU HƯƠNG</button>
+                                <button class="btn btn-default none-border margin-5">2015</button>
+                                <button class="btn btn-default none-border margin-5">Vintage</button>
+                                <button class="btn btn-default none-border margin-5">Vest</button>
+                                <button class="btn btn-default none-border margin-5">Xuân hè</button>
+                                <button class="btn btn-default none-border margin-5">Denim</button>
+                                <button class="btn btn-default none-border margin-5">Xu hướng</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h4 class="border-bottom">
+                                    <span>VIDEO MỚI</span>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new-video">
+                        <div style="height: 146px;">
+                            <div class="fill" style="background-image:url('/assets/images/blog/new video/videos.jpg')"></div>
+                        </div>
+                        <div class="play-video">
+                            <i class="fa fa-caret-right"></i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <a href="#" style="margin-top: 20px;">Xem thêm <i class="fa fa-angle-double-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <div class="news-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-2">
+                                    <div class="row">
+                                        <div class="time-news">
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="day-news bold">
+                                                        08
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="month-year-news">
+                                                        <label>Tháng 7</label>
+                                                        <label>2015</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="row news-content">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <h3 style="font-size: 26px;">
+                                                        <a href="/client/blogs/0">Sáng tạo không gian sống cho ngôi nhà thân yêu</a>
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-muted">
+                                                    <i class="fa fa-edit"></i>
+                                                    Mai Linh
+                                                </div>
+                                                <div class="col-sm-6 text-muted">
+                                                    <i class="fa fa-comment-o"></i>
+                                                    8 nhận xét
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <a href="/client/blogs/0"><img src="~/assets/images/home/body/blog/bolg1.jpg" alt="" /></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p>
+                                                i can do everything i can i do. i will do it. everything will done as i think and i do.
+                                            </p>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <a class="btn btn-default none-border" href="/client/blogs/0">ĐỌC THÊM</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-2">
+                                    <div class="row">
+                                        <div class="time-news">
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="day-news bold">
+                                                        12
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="month-year-news">
+                                                        <label>Tháng 7</label>
+                                                        <label>2015</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="row news-content">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <h3 style="font-size: 26px;">
+                                                        <a href="/client/blogs/0">Sáng tạo không gian sống cho ngôi nhà thân yêu</a>
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-muted">
+                                                    <i class="fa fa-edit"></i>
+                                                    Mai Linh
+                                                </div>
+                                                <div class="col-sm-6 text-muted">
+                                                    <i class="fa fa-comment-o"></i>
+                                                    8 nhận xét
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <a href="/client/blogs/0"><img src="~/assets/images/home/body/blog/blog2.jpg" alt="" /></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p>
+                                                i can do everything i can i do. i will do it. everything will done as i think and i do.
+                                            </p>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <a class="btn btn-default none-border" href="/client/blogs/0">ĐỌC THÊM</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-2">
+                                    <div class="row">
+                                        <div class="time-news">
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="day-news bold">
+                                                        03
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="month-year-news">
+                                                        <label>Tháng 7</label>
+                                                        <label>2015</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="row news-content">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <h3 style="font-size: 26px;">
+                                                        <a href="/client/blogs/0">Sáng tạo không gian sống cho ngôi nhà thân yêu</a>
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-muted">
+                                                    <i class="fa fa-edit"></i>
+                                                    Mai Linh
+                                                </div>
+                                                <div class="col-sm-6 text-muted">
+                                                    <i class="fa fa-comment-o"></i>
+                                                    8 nhận xét
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <a href="/client/blogs/0"><img src="~/assets/images/home/body/blog/bolg1.jpg" alt="" /></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p>
+                                                i can do everything i can i do. i will do it. everything will done as i think and i do.
+                                            </p>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <a class="btn btn-default none-border" href="/client/blogs/0">ĐỌC THÊM</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-2">
+                                    <div class="row">
+                                        <div class="time-news">
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="day-news bold">
+                                                        27
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="month-year-news">
+                                                        <label>Tháng 6</label>
+                                                        <label>2015</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="row news-content">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <h3 style="font-size: 26px;">
+                                                        <a href="/client/blogs/0">Sáng tạo không gian sống cho ngôi nhà thân yêu</a>
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-4 text-muted">
+                                                    <i class="fa fa-edit"></i>
+                                                    Mai Linh
+                                                </div>
+                                                <div class="col-sm-6 text-muted">
+                                                    <i class="fa fa-comment-o"></i>
+                                                    8 nhận xét
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <a href="/client/blogs/0"><img src="~/assets/images/home/body/blog/blog2.jpg" alt="" /></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <p>
+                                                i can do everything i can i do. i will do it. everything will done as i think and i do.
+                                            </p>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <a class="btn btn-default none-border" href="/client/blogs/0">ĐỌC THÊM</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-10 col-sm-offset-2">
+                                    <div class="pager" style="text-align: left">
+                                        <div class="pages">
+                                            <ul class="pagination">
+                                                <li class="hide">
+                                                    <a class="none-border" href="javascript:;">
+                                                        <i class="fa fa-angle-left"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="active">
+                                                    <a class="none-border" href="javascript:;">1</a>
+                                                </li>
+                                                <li>
+                                                    <a class="none-border" href="javascript:;">2</a>
+                                                </li>
+                                                <li>
+                                                    <a class="none-border" href="javascript:;">3</a>
+                                                </li>
+                                                <li>
+                                                    <a class="none-border" href="javascript:;">
+                                                        <i class="fa fa-angle-right"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

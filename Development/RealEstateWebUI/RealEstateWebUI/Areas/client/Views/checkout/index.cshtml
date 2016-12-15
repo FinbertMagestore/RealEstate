@@ -1,0 +1,337 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+@model RealEstateWebUI.Areas.client.Models.CheckoutViewModel
+@using RealEstateWebUI.Areas.admin.Models;
+@using RealEstateWebUI.Areas.admin.Services;
+@using RealEstateWebUI.Areas.admin.UtilzGeneral;
+<html>
+<head>
+    <link href="~/assets/admin/favicon.ico" rel="shortcut icon">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="@Common.StoreName- Thanh toán đơn hàng">
+    <title>@Common.StoreName - Thanh toán đơn hàng</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/assets/css/client/myScssClient.min.css")
+    <link href="~/assets/veneto/plugins/skins/all.css" rel="stylesheet" />
+    <link href="~/assets/veneto/css/jquery-icheck.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        <div class="checkout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="shopName">
+                            <h3><a href="/">@Common.StoreName</a></h3>
+                            @Html.HiddenFor(model => model.CartID)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-12 order-info">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>
+                                    <h4>
+                                        Đơn hàng (@CartService.GetNumberQuantityInCart(Model.CookieID))
+                                    </h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @if (Model.CartItems != null && Model.CartItems.Count > 0)
+                                    {
+                                        <ul class="list-unstyled products-list">
+                                            @foreach (var item in Model.CartItems)
+                                            {
+                                                <li class="product product-has-image clearfix">
+                                                    <div class="product-thumbnail pull-left">
+                                                        <div class="product-thumbnail__wrapper">
+                                                            @{
+                                                                var srcImage = "/assets/images/noimage.gif";
+                                                                if (item != null && item.Variant != null && item.Variant.Product != null)
+                                                                {
+                                                                    srcImage = item.Variant.Product.Images[0].ImageUrl;
+                                                                    <img class="product-thumbnail__image" src="@srcImage" alt="" width="38" height="50">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <img class="product-thumbnail__image" src="@srcImage" alt="" width="50" height="50">
+                                                                }
+                                                            }
+                                                        </div>
+                                                        <span class="product-thumbnail__quantity" aria-hidden="true">@item.NumberVariant</span>
+                                                    </div>
+                                                    <div class="product-info pull-left">
+                                                        <p>@item.Variant.Product.ProductName</p>
+                                                        @if (!string.IsNullOrEmpty(item.Variant.VariantTittle) && item.Variant.VariantTittle != "Default Title")
+                                                        {
+                                                            <p class="text-muted">@item.Variant.VariantTittle</p>
+                                                        }
+                                                    </div>
+                                                    <span class="product-price pull-right">@SString.FormatMoneyVN(item.Variant.VariantPrice) ₫</span>
+                                                </li>
+                                                                }
+                                        </ul>
+                                                                }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <span class="pull-left">Tạm tính</span>
+                                                <span class="pull-right">@SString.FormatMoneyVN(Model.TotalSubPrice) ₫</span>
+                                                @Html.HiddenFor(model => model.TotalSubPrice)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <span class="pull-left">Phí vận chuyển</span>
+                                            <span class="pull-right">@SString.FormatMoneyVN(Model.TotalShipping) ₫</span>
+                                            @Html.HiddenFor(model => model.TotalShipping)
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <span class="pull-left">Tổng cộng</span>
+                                            <span class="pull-right" style="color: #369ad6; font-size: 20px">@SString.FormatMoneyVN(Model.TotalPrice) ₫</span>
+                                            @Html.HiddenFor(model => model.TotalPrice)
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <input type="submit" class="btn btn-primary col-md-12 hidden-sm hidden-xs margin-5" value="ĐẶT HÀNG" />
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h3>Thông tin mua hàng</h3>
+                                    <p> <a href="/client/authorization/register">Đăng ký tài khoản mua hàng</a> / <a href="/client/authorization/login">Đăng nhập</a> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    @Html.TextBoxFor(model => model.CustomerEmail, new { @class = "form-control", @type = "text", @placeholder = "Email", @required = "" })
+                                    @Html.ValidationMessageFor(model => model.CustomerEmail)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="information_Billing">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <a href="javascript: void(0)">Thông tin thanh toán và nhận hàng </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        @Html.TextBoxFor(model => model.BillingAddress.CustomerName, new { @class = "form-control", @type = "text", @placeholder = "Họ và tên", @required = "" })
+                                        @Html.ValidationMessageFor(model => model.BillingAddress.CustomerName)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        @Html.TextBoxFor(model => model.BillingAddress.Phone, new { @class = "form-control", @type = "text", @placeholder = "Số điện thoại" })
+                                        @Html.ValidationMessageFor(model => model.BillingAddress.Phone)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        @Html.TextBoxFor(model => model.BillingAddress.HomeAddress, new { @class = "form-control", @type = "text", @placeholder = "Địa chỉ" })
+                                        @Html.ValidationMessageFor(model => model.BillingAddress.HomeAddress)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="next-select__wrapper">
+                                            @Html.DropDownListFor(m => m.BillingProvinceID, new SelectList(Model.Provinces, "ProvinceID", "ProvinceName"), new { @class = "form-control next-select", @onchange = "billingProvinceChange(this.value);" })
+                                            <span class="next-icon next-icon--size-12">
+                                                <img class="img-responsive" src="~/assets/images/angle-down.png" alt="">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="next-select__wrapper">
+                                            @Html.DropDownListFor(m => m.BillingDistrictID, new SelectList(Model.Districts, "DistrictID", "DistrictName"), new { @class = "form-control next-select" })
+                                            <span class="next-icon next-icon--size-12">
+                                                <img class="img-responsive" src="~/assets/images/angle-down.png" alt="">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="information_Shipping hide">
+                            <hr />
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <a href="javascript: void(0)">Thông tin nhận hàng  </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        @Html.TextBoxFor(model => model.ShippingAddress.CustomerName, new { @class = "form-control", @type = "text", @placeholder = "Họ và tên" })
+                                        @Html.ValidationMessageFor(model => model.ShippingAddress.CustomerName)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        @Html.TextBoxFor(model => model.ShippingAddress.Phone, new { @class = "form-control", @type = "text", @placeholder = "Số điện thoại" })
+                                        @Html.ValidationMessageFor(model => model.ShippingAddress.Phone)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        @Html.TextBoxFor(model => model.ShippingAddress.HomeAddress, new { @class = "form-control", @type = "text", @placeholder = "Địa chỉ" })
+                                        @Html.ValidationMessageFor(model => model.ShippingAddress.HomeAddress)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="next-select__wrapper">
+                                            @Html.DropDownListFor(m => m.ShippingProvinceID, new SelectList(Model.Provinces, "ProvinceID", "ProvinceName"), new { @class = "form-control next-select", @onchange = "shippingProvinceChange(this.value);" })
+                                            @Html.ValidationMessageFor(model => model.ShippingProvinceID)
+                                            <span class="next-icon next-icon--size-12">
+                                                <img class="img-responsive" src="~/assets/images/angle-down.png" alt="">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="next-select__wrapper">
+                                            @Html.DropDownListFor(m => m.ShippingDistrictID, new SelectList(Model.Districts, "DistrictID", "DistrictName"), new { @class = "form-control next-select" })
+                                            <span class="next-icon next-icon--size-12">
+                                                <img class="img-responsive" src="~/assets/images/angle-down.png" alt="">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    @Html.TextAreaFor(model => model.CheckoutNote, new { @class = "form-control", @type = "text", @placeholder = "Ghi chú" })
+                                    @Html.ValidationMessageFor(model => model.CheckoutNote)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    @Html.CheckBoxFor(model => model.OtherShippingAddress)
+                                    @Html.LabelFor(model => model.OtherShippingAddress, new { @class = "control-label" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h3>Vận chuyển</h3>
+                                    <div class="next-select__wrapper">
+                                        <select class="form-control next-select">
+                                            <option value="500000">Giao hàng tận nơi - 500.000₫</option>
+                                        </select>
+                                        <span class="next-icon next-icon--size-12">
+                                            <img class="img-responsive" src="~/assets/images/angle-down.png" alt="">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h3>Thanh toán</h3>
+                                    <div class="radio">
+                                        <label class="" style="padding-left: 0">
+                                            <div class="iradio_square-blue checked" style="position: relative;">
+                                                <input class="icheck square-blue" checked="" style="position: absolute; opacity: 0;" type="radio">
+                                                <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; border: 0px none; opacity: 0;"></ins>
+                                            </div>
+                                            <span style="font-weight: 700">
+                                                Thanh toán khi giao hàng (COD)
+                                            </span>
+                                        </label>
+                                        <p class="text-muted" style="padding-left: 30px;">cod</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn btn-primary col-xs-12 hidden-md hidden-lg margin-5" value="ĐẶT HÀNG" />
+                    </div>
+                </div>
+            </div>
+        </div>
+                                                                }
+    <script>
+        window.onload = function () {
+            if ($('#OtherShippingAddress').is(":checked")) {
+                $(".information_Shipping").removeClass("hide");
+                $("#ShippingAddress_AddressBookLastName").attr("required", "");
+            } else {
+                $(".information_Shipping").addClass("hide");
+                $("#ShippingAddress_AddressBookLastName").removeAttr("required");
+            }
+            //shippingProvinceChange($("#ShippingProvinceID").val());
+            //billingProvinceChange($("#BillingProvinceID").val());
+        };
+        $('#OtherShippingAddress').click(function () {
+            if (this.checked) {
+                $(".information_Shipping").removeClass("hide");
+                $("#ShippingAddress_AddressBookLastName").attr("required", "");
+            } else {
+                $(".information_Shipping").addClass("hide");
+                $("#ShippingAddress_AddressBookLastName").removeAttr("required");
+            }
+        });
+    </script>
+    <script src="~/assets/veneto/js/icheck.js"></script>
+    <script src="~/assets/veneto/plugins/icheck.min.js"></script>
+    <script src="~/assets/js/client/client.js"></script>
+</body>
+</html>

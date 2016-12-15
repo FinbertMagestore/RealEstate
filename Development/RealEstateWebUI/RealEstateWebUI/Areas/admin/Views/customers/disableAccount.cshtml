@@ -1,0 +1,30 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.DisableAccountModel
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formDisableAccount", novalidate = "novalidate", autocomplete = "off" }))
+{
+    <div class="modal-dialog" role="document">
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(x => Model.CustomerID)
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">Kích hoạt tài khoản</h4>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc muốn vô hiệu hóa tài khoản của khách hàng @RealEstateWebUI.Areas.admin.Services.CustomerService.GetCustomerName(Model.CustomerID)?</p>
+
+                <p>Khách hàng sẽ không thể đăng nhập vào tài khoản của họ nữa!</p>
+            </div>
+            <div class="modal-footer">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="submitDisableAccount(@Model.CustomerID)">Vô hiệu hóa tài khoản</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/assets/js/admin/customer.js"></script>
+}
+
+

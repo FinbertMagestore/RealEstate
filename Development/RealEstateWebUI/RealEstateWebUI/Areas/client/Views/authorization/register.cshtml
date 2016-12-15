@@ -1,0 +1,236 @@
+﻿@using RealEstateWebUI.Areas.admin.Models;
+
+@{
+    ViewBag.Title = Common.StoreName + " | Đăng ký";
+    Layout = "~/Areas/client/Views/Shared/MasterPageClient.cshtml";
+}
+
+@Html.Partial("~/Areas/client/Views/Shared/_TopBarWhite.cshtml")
+
+<div class="header-page" style="background-image: url('/assets/images/home/slide/back-ground.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <h4>Đăng ký</h4>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 header-page-right" style="margin: 10px 0;">
+                    <i class="fa fa-home"></i>
+                    <a href="/">Trang chủ</a> / Đăng ký
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="register">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-content">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4>ĐĂNG KÝ TÀI KHOẢN</h4>
+                                <p style="font-size: 16px;">
+                                    Nếu bạn có 1 tài khoản, xin vui lòng chuyển qua trang <a href="/client/authorization/login" style="font-style: italic; color: black;">đăng nhập</a>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p class="bold">
+                                    Thông tin cá nhân của bạn
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                Họ và Tên *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="text" name="name" value="" style="width: 100%" placeholder="Họ và Tên" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                Email *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="text" name="email" value="" style="width: 100%" placeholder="Email" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                Số điện thoại *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="text" name="phonenumber" value="" style="width: 100%" placeholder="Số điện thoại" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                Fax *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="text" name="fax" value="" style="width: 100%" placeholder="Fax" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p class="bold">
+                                    Địa chỉ của bạn
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                Company *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="text" name="company" value="" style="width: 100%" placeholder="Company" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                Address 1 *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="text" name="address1" value="" style="width: 100%" placeholder="Address 1" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                Address 2 *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="text" name="address2" value="" style="width: 100%" placeholder="Address 2" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                City *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="text" name="city" value="" style="width: 100%" placeholder="City" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                Post Code *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="text" name="postcode" value="" style="width: 100%" placeholder="Post Code" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                Quốc gia *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <select class="form-control none-border" style="width: 100%">
+                                    <option value="vn">----- Việt Nam ----</option>
+                                    <option value="vn">----- Nhật Bản ----</option>
+                                    <option value="vn">----- Anh ----</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                Region / State *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <select class="form-control none-border" style="width: 100%">
+                                    <option value="vn">----- Lựa chọn ----</option>
+                                    <option value="vn">----- Hà Nội ----</option>
+                                    <option value="vn">----- Bắc Ninh ----</option>
+                                    <option value="vn">----- TP Hồ Chí Minh ----</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p class="bold">
+                                    Mật khẩu của bạn
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                Mật khẩu *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="text" name="name" value="" style="width: 100%" placeholder="Mật khẩu" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 text-right">
+                                Nhập lại mật khẩu *
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input class="form-control none-border" type="text" name="email" value="" style="width: 100%" placeholder="Nhập lại mật khẩu" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-12">
+                                <input id="receiveNews" class="check-box" data-val="true" name="receiveNews" value="true" type="checkbox">
+                                <input name="receiveNews" value="false" type="hidden">
+                                <label class="control-label" for="receiveNews">Đăng ký nhận tin tức từ chúng tôi qua Email</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                <a href="#" class="btn btn-default none-border" style="background-color: black; color: white;">TIẾP TỤC</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

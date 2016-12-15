@@ -1,0 +1,730 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.DetailOrderModel
+@using RealEstateWebUI.Areas.admin.Models;
+@{
+    ViewBag.Title = Common.StoreName + "|" + @Model.OrderName;
+    Layout = "~/Areas/admin/Views/Shared/_MasterPage.cshtml";
+}
+
+<div id="global-icon-symbols" refresh-always="true" style="display: none;">
+    <svg xmlns="http://www.w3.org/2000/svg">
+        <symbol id="next-credit-card" class="icon-symbol--loaded">
+            <svg enable-background="new 0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                    <path d="M23.6 10H.4c-.2 0-.4.5-.4.7v7.7c0 .7.6 1.6 1.3 1.6h21.4c.7 0 1.3-.9 1.3-1.6v-7.7c0-.2-.2-.7-.4-.7zM20 16.6c0 .2-.2.4-.4.4h-4.1c-.2 0-.4-.2-.4-.4v-2.1c0-.2.2-.4.4-.4h4.1c.2 0 .4.2.4.4v2.1zM22.7 4H1.3C.6 4 0 4.9 0 5.6v1.7c0 .2.2.7.4.7h23.1c.3 0 .5-.5.5-.7V5.6c0-.7-.6-1.6-1.3-1.6z">
+                </g>
+            </svg>
+        </symbol>
+        <symbol id="next-orders-16" class="icon-symbol--loaded">
+            <svg enable-background="new 0 0 16 16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                    <path d="M13.992 0H2.1C.94 0 0 .94 0 2.1v12.244C0 15.305.785 16 1.75 16H14.34c.964 0 1.658-.694 1.658-1.658V2.1C16 .94 15.15 0 13.992 0zM14 2v8h-1.757C11.28 10 10 11.28 10 12.243v.7c0 .193.337.057.144.057H5.247c-.193 0-.247.136-.247-.057v-.7C5 11.28 4.113 10 3.148 10H2V2h12zM7.117 9.963c.167.16.437.16.603.002l5.17-5.042c.165-.16.165-.422 0-.583l-.604-.583c-.166-.16-.437-.16-.603 0L7.42 7.924 5.694 6.24c-.166-.16-.437-.16-.603 0l-.604.582c-.166.162-.166.423 0 .584l2.63 2.557z">
+                </g>
+            </svg>
+        </symbol>
+        <symbol id="next-shipping" class="icon-symbol--loaded">
+            <svg enable-background="new 0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.5 8h1.6c.3 0 .7 0 .9.3l2.7 2.6c.2.2.4.5.4.9v5c0 .2-.1.2-.3.2h-.3c-.2 0-.5-.1-.6-.3-.6-1.3-1.9-2.1-3.4-2.1-.6 0-1.3.2-1.9.5-.2.1-.5 0-.5-.2v-5.8c-.1-.7.7-1.1 1.4-1.1zm-17.2-4h12.9c.7 0 .8 1 .8 1.7v10.2c0 .7-.1 1.1-.8 1.1h-3.8c-.2 0-.3 0-.4-.2-.6-1.4-1.9-2.2-3.5-2.2s-2.9.9-3.5 2.2c0 .2-.2.2-.4.2h-1.3c-.7 0-1.3-.4-1.3-1.1v-10.2c0-.7.6-1.7 1.3-1.7z">
+                    <circle r="2.1" cy="18.5" cx="19.3">
+                        <circle r="2.1" cy="18.5" cx="6.5">
+            </svg>
+        </symbol>
+        <symbol id="next-checkmark" class="icon-symbol--loaded">
+            <svg enable-background="new 0 0 24 24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M23.6 5L22 3.4c-.5-.4-1.2-.4-1.7 0L8.5 15l-4.8-4.7c-.5-.4-1.2-.4-1.7 0L.3 11.9c-.5.4-.5 1.2 0 1.6l7.3 7.1c.5.4 1.2.4 1.7 0l14.3-14c.5-.4.5-1.1 0-1.6z">
+            </svg>
+        </symbol>
+    </svg>
+</div>
+
+<div class="page-heading page-heading-md">
+    <span>
+        <i class="fa fa-credit-card fa-2x"></i>
+    </span>
+    @using RealEstateWebUI.Areas.admin.UtilzGeneral
+    <a href="/admin/orders"><span class="title">Đơn hàng</span></a> <span class="title"> / @Model.OrderName @SDateTime.ToDateTime(Model.CreatedDateTime)</span>
+
+    @*<input id="testTagsinput" type="text" value="" style="width: 100px;" />
+
+    <a href="javascript: void(0)" onclick="return submitSuggetEmail();">submit</a>*@
+
+    <div class="pull-right">
+        <a class="btn btn-default" href="/admin/orders">Hủy</a>
+    </div>
+</div>
+
+<div class="container-fluid-md">
+    @using (Html.BeginForm())
+    {
+    <div class="row">
+        <div class="col-sm-12">
+            @Html.HiddenFor(m => m.OrderID)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div id="strMessage" style="margin-right:15px">
+                @if (!string.IsNullOrEmpty(ViewBag.strSuccess as string))
+                    {
+                <div class="alert alert-success">
+                    <button class="close" data-dismiss="alert">×</button>
+                    @Html.Raw(ViewBag.strSuccess)
+                </div>
+                    }
+                @if (!string.IsNullOrEmpty(ViewBag.strError as string))
+                    {
+                <div class="alert alert-danger">
+                    <button class="close" data-dismiss="alert">×</button>
+                    @Html.Raw(ViewBag.strError)
+                </div>
+                    }
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h4>Chi tiết đơn hàng</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (Model.LineItemsPending != null && Model.LineItemsPending.Count > 0)
+                                {
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <svg class="next-icon next-icon--16 next-icon--blue">
+                                            <use xlink:href="#next-orders-16" role="presentation" />
+                                        </svg>
+                                        Chưa giao
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="tableLineItem" style="width: 100%">
+                                            <colgroup>
+                                                <col width="50">
+                                                <col width="45%">
+                                                <col width="10%">
+                                                <col width="3%">
+                                                <col width="10%">
+                                                <col>
+                                            </colgroup>
+                                            <tbody>
+                                                @foreach (var item in Model.LineItemsPending)
+                                                        {
+                                                    <tr>
+                                                        <td>
+                                                            @if (!String.IsNullOrEmpty(item.ImageUrl))
+                                                                    {
+                                                                <img src="@item.ImageUrl" alt="" width="50" height="50" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                <img class="product-thumb product-image-is-blank" width="50" height="50" src="/assets/images/no-image-50-50.png">
+                                                                    }
+                                                        </td>
+                                                        <td>
+                                                            @if (item.VariantName == "Default Title")
+                                                                    {
+                                                                <a href="/admin/products/@item.ProductID">@item.ProductName</a>
+                                                                @*@Html.ActionLink(item.ProductName, "detail", "products", new { id=item.ProductID}, null)*@
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                <a href="/admin/products/@item.ProductID/variants/@item.VariantID">@item.ProductName</a>
+                                                                @*@Html.ActionLink(item.ProductName, "detail", "variants", new { id = item.VariantID }, null)*@
+                                                                <p class="subdued">@item.VariantName</p>
+                                                                    }
+                                                        </td>
+                                                        <td class="text-right">@(item.Price)₫</td>
+                                                        <td> x </td>
+                                                        <td>@item.Quantity</td>
+                                                        <td class="text-right">@(item.Price * item.Quantity)₫</td>
+                                                    </tr>
+                                                        }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                                }
+
+                            @if (Model.LineItemsPaid != null && Model.LineItemsPaid.Count > 0)
+                                {
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <svg class="next-icon next-icon--16 next-icon--blue">
+                                            <use xlink:href="#next-orders-16" role="presentation" />
+                                        </svg>
+                                        Đã giao
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="tableLineItem" style="width: 100%">
+                                            <colgroup>
+                                                <col width="50">
+                                                <col width="45%">
+                                                <col width="10%">
+                                                <col width="3%">
+                                                <col width="10%">
+                                                <col>
+                                            </colgroup>
+                                            <tbody>
+                                                @foreach (var item in Model.LineItemsPaid)
+                                                        {
+                                                    <tr>
+                                                        <td>
+                                                            @if (!String.IsNullOrEmpty(item.ImageUrl))
+                                                                    {
+                                                                <img src="@item.ImageUrl" alt="" width="50" height="50" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                <img class="product-thumb product-image-is-blank" width="50" height="50" src="/assets/images/no-image-50-50.png">
+                                                                    }
+                                                        </td>
+                                                        <td>
+                                                            @if (item.VariantName == "Default Title")
+                                                                    {
+                                                                <a href="/admin/products/@item.ProductID">@item.ProductName</a>
+                                                                @*@Html.ActionLink(item.ProductName, "detail", "products", new { id = item.ProductID }, null)*@
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                <a href="/admin/products/@item.ProductID/variants/@item.VariantID">@item.ProductName</a>
+                                                                @*@Html.ActionLink(item.ProductName, "detail", "variants", new { id = item.VariantID }, null)*@
+                                                                <p class="subdued">@item.VariantName</p>
+                                                                    }
+                                                        </td>
+                                                        <td class="text-right">@(item.Price)₫</td>
+                                                        <td> x </td>
+                                                        <td>@item.Quantity</td>
+                                                        <td class="text-right">@(item.Price * item.Quantity)₫</td>
+                                                    </tr>
+                                                        }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                                }
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-2 col-sm-offset-8 text-right">Tổng cộng</div>
+                                        <div class="col-sm-2">@(Model.TotalCount)₫</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="background-color: #f5f6f7; padding: 20px">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @if (Model.TotalCount <= 0)
+                                            {
+                                        <div class="col-sm-1">
+                                            <svg class="next-icon next-icon--20 next-icon--green next-icon--no-nudge">
+                                                <use xlink:href="#next-checkmark" role="presentation" />
+                                            </svg>
+                                        </div>
+                                        <div class="col-sm-11">
+                                            Đơn hàng miễn phí
+                                        </div>
+                                            }
+                                            else
+                                            {
+                                                if (Model.BillingStatus == Common.Pending)
+                                                {
+                                        <div class="col-sm-1">
+                                            <svg class="next-icon next-icon--24 next-icon--blue next-icon--no-nudge">
+                                                <use xlink:href="#next-credit-card" role="presentation" />
+                                            </svg>
+                                        </div>
+                                        <div class="col-sm-11">
+                                            <label>Thanh toán khi giao hàng (COD)</label>
+                                            <a class="btn btn-primary pull-right" data-toggle="modal" data-target="#markAsPaid" href="javascript: void(0);">Xác nhận</a>
+                                        </div>
+                                                }
+                                                else
+                                                {
+                                        <div class="col-sm-1">
+                                            <svg class="next-icon next-icon--20 next-icon--green next-icon--no-nudge">
+                                                <use xlink:href="#next-checkmark" role="presentation" />
+                                            </svg>
+                                        </div>
+                                        <div class="col-sm-11">
+                                            Đơn hàng đã xác nhận thanh toán @(Model.TotalCount)₫
+                                        </div>
+                                                }
+                                            }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="background-color: #f5f6f7; padding: 20px">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @if (Model.ShippingStatus == Common.Unfulfilled)
+                                            {
+                                        <div class="col-sm-1">
+                                            <svg class="next-icon next-icon--24 next-icon--blue next-icon--no-nudge">
+                                                <use xlink:href="#next-shipping" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            </svg>
+                                        </div>
+                                        <div class="col-sm-11">
+                                            <label>Thanh toán khi giao hàng (COD)</label>
+                                            <a class="btn btn-primary pull-right" data-toggle="modal" data-target="#markAsFulfilled" href="javascript: void(0);">Xác nhận</a>
+                                        </div>
+                                            }
+                                            else
+                                            {
+                                        <div class="col-sm-1">
+                                            <svg class="next-icon next-icon--20 next-icon--green next-icon--no-nudge">
+                                                <use xlink:href="#next-checkmark" role="presentation" />
+                                            </svg>
+                                        </div>
+                                        <div class="col-sm-11">
+                                            Tất cả sản phẩm đã được giao
+                                        </div>
+                                            }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h4>Chi tiết đơn hàng</h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @Html.LabelFor(m => m.OrderNote, new { @class = "control-label" })
+                                        @Html.TextAreaFor(m => m.OrderNote, new { @class = "form-control", style = "height: 100px;" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @Html.LabelFor(m => m.Tags, new { @class = "control-label" })
+                                        <input class="taginput" name="Tags" type="text" data-role="tagsinput" value="@Model.Tags" style="display: none;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label>Bạn có thể chọn những tag đã được sử dụng</label>
+                                        @if (Model.ListTag != null && Model.ListTag.Count > 0)
+                                            {
+                                        <div class="col-button-colors">
+                                            @foreach (var item in Model.ListTag)
+                                                    {
+                                                <a class="btn btn-info" onclick="addTag(this)">@item.TagName</a>
+                                                    }
+                                        </div>
+                                            }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12 text-right">
+                                        <input type="submit" name="btnSave" value="Lưu" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            @if (Model.Customer != null)
+                                {
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h3>
+                                        @Html.ActionLink(Model.Customer.CustomerFirstName + " " + Model.Customer.CustomerLastName, "detail", "customers", new { id = Model.CustomerID }, null)
+                                    </h3>
+                                </div>
+                            </div>
+                                }
+                                else
+                                {
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>Không có khách hàng</h4>
+                                </div>
+                            </div>
+                                }
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            @if (SNumber.ToNumber(Model.ShippingAddressID) > 0 && Model.ShippingAddress != null)
+                                {
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h4>Địa chỉ giao hàng</h4>
+                                </div>
+                                <div class="col-sm-3 text-right"><a href="javascript:void(0)" data-toggle="modal" data-target="#editShippingAddress">Sửa</a></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @Html.DisplayFor(m => m.ShippingAddress.CustomerName, new { @class = "control-label" })
+                                    @*<label class="text-muted" id="shippingAddressName"></label>*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @Html.DisplayFor(m => m.ShippingAddress.HomeAddress, new { @class = "control-label" })
+                                    @*<label class="text-muted" id="shippingAddressHomeAddress"></label>*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @Html.DisplayFor(m => m.ShippingAddress.ProvinceName, new { @class = "control-label" })
+                                    @*<label class="text-muted" id="shippingAddressProvince"></label>*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @Html.DisplayFor(m => m.ShippingAddress.CountryName, new { @class = "control-label" })
+                                    @*<label class="text-muted" id="shippingAddressCountry"></label>*@
+                                </div>
+                            </div>
+                                }
+                                else
+                                {
+                            <div class="row">
+                                <div class="col-sm-9"><label>Chưa có địa chỉ giao hàng</label></div>
+                                <div class="col-sm-3 text-right"><a href="javascript:void(0)" data-toggle="modal" data-target="#addShippingAddress">Thêm</a></div>
+                            </div>
+                                }
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            @if (SNumber.ToNumber(Model.BillingAddressID) > 0 && Model.BillingAddress != null)
+                                {
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h4>Địa chỉ thanh toán</h4>
+                                    @*<div class="col-sm-3 text-right"><a href="javascript:void(0)" data-target="#editBillingAddress" data-toggle="modal">Sửa</a></div>*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @Html.DisplayFor(m => m.BillingAddress.CustomerName, new { @class = "control-label" })
+                                    @*<label class="text-muted" id="billingAddressName"></label>*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @Html.DisplayFor(m => m.BillingAddress.HomeAddress, new { @class = "control-label" })
+                                    @*<label class="text-muted" id="billingAddressAddress"></label>*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @Html.DisplayFor(m => m.BillingAddress.ProvinceName, new { @class = "control-label" })
+                                    @*<label class="text-muted" id="billingAddressProvince"></label>*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @Html.DisplayFor(m => m.BillingAddress.CountryName, new { @class = "control-label" })
+                                    @*<label class="text-muted" id="billingAddressCountry"></label>*@
+                                </div>
+                            </div>
+                                }
+                                else
+                                {
+                            <div class="row">
+                                <div class="col-sm-12"><label>Chưa có địa chỉ thanh toán</label></div>
+                            </div>
+                                }
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-1"><i class="fa-envelope fa fa-fw"></i></div>
+                                <div class="col-sm-9">
+                                    @Html.DisplayFor(m => m.CustomerEmail, new { @class = "control-label" })
+                                </div>
+                                <div class="col-sm-2 row text-right">
+                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#editEmail">Sửa</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+<div class="modal fade" id="markAsPaid">
+    <div class="modal-dialog" role="document" style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Xác nhận thanh toán</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            Xác nhận khách hàng đã thanh toán số tiền @Model.TotalCount ₫ cho phương thức thanh toán Thanh toán khi giao hàng (COD) cho đơn hàng này
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-5 pull-right text-right">
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Hủy</button>
+                    <button class="btn btn-primary" onclick="submitMarkAsPaid(@Model.OrderID)" type="button">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="markAsFulfilled">
+    <div class="modal-dialog" role="document" style="width: 600px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Xác nhận giao hàng</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            Xác nhận giao đơn hàng cho khách hàng
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-5 pull-right text-right">
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Hủy</button>
+                    <button class="btn btn-primary" onclick="submitMarkAsFulfilled(@Model.OrderID)" type="button">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editEmail">
+    <div class="modal-dialog" role="document" style="width: 400px">
+        <form action="/admin/orders/editEmail/@Model.OrderID" method="post">
+            @Html.HiddenFor(m => m.OrderID)
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title">Sửa email đơn hàng</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CustomerEmail, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.CustomerEmail, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.CustomerEmail)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-sm-5 pull-right text-right">
+                        <button class="btn btn-default" type="button" data-dismiss="modal">Hủy</button>
+                        <button class="btn btn-primary" type="submit">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="editShippingAddress">
+    <div class="modal-dialog" role="document">
+        <form action="/admin/orders/editShippingAddress/@Model.OrderID" method="post">
+            @Html.HiddenFor(m => m.OrderID)
+            @Html.HiddenFor(m => m.ShippingAddressID)
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" aria-hidden="true" data-dismiss="modal" type="button">X</button>
+                    <h4 class="modal-title">Sửa địa chỉ</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                @Html.LabelFor(m => m.ShippingAddress.CustomerName, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.ShippingAddress.CustomerName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ShippingAddress.CustomerName)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.LabelFor(m => m.ShippingAddress.Phone, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.ShippingAddress.Phone, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ShippingAddress.Phone)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                @Html.LabelFor(m => m.ShippingAddress.HomeAddress, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.ShippingAddress.HomeAddress, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ShippingAddress.HomeAddress)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                @Html.LabelFor(m => m.ShippingAddress.ProvinceName, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.ShippingAddress.ProvinceName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ShippingAddress.ProvinceName)
+                            </div>
+                            <div class="col-sm-6">
+                                @if (Model.ShippingAddress != null)
+                                {
+                                @Html.LabelFor(m => m.ShippingAddress.CountryName, new { @class = "control-label" })
+                                @Html.DropDownListFor(model => model.ShippingAddress.CountryID, new SelectList(Model.ShippingAddress.Countries, "CountryID", "CountryName", Model.ShippingAddress.CountryID), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ShippingAddress.CountryID)
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">Đóng</button>
+                    <button class="btn btn-primary" type="submit"> Xác nhận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="addShippingAddress">
+    <div class="modal-dialog" role="document">
+        <form action="/admin/orders/addShippingAddress/@Model.OrderID" method="post">
+            @Html.HiddenFor(m => m.OrderID)
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" aria-hidden="true" data-dismiss="modal" type="button">X</button>
+                    <h4 class="modal-title">Thêm địa chỉ</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                @Html.LabelFor(m => m.ShippingAddress.CustomerName, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.ShippingAddress.CustomerName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ShippingAddress.CustomerName)
+                            </div>
+                            <div class="col-sm-6">
+                                @Html.LabelFor(m => m.ShippingAddress.Phone, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.ShippingAddress.Phone, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ShippingAddress.Phone)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                @Html.LabelFor(m => m.ShippingAddress.HomeAddress, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.ShippingAddress.HomeAddress, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ShippingAddress.HomeAddress)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                @Html.LabelFor(m => m.ShippingAddress.ProvinceName, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.ShippingAddress.ProvinceName, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ShippingAddress.ProvinceName)
+                            </div>
+                            <div class="col-sm-6">
+                                @if (Model.ShippingAddress != null)
+                                {
+                                @Html.LabelFor(m => m.ShippingAddress.CountryName, new { @class = "control-label" })
+                                @Html.DropDownListFor(model => model.ShippingAddress.CountryID, new SelectList(Model.ShippingAddress.Countries, "CountryID", "CountryName", Model.ShippingAddress.CountryID), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ShippingAddress.CountryID)
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">Đóng</button>
+                    <button class="btn btn-primary" type="submit"> Xác nhận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/assets/js/admin/order.js"></script>
+<style>
+    .tableLineItem td {
+        padding: 10px 5px;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        var emails = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('CustomerEmail'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: '/admin/customers/getEmails/?query=%QUERY',
+                wildcard: '%QUERY'
+            }
+        });
+
+        var elt = $('#testTagsinput');
+        elt.tagsinput({
+            itemValue: 'CustomerID',
+            itemText: 'CustomerEmail',
+            typeaheadjs: {
+                name: 'emails',
+                displayKey: 'CustomerEmail',
+                source: emails
+            }
+        });
+
+    });
+    function submitSuggetEmail() {
+        var temp = $("#testTagsinput").val();
+        alert(temp);
+    }
+</script>
+

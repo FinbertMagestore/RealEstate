@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/assets/admin/favicon.ico" rel="shortcut icon">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/font-awesome.css")
+    @Styles.Render("~/Content/veneto-admin.min.css")
+    @Styles.Render("~/assets/css/admin/mycss.css")
+    @Scripts.Render("~/bundles/jquery")
+    <link href="~/assets/css/bootstrap-tagsinput.min.css" rel="stylesheet" />
+    <script language="javascript" src="~/assets/ckeditor/ckeditor.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="sidebar sidebar-default">
+            <div class="header-logo">
+                <a class="navbar-logo" href="/admin/dashboard/">
+                    <img width="125" src="/assets/images/bizweb-logo.png">
+                </a>
+                <a class="view-storefront" href="/" target="_blank" title="Xem website của bạn"><i class="fa fa-lg fa-external-link"></i></a>
+            </div>
+            <nav>
+                <ul class="nav nav-pills nav-stacked">
+                    <li>
+                        <a href="/admin/dashboard"><i class="fa fa-lg fa-fw fa-home"></i> Trang chủ </a>
+                    </li>
+                    <li>
+                        <a href="/admin/orders"><i class="fa fa-lg fa-fw fa-credit-card"></i> Đơn hàng </a>
+                    </li>
+                    <li>
+                        <a href="/admin/products"><i class="fa fa-lg fa-fw fa-tag"></i> Sản phẩm </a>
+                    </li>
+                    <li>
+                        <a href="/admin/collections"><i class="fa fa-lg fa-fw fa-tags"></i>  Danh mục sản phẩm </a>
+                    </li>
+                    <li>
+                        <a href="/admin/customers"><i class="fa fa-lg fa-fw fa-users"></i> Khách hàng </a>
+                    </li>
+                </ul>
+            </nav>
+            @if (!string.IsNullOrEmpty(User.Identity.GetUserName()))
+            {
+                <div class="nav-user">
+                    <div class="dropdown dropup">
+                        <a data-toggle="dropdown" href="javascript:void(0)">
+                            <span style="font-size:14px">@User.Identity.GetUserName()</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                @using Microsoft.AspNet.Identity
+                                @Html.ActionLink("Tài khoản của bạn", "detail", "accounts", new { id = Membership.GetUser(User.Identity.GetUserName()).ProviderUserKey }, null)
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                @Html.ActionLink("Đăng xuất", "logout", "authorization")
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="page-content">
+            <div class="page-body">
+                @RenderBody()
+            </div>
+            <div class="col-sm-12" style="margin-top:-10px">
+                <div class="text-center text-muted">
+                    Bizweb Sky - Nền tảng bán hàng online được sử dụng nhiều nhất Việt Nam
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/assets/js/bootstrap-tagsinput.min.js"></script>
+    <script src="~/assets/js/typeahead.bundle.js"></script>
+    @RenderSection("scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            var href = window.location.href;
+            var temp = href.split("/");
+            $('nav li a').each(function (e, i) {
+                if ($(this).attr('href').indexOf(temp[4]) >= 0) {
+                    $(this).parent().addClass('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

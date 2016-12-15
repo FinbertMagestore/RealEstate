@@ -1,0 +1,343 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.Product
+@using RealEstateWebUI.Areas.admin.Models;
+
+@{
+    ViewBag.Title = Common.StoreName + " | Chi tiết sản phẩm";
+    Layout = "~/Areas/client/Views/Shared/MasterPageClient.cshtml";
+}
+
+@Html.Partial("~/Areas/client/Views/Shared/_TopBarWhite.cshtml")
+
+<div class="header-page" style="background-image: url('/assets/images/home/slide/back-ground.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <h4>@Model.ProductName</h4>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 header-page-right" style="margin: 10px 0;">
+                <i class="fa fa-home"></i>
+                <a href="/">Trang chủ</a> / <a href="/client/products">Sản phẩm</a> / @Model.ProductName
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="product-detail">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="image-product-detail" style="width: 100%">
+                    @{
+                        var urlImage = "";
+                        if (Model != null && Model.Images != null && Model.Images.Count > 0)
+                        {
+                            urlImage = Model.Images[0].ImageUrl;
+                        }
+                    }
+
+                    <span class='zoom' id='product-image'>
+                        <img src="@urlImage" alt="" width="510" height="350" />
+                    </span>
+                </div>
+                <div class="row text-center" style="margin-top: 10px">
+                    @if (Model != null && Model.Images != null && Model.Images.Count > 0)
+                    {
+                        foreach (var item in Model.Images)
+                        {
+                            <div class="image-product-detail-relation">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        @{
+                                            var urlImageVariant = "";
+                                            if (item != null && !string.IsNullOrEmpty(item.ImageUrl))
+                                            {
+                                                urlImageVariant = item.ImageUrl;
+                                            }
+                                        }
+                                        <img src="@urlImageVariant" alt="" style="width: 100%; height: 100%;" />
+                                    </div>
+                                </div>
+                            </div>
+                                                }
+                                            }
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="product-detail-content">
+                    <h2>
+                        @Model.ProductName
+                    </h2>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <img class="number-star" src="~/assets/images/home/body/product/number-star.jpg" alt="" />
+                                <span class="text-muted">
+                                    (3 nhận xét)  |  <a href="#"><span style="text-decoration:underline">Viết nhận xét của bạn</span></a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+
+                                @if (Model.Variants != null && Model.Variants.Count > 0)
+                                {
+                                    <span class="price">
+                                        @RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(Model.Variants[0].VariantPrice) ₫
+                                    </span>
+                                    <span class="price-product">
+                                        @RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(Model.Variants[0].CompareWithPrice) ₫
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p>
+                                    @Html.Raw(Model.ProductContent)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    @if (Model.Options != null && Model.Options.Count > 0)
+                    {
+                        foreach (var item in Model.Options)
+                        {
+                            if (item.OptionValues != null && item.OptionValues.Count > 0)
+                            {
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <label class="strong bold">
+                                                @item.OptionName
+                                            </label>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <select style="width: 100%; height: 40px">
+                                                @for (int i = 0; i < item.OptionValues.Count; i++)
+                                                {
+                                                    <option value="variant-option-@i">@item.OptionValues[i]</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span>Số lượng:   </span>
+                                <div style="display: inline-flex">
+                                    <button class="btn btn-default none-border" style="height: 40px;width: 50px;" type="button" onclick="subOrderNumberVariant()">-</button>
+                                    <input type="number" id="orderNumberVariant" min="1" value="1" class="form-control none-border text-center" style="width: 70px; height: 40px;" />
+                                    <button class="btn btn-default none-border" style="height: 40px;width: 50px;" type="button" onclick="addOrderNumberVariant()">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @if (Model.Variants != null && Model.Variants.Count > 0)
+                    {
+                        <div class="form-group">
+                            <div class="row" style="margin: 10px 0;">
+                                <button class="btn btn-default" style="background-color: rgb(213,45,45); color: white" onclick="buyProduct(@Model.Variants[0].VariantID, 0)">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    MUA HÀNG
+                                </button>
+                                <button class="btn btn-default">
+                                    <i class="fa fa-heart"></i>
+                                </button>
+                                <button class="btn btn-default">
+                                    <i class="fa fa-retweet"></i>
+                                </button>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57a302468ab5219e"></script>
+                                <div class="addthis_native_toolbox"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="product-detail-description">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#menu1">MÔ TẢ</a></li>
+                    <li><a data-toggle="tab" href="#menu2">NHẬN XÉT</a></li>
+                    <li><a data-toggle="tab" href="#menu3">TAGS</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="menu1" class="tab-pane fade in active">
+                        <p>
+                            @Html.Raw(Model.ProductContent)
+                        </p>
+                    </div>
+                    <div id="menu2" class="tab-pane fade">
+                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                    </div>
+                    <div id="menu3" class="tab-pane fade">
+                        @if (!string.IsNullOrEmpty(Model.Tags))
+                        {
+                            if (Model.ListTag != null && Model.ListTag.Count > 0)
+                            {
+                                foreach (var item in Model.ListTag)
+                                {
+                                    <button class="btn btn-default none-border margin-5">@item.TagName</button>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="banner-right-product pull-left">
+                        <div class="fill" style="background-image: url('/assets/images/product_detail/banner.jpg')">
+                        </div>
+                        <div class="banner-right-product-text">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h4>NỘI THẤT</h4>
+                                    <h2>PHONG CÁCH</h2>
+                                    <p>Cho không gian sáng tạo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="products-body" style="padding: 40px 0;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="products-title">
+                    <span>
+                        <a href="#">SẢN PHẨM LIÊN QUAN</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="products">
+            <div class="row">
+                <div class="span-12">
+                    @if (Model.ProductsRelation != null && Model.ProductsRelation.Count > 0)
+                    {
+                        <div id="owl-products" class="owl-carousel">
+                            @foreach (var item in Model.ProductsRelation)
+                            {
+                                <div class="item">
+                                    <div class="product">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                @{
+                                                    var urlImageOfProductRelation = "";
+                                                    if (item != null && item.Images != null && item.Images.Count > 0)
+                                                    {
+                                                        urlImageOfProductRelation = item.Images[0].ImageUrl;
+                                                    }
+                                                }
+                                                <a href="/client/products/@item.ProductID">
+                                                    <img class="image-product" src="@urlImageOfProductRelation" alt="" style="height: 190px;" />
+                                                    <h4>@item.ProductName</h4>
+                                                </a>
+                                                <img class="number-star" src="~/assets/images/home/body/product/number-star.jpg" alt="" />
+                                                <p>
+                                                    @if (item.Variants != null && item.Variants.Count > 0)
+                                                    {
+                                                        <span class="price">
+                                                            @RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(item.Variants[0].VariantPrice) ₫
+                                                        </span>
+                                                    }
+                                                    <span class="price-product">
+                                                    </span>
+                                                </p>
+                                                @if (item.Variants != null && item.Variants.Count > 0)
+                                                {
+                                                    <div class="buttons">
+                                                        <button class="btn btn-default">
+                                                            <i class="fa fa-heart"></i>
+                                                        </button>
+                                                        <button class="btn btn-default" onclick="buyProduct(@item.Variants[0].VariantID, 1)">
+                                                            <i class="fa fa-shopping-cart"></i>
+                                                            MUA HÀNG
+                                                        </button>
+                                                        <button class="btn btn-default">
+                                                            <i class="fa fa-retweet"></i>
+                                                        </button>
+                                                    </div>
+                                                }
+
+                                                <div class="overlay-product">
+                                                    <div class="search-product">
+                                                        <a href="/client/products/@item.ProductID"><i class="fa fa-search"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                                    }
+                        </div>
+                        <a class="previous-slider products-prev">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        <a class="next-slider products-next">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <h1 class="text-center" style="margin: 40px 0;">Không có sản phẩm liên quan</h1>
+                                                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    #owl-products .item {
+        margin: 5px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#product-image').zoom();
+        var owlProducts = $("#owl-products");
+        owlProducts.owlCarousel({
+            //autoPlay: 10000,
+            items: 4,
+            itemsDesktop: [1199, 4],
+            itemsDesktopSmall: [979, 2],
+            navigation: false
+        });
+        $(".products-next").click(function () {
+            owlProducts.trigger('owl.next');
+        })
+        $(".products-prev").click(function () {
+            owlProducts.trigger('owl.prev');
+        })
+    });
+</script>

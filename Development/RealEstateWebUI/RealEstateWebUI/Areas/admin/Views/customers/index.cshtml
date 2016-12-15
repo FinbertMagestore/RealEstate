@@ -1,0 +1,222 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.CustomerModel
+@using RealEstateWebUI.Areas.admin.Models;
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = Common.StoreName + " | Danh sách khách hàng";
+    Layout = "~/Areas/admin/Views/Shared/_MasterPage.cshtml";
+}
+
+<div class="page-heading page-heading-md">
+    <span>
+        <i class="fa fa-users fa-2x"></i>
+    </span>
+    <span class="title">
+        Danh sách khách hàng
+    </span>
+    <div class="pull-right">
+        <a href="/admin/customers/create" class="btn btn-primary">Thêm khách hàng</a>
+    </div>
+</div>
+<div class="container-fluid-md">
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    <div id="strMessage">
+        @if (!string.IsNullOrEmpty(ViewBag.strSuccess as string))
+            {
+            <div class="alert alert-success">
+                <button class="close" data-dismiss="alert">×</button>
+                @Html.Raw(ViewBag.strSuccess)
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(ViewBag.strError as string))
+            {
+            <div class="alert alert-danger">
+                <button class="close" data-dismiss="alert">×</button>
+                @Html.Raw(ViewBag.strError)
+            </div>
+        }
+    </div>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Tất cả khách hàng</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab1" class="tab-pane active">
+
+            <form action="/admin/customers" method="post">
+                <div class="row form-group">
+                    <div class="col-sm-2"> Điều kiện tìm kiếm</div>
+                    <div class="col-sm-8">
+                        @Html.TextBox("txtConditionFind", null, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-sm-2"> Điều kiện lọc</div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-3" style="width:250px">
+                                @using System.Web.UI.WebControls;
+                                @{
+                                    var listItems = new List<ListItem>
+                                        {
+                                              new ListItem { Text = "Chọn điều kiện lọc theo...", Value="" },
+                                              new ListItem { Text = "Tổng đơn hàng", Value="TotalOrder" },
+                                              new ListItem { Text = "Tổng chi tiêu", Value = "TotalCount"},
+                                              new ListItem { Text = "Nhận tiếp thị", Value = "AcceptsMarketing"},
+                                              new ListItem { Text = "Trạng thái", Value = "State"},
+                                        };
+                                }
+                                @Html.DropDownList("ddlConditionFilter", new SelectList(listItems, "Value", "Text"), new { @class = "form-control", @onchange = "changeSelectConditionFilterCustomer()" })
+
+                            </div>
+                            <div style="display: inline" id="cfTotalOrder" class="hide">
+                                <div class="col-sm-2" style="width: 250px">
+                                    @{
+                                        var lstCompareTotalOrder = new List<ListItem>{
+                                //new ListItem {Text="Chọn điều kiện lọc...", Value = ""},
+                                new ListItem {Text="bằng", Value = "equals"},
+                                new ListItem {Text="không bằng", Value = "notequals"},
+                                new ListItem {Text="lớn hơn", Value = "greater"},
+                                new ListItem {Text="nhỏ hơn", Value = "smaller"}
+                            };
+                                    }
+                                    @Html.DropDownList("ddlCompareTotalOrder", new SelectList(lstCompareTotalOrder, "Value", "Text"), new { @class = "form-control" })
+                                </div>
+                                <div class="col-sm-2">
+                                    @Html.TextBox("txtTotalOrder", string.Empty, new { @class = "form-control" })
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+                            <div style="display: inline" id="cfTotalCount" class="hide">
+                                <div class="col-sm-2" style="width:250px">
+                                    @{
+                                        var lstCompareTotalCount = new List<ListItem>{
+                                //new ListItem {Text="Chọn điều kiện lọc...", Value = ""},
+                                new ListItem {Text="bằng", Value = "equals"},
+                                new ListItem {Text="không bằng", Value = "notequals"},
+                                new ListItem {Text="lớn hơn", Value = "greater"},
+                                new ListItem {Text="nhỏ hơn", Value = "smaller"}
+                            };
+                                    }
+                                    @Html.DropDownList("ddlCompareTotalCount", new SelectList(lstCompareTotalCount, "Value", "Text"), new { @class = "form-control" })
+                                </div>
+                                <div class="col-sm-2">
+                                    @Html.TextBox("txtTotalCount", string.Empty, new { @class = "form-control" })
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+
+                            <div style="display: inline" id="cfAcceptsMarketing" class="hide">
+                                <div class="col-sm-2" style="width: 250px">
+                                    @{
+                                        var lstAcceptsMarketing = new List<ListItem>{
+                                        new ListItem {Text="Có", Value = "true"},
+                                        new ListItem {Text="Không", Value = "false"},
+                                        };
+                                    }
+                                    @Html.DropDownList("ddlAcceptsMarketing", new SelectList(lstAcceptsMarketing, "Value", "Text"), new { @class = "form-control" })
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+
+                            <div style="display: inline" id="cfState" class="hide">
+                                <div class="col-sm-2" style="width: 250px">
+                                    @{
+                                        var lstState = new List<ListItem>{
+                                        new ListItem {Text="Có tài khoản", Value = "enable"},
+                                        new ListItem {Text="Chưa đăng ký", Value = "disable"},
+                                        };
+                                    }
+                                    @Html.DropDownList("ddlState", new SelectList(lstState, "Value", "Text"), new { @class = "form-control" })
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+            <div class="table-responsive" style="margin-top:10px">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Họ tên
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                Đơn hàng
+                            </th>
+                            <th>
+                                Tổng chi tiêu(đ)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.lstCustomer != null && Model.lstCustomer.Count > 0)
+                        {
+                            foreach (var item in Model.lstCustomer)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.ActionLink(RealEstateWebUI.Areas.admin.Services.CustomerService.GetCustomerName(item.CustomerID).ToString(), "detail", "customers", new { id = item.CustomerID }, null)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CustomerEmail)
+                                    </td>
+                                    <td>
+                                        @using RealEstateWebUI.Areas.admin.UtilzGeneral;
+                                        @SNumber.ToNumber(item.TotalOrder)
+                                        @*@RealEstateWebUI.Areas.admin.Services.CustomerService.GetTotalOrderOfCustomer(item.CustomerID)*@
+                                    </td>
+                                    <td>
+                                        @SNumber.ToNumber(item.TotalCount)
+                                        @*@RealEstateWebUI.Areas.admin.Services.CustomerService.GetTotalCountOfCustomer(item.CustomerID)*@
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    @if (!IsPost)
+                    {
+                        @Html.PagedListPager(Model.lstCustomer, page => Url.Action("index", new { page }))
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-muted">
+                    @{
+                        var temp = 0;
+                        if (Model.lstCustomer != null)
+                        {
+                            temp = Model.lstCustomer.Count;
+                        }
+                    }
+                    Hiển thị @SNumber.ToNumber(temp) kết quả
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        changeSelectConditionFilterCustomer();
+    };
+</script>
+<script src="~/assets/js/admin/customer.js"></script>

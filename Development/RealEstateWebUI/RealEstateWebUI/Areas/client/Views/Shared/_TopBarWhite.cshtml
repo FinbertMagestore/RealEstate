@@ -1,0 +1,81 @@
+﻿<div class="top-bar-white">
+    <div class="container">
+        <div class="row">
+            <div class="menu-header">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12 menu_list">
+                            <a href="/"><img src="~/assets/images/product_list/logo-black.jpg" alt="" /></a>
+                        </div>
+                        <div class="col-lg-7 col-md-7 hidden-sm hidden-xs">
+                            <div class="menu_list text-center">
+                                <ul>
+                                    <li>
+                                        <a href="#">GIỚI THIỆU</a>
+                                    </li>
+                                    <li>
+                                        <a href="/client/products">SẢN PHẨM</a>
+                                        @Html.Partial("~/Areas/client/Views/Shared/megaMenu.cshtml")
+                                    </li>
+                                    <li>
+                                        <a href="/client/blogs">TIN TỨC</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">BẢN ĐỒ</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">LIÊN HỆ</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-5 col-xs-12 hidden-lg hidden-md">
+                            <div class="dropdown-toggle hidden-md hidden-lg css-sub" aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown">
+                                <span>Menu</span>
+                                <span class="fa fa-navicon" style="margin-left: 10px;"></span>
+                            </div>
+                            <ul class="dropdown-menu sub-menu">
+                                <li>
+                                    <a href="#">GIỚI THIỆU</a>
+                                </li>
+                                <li>
+                                    <a href="/client/products">SẢN PHẨM</a>
+                                </li>
+                                <li>
+                                    <a href="/client/blogs">TIN TỨC</a>
+                                </li>
+                                <li>
+                                    <a href="#">BẢN ĐỒ</a>
+                                </li>
+                                <li>
+                                    <a href="#">LIÊN HỆ</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="top-bar-white-right">
+                                <div class="search-header">
+                                    <a href="#"><img src="~/assets/images/product_list/search-black.png" alt="" /></a>
+                                </div>
+                                <a href="/client/cart">
+                                    <i class="fa fa-shopping-cart" style="font-size: 1.3em">
+                                    </i>
+                                    <div class="talkbubble">
+                                        <span class="numberCart">0</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dropdown-menu.categories {
+        left: -190px;
+        width: 1140px;
+    }
+</style>

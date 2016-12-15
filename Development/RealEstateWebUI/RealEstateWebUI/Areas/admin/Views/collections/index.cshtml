@@ -1,0 +1,212 @@
+﻿@model CollectionModel
+@using RealEstateWebUI.Areas.admin.Models;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = Common.StoreName + " | Danh mục sản phẩm";
+    Layout = "~/Areas/admin/Views/Shared/_MasterPage.cshtml";
+}
+
+<div class="page-heading page-heading-md">
+    @Html.AntiForgeryToken()
+    <span>
+        <i class="fa fa-tags fa-2x"></i>
+    </span>
+    <span class="title">
+        Danh mục sản phẩm
+    </span>
+    <div class="pull-right">
+        <a href="/admin/collections/create" class="btn btn-primary">Thêm mới</a>
+    </div>
+</div>
+<div class="container-fluid-md">
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    <div id="strMessage">
+        @if (!string.IsNullOrEmpty(ViewBag.strSuccess as string))
+            {
+            <div class="alert alert-success">
+                <button class="close" data-dismiss="alert">×</button>
+                @Html.Raw(ViewBag.strSuccess)
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(ViewBag.strError as string))
+            {
+            <div class="alert alert-danger">
+                <button class="close" data-dismiss="alert">×</button>
+                @Html.Raw(ViewBag.strError)
+            </div>
+        }
+    </div>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Tất cả danh mục sản phẩm</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab1" class="tab-pane active">
+            <form action="/admin/collections/" method="post">
+                <div class="row form-group">
+                    <div class="col-sm-2">
+                        Điều kiện tìm kiếm
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.TextBox("txtConditionFind", null, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-2"> Điều kiện lọc</div>
+                    <div class="col-sm-8">
+                        @using RealEstateWebUI.Areas.admin.Models
+                        <div class="row">
+                            <div class="col-sm-3" style="width: 250px">
+                                @using System.Web.UI.WebControls;
+                                @{
+                                    var listItems = new List<ListItem>
+                                        {
+                                              new ListItem { Text = "Chọn điều kiện lọc theo...", Value="" },
+                                              new ListItem { Text = "Hiển thị", Value="ddlDisplayStatus" },
+                                              new ListItem { Text = "Loại", Value="ddlCollectionStyle" }
+                                        };
+                                }
+                                @Html.DropDownList("ddlConditionFilter", new SelectList(listItems, "Value", "Text", ViewBag.ddlConditionFilter), new { @class = "form-control", @onchange = "changeSelect()" })
+
+                            </div>
+
+                            <div style="display: inline" id="cfDisplayStatus" class="hide">
+                                <div class="col-sm-2">
+                                    @{
+                                        var lstDisplayStatus = new List<ListItem>{
+                                                new ListItem {Text="Tất cả", Value = ""},
+                                                new ListItem {Text="Hiển thị", Value = "1"},
+                                                new ListItem {Text="Ẩn", Value = "0"},
+                                            };
+                                    }
+                                    @Html.DropDownList("ddlDisplayStatus", new SelectList(lstDisplayStatus, "Value", "Text", Model.ddlDisplayStatus), new { @class = "form-control" })
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+                            <div style="display: inline" id="cfCollectionStyle" class="hide">
+                                <div class="col-sm-3">
+                                    @{
+                                        var lstCollectionStyle = new List<ListItem>{
+                                                new ListItem {Text="Tất cả", Value = ""},
+                                                new ListItem {Text="Thông minh", Value = "smart"},
+                                                new ListItem {Text="Thường", Value = "custom"},
+                                            };
+                                    }
+                                    @Html.DropDownList("ddlCollectionStyle", new SelectList(lstCollectionStyle, "Value", "Text", Model.ddlCollectionStyle), new { @class = "form-control" })
+
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-default" value="Lọc" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="table-responsive" style="margin-top:10px">
+                <table class="table table-hover vert-align">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px"></th>
+                            <th>
+                                Danh mục
+                            </th>
+                            <th>
+                                Điều kiện
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @using RealEstateWebUI.Areas.admin.Services;
+                        @if (Model.lstCollection != null && Model.lstCollection.Count > 0)
+                        {
+                            foreach (var item in Model.lstCollection)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.CollectionImage))
+                                        {
+                                            <img src="@item.CollectionImage" width="50" height="50" />
+                                        }
+                                        else
+                                        {
+                                            <img src="/assets/images/no-image-50-50.png" class="product-thumb product-image-is-blank" width="50" height="50" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.CollectionName != null)
+                                        {
+                                            @Html.ActionLink(item.CollectionName, "detail", "collections", new { id = item.CollectionID }, null)
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.CollectionType == "custom")
+                                        {
+                                            @Html.Label("-----");
+
+                                        }
+                                        else
+                                        {
+                                            <ul class="list-unstyled">
+                                                @for (int i = 0; i < item.TblRules.Count; i++)
+                                                {
+                                                    <li class="note">
+                                                        @RuleService.GetCondition(item.TblRules[i])
+                                                    </li>
+                                                }
+                                            </ul>
+
+                                        }
+
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    @if (!IsPost)
+                    {
+                        @Html.PagedListPager(Model.lstCollection, page => Url.Action("index", new { page }))
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-muted">
+                    @{
+                        var temp = 0;
+                        if (Model.lstCollection != null)
+                        {
+                            temp = Model.lstCollection.Count;
+                        }
+                    }
+                    Hiển thị @RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(temp) kết quả
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function () {
+        changeSelect();
+    };
+    function changeSelect() {
+        var ddlConditionFilter = document.getElementById("ddlConditionFilter").value;
+        if (ddlConditionFilter == "ddlDisplayStatus") {
+            $("#cfDisplayStatus").removeClass("hide");
+            $("#cfCollectionStyle").addClass("hide");
+        } else if (ddlConditionFilter == "ddlCollectionStyle") {
+            $("#cfDisplayStatus").addClass("hide");
+            $("#cfCollectionStyle").removeClass("hide");
+        } else {
+            $("#cfDisplayStatus").addClass("hide");
+            $("#cfCollectionStyle").addClass("hide");
+        }
+    }
+</script>

@@ -1,0 +1,252 @@
+- kết hợp nhiều mệnh đề where trong linq
+
+- xóa virtual directory IIS Express:
+	http://forums.iis.net/t/1195314.aspx?I+accidentally+created+a+virtual+directory+in+IIS+Express+and+want+to+remove+it+
+
+- Không truyền được dữ liệu từ View về Controller là do:
+	sai tên, 
+	trong model không có get,set
+	---còn chỉ cần đúng tên là truyền về được
+
+- F12 lên tìm class nào có tên dị dị rồi search theo nó để tìm hiểu xem nó là cái gì.
+
+- dropdownlist phải dùng theo kiểu Model
+
+- không thể có 2 form lồng nhau. 
+	up ảnh thì dùng base 64 lưu lại rồi preview luôn. khi lưu sản phẩm thì mới save ảnh.
+
+- dùng DOM: document thì phần tử document được tạo mới khi load trang và không thay đổi các phần tử trong nó đến khi load trang khác.
+	document.getElementById("img") sẽ không tìm thấy nếu img được chèn vào sau khi load trang
+	-- $("#img") luôn tìm thấy img nếu nó có trong trang cả khi được chèn vào sau khi load trang
+- base64 image is not displayed in asp.net mvc view: 
+	hàm CreateImageHtmlTag phải trả về MvcString thay vì trả về string
+
+- ajax:
+	+ sử dụng formdata để lấy tất cả input của form vào nó và lấy tất cả ảnh. (chú ý: phải dùng for để lấy input của form, phải update ckeditor trước khi submit sử dụng ajax "http://stackoverflow.com/questions/3256510/how-to-ajax-submit-a-form-textarea-input-from-ckeditor")
+	+ ajax trả về 1 string ko tự chuyển hướng đến trang. muốn chuyển hướng đến trang phải dùng "window.location =" 
+
+- sử dụng validate
+	+ có 2 dạng validate là : validate ở trên view và validate trong controller: 
+		nếu validate trong view lỗi thì nó không tạo ra request tới server.
+		validate trong controller sử dụng: ModelState.IsValid
+	+ sử dụng thư viện: 
+		có 2 thư viện validate có sẵn là:
+		<script src="~/Scripts/jquery.validate.js"></script>
+		<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+		Nếu mà form được load sau thì nó sẽ ko nhận 2 file js này cho form được load sau. nếu vẫn muốn sử dụng thư viện thì trong form được load sau phải khai báo lại 2 thư viện này.
+	+ có thể tự viết validate bằng tay:
+		http://www.w3schools.com/jsref/jsref_match.asp
+		var input = $('#xxx'); input.val().match(format);
+	+ dùng ajax thì phải chú ý form.valid
+
+- dùng dropdownlist thì model=>model chỉ là lấy ra tên, còn muốn select giá trị thì để trong new SelectedList
+
+- error of student it: "mindset": tư duy theo lối mòn: 
+	cách đặt tên cho biến: thừa nghĩa và thiếu nghĩa đều không chấp nhận được.
+	vd: listProduct ==> products
+	nhớ đọc cuốn Clean code,
+
+- lỗi không vào được project visual studio: expected 1 export with contractname microsoft internal visualstudio platformUI ISolation attached collection service but foudn 0 after applying applicable constraints
+
+	cách giải quyết: 
+	https://social.msdn.microsoft.com/Forums/en-US/ef28f0ef-b109-4d40-bead-3caa8e840c18/vs2013-rc-team-explorer-error-after-installation?forum=vssetup
+	devenv /resetuserdata
+
+- lỗi 404; lỗi 500
+Description: HTTP 404. The resource you are looking for (or one of its dependencies) could have been removed, had its name changed, or is temporarily unavailable.  Please review the following URL and make sure that it is spelled correctly. 
+	xem lại route
+	DO ROUTE //phải xem lại route
+	//do đổi tên các file trong project nên nó không load được tên file mới. phải xóa hết phần đó đi copy lại vào folder rồi include
+
+- 	post về sau đó truyền vào query string
+
+	???xuất thông báo trong khi get???
+	???lưu lại đăng nhập khi ấn vào lưu đăng nhập. trên browser có nhưng trong code đọc bằng request.cookies ko thấy???
+	???tạo các modal trong các script: m đang có 2 cách tạo modal là: viết trực tiếp modal trong view, cách viết ajax để truyền xử lý về controller=>trả về html=>cho vào modal???
+    thêm các option cho product: khi xoá hoặc thêm mới nó viết lại các rule đổi tên class, lấy lại giá trị
+    thêm 1 class vd: active
+		function() {
+            Bizweb.Form = function() {
+                function n(n, t) {
+                    $this = $(n);
+                    this.$form = $(n);
+                    var i = $this.attr("action");
+                    $this.submit(function() {
+                        var r = $(n).find("[type='submit']"),
+                            u = r.html();
+                        return r.addClass("disabled").html(Bizweb.LOADING), NProgress.start(), $.ajax({
+                            url: i,
+                            data: $(n).serialize(),
+                            type: "POST",
+                            global: !1,
+                            success: function(n) {
+                                Bizweb.Utility.loadAjax(window.location.href, t, function() {
+                                    n.message ? Bizweb.Flash.notice(n.message) : Bizweb.Flash.notice("Cáº­p nháº­t thÃ´ng tin thÃ nh cÃ´ng")
+                                })
+                            },
+                            error: function(n) {
+                                n.responseJSON && n.responseJSON.error ? Bizweb.Flash.error(n.responseJSON.error.replace(/\n/g, "; ").replace(/; $/, "")) : Bizweb.Flash.error("Cáº­p nháº­t thÃ´ng tin tháº¥t báº¡i");
+                                r.removeClass("disabled").html(u);
+                                NProgress.done()
+                            }
+                        }), !1
+                    })
+                }
+                return n
+            }()
+        }.call(this),
+        function() {
+            var n = "bizweb-modal",
+                t = function(n, t) {
+                    return function() {
+                        return n.apply(t, arguments)
+                    }
+                };
+            Bizweb.Modal = function() {
+                function i(i, r) {
+                    this.show = t(this.show, this);
+                    this.modalContainer = $("#" + n);
+                    this.node = i;
+                    this.options = {};
+                    r != null && (this.options = r)
+                }
+                return i.container = function() {
+                    return document.getElementById(n)
+                }, i.hide = function() {
+                    var n = Bizweb.Modal.container();
+                    n != null && n.currentModal != null && n.currentModal.hide()
+                }, i.prototype.onClickHide = function(n) {
+                    n.preventDefault();
+                    Bizweb.Modal.hide()
+                }, i.prototype.bindingsContext = function() {
+                    return Bindings.childContext(this.node)
+                }, i.prototype.show = function(n) {
+                    if (n == null && (n = {}), n.context == null && (n.context = this.bindingsContext()), this.modalContainer.length > 0 && (this.modalContainer[0].currentModal && this.modalContainer[0].currentModal.hide(), this.modalContainer[0].currentModal = this), n.content == null) {
+                        var t = this.node.href;
+                        if (t != null) {
+                            this.fetchHTML(t, n);
+                            return
+                        }
+                    }
+                    n.content != null ? this.modalContainer.html(n.content) : this.modalContainer.html(this.node.innerHTML);
+                    Bindings.bind(this.modalContainer[0], n.context).refreshImmediately();
+                    this.modalContainer.on("click", ".close-modal", this.onClickHide);
+                    typeof n.onRender == "function" && n.onRender();
+                    this._rebindValidation();
+                    this.modalContainer.modal("show");
+                    this.isShown = !0;
+                    this._focusFirstInput(this.modalContainer)
+                }, i.prototype._rebindValidation = function() {
+                    var n = this.modalContainer.find("form");
+                    n.length != 0 && (n.data("validator", null), $.validator.unobtrusive.parse(document), n.data("unobtrusiveValidation") && n.validate(n.data("unobtrusiveValidation").options))
+                }, i.prototype.hide = function(n) {
+                    n == null && (n = {});
+                    this.isShown && (this.modalContainer.modal("hide"), this.options.move ? $(this.node).append(this.modalContainer.children()) : Bindings.unbind(this.modalContainer[0]), this.modalContainer.empty(), this.modalContainer[0].currentModal = null)
+                }, i.prototype.fetchHTML = function(n, t) {
+                    var i = this;
+                    t == null && (t = {});
+                    $.ajax({
+                        url: n,
+                        dataType: "html",
+                        data: t.data,
+                        success: function(n) {
+                            return i.show({
+                                context: t.context,
+                                content: n,
+                                onRender: t.onRender
+                            })
+                        }
+                    })
+                }, i.prototype._focusFirstInput = function(n) {
+                    return n.find("input:visible:enabled").first().focus()
+                }, i.name = "Modal", i
+            }()
+        }.call(this),
+        function() {
+            $(document).on("ready page:load", function() {
+                if (!$(".ajax-notification").hasClass("is-visible")) {
+                    var t = $(".ajax-notification-message"),
+                        i = t.hasClass("error"),
+                        n = t.text();
+                    n !== null && n != "" && Bizweb.Flash.display(n, i)
+                }
+            });
+            Bizweb.Flash = {
+                error: function(n, t) {
+                    t == null && (t = 5e3);
+                    Bizweb.Flash.display(n, !0, t)
+                },
+                notice: function(n, t) {
+                    t == null && (t = 3e3);
+                    Bizweb.Flash.display(n, !1, t)
+                },
+                display: function(n, t, i) {
+                    var r = $(".ajax-notification");
+                    t != null && r.toggleClass("has-errors", t);
+                    i == null && (i = 3e3);
+                    clearTimeout(i);
+                    $(".ajax-notification-message").text(n);
+                    r.addClass("is-visible");
+                    setTimeout(Bizweb.Flash.hide.bind(this), i)
+                },
+                hide: function() {
+                    $(".ajax-notification").removeClass("is-visible");
+                    $(".ajax-notification-message").text("")
+                }
+            }
+        }.call(this),
+
+-   phải tìm 1 cách nào đó để định danh các đối tượng mình quản lý: khách hàng (định danh bằng email | số điện thoại | số CMTND)
+    phải tìm cách phân trang để cho nó hiển thị ngắn gọn.
+    khi đưa 1 cái vào đường dẫn thì phải thay khoảng trắng bằng dấu -, thay thế các chữ có dấu (http://jsbin.com/yewaqanise/edit?html,js,output)
+
+-   Học sass: sử dụng scss.
+    +   Biến: 
+        sử dụng "$variable_name: value;" để khai báo biến
+        sử dụng biến: "$variable_name"
+    +   Lồng nhau: 
+        khai báo các class css lồng nhau: ví dụ:
+            nav {
+                ul {
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                }
+
+                li { display: inline-block; }
+            }
+    +   Partial và import:
+        Tách các file scss ra các file nhỏ với tên file là: "_name.scss"
+        Trong file to sẽ import các file thành phần bằng cách: "@import 'name';"
+    +   Mixins:
+        Để khai báo các hàm trong scss: vd: 
+            @mixin border-radius($radius) {
+                border-radius: $radius;
+            }
+        Sử dụng mixins
+            .box { @include border-radius(10px); }
+    +   Extend và Inheritance: 
+        Viết 1 số class cha và các class con kế thừa từ nó:vd:
+            .message {
+                border: 1px solid #ccc;
+                padding: 10px;
+                color: #333;
+            }
+
+            .success {
+                @extend .message;
+                border-color: green;
+            }
+    +   Sử dụng các toán tử:
+        viết trực tiếp các toán tử: +, -, *, / và % trong các thuộc tính của css để tạo ra giá trị thuộc tính mới từ các biến.
+    +   bonus: http://sass-lang.com/documentation/file.SASS_REFERENCE.html
+
+- thay đổi kích thước ảnh to hơn khi hover mà ko thay đổi kích thước trên trình duyệt || phóng to hình ảnh ở chính giữa
+    http://jsfiddle.net/5Hm9u/2/
+
+- phóng to hình ảnh, xem hình ảnh rõ hơn ở vị trí mình muốn:
+    http://www.jacklmoore.com/zoom/
+
+- thay đổi giá trị của dropdownlist khi chọn trong 1 dropdownlist khác.
+    http://stackoverflow.com/questions/17013644/fill-drop-down-list-on-selection-of-another-drop-down-list

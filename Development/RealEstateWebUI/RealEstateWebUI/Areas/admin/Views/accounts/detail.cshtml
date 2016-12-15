@@ -1,0 +1,113 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.AppUser
+@using RealEstateWebUI.Areas.admin.Models;
+@{
+    ViewBag.Title = Common.StoreName + " | " + @Model.Username;
+
+    Layout = "~/Areas/admin/Views/Shared/_MasterPage.cshtml";
+}
+<form method="post" autocomplete="off" action="/admin/accounts/@Model.Id" novalidate="novalidate">
+    <div class="page-heading page-heading-md">
+        <span class="h3">
+            <i class="fa fa-users"></i>
+            Tài khoản /
+            <span>
+                @Model.Username
+            </span>
+        </span>
+        <div class="pull-right">
+            <input type="submit" class="btn btn-primary" value="Lưu" id="btnSave" />
+        </div>
+    </div>
+    <div class="container-fluid-md">
+        @if (!string.IsNullOrEmpty(@ViewBag.Message))
+            {
+                if (ViewBag.Success == true)
+                {
+                <div class="alert alert-success">
+                    @Html.Raw(@ViewBag.Message)
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-danger">
+                    @Html.Raw(@ViewBag.Message)
+                </div>
+            }
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => Model.Id)
+        }
+        <div class="row" style="margin-top: 10px">
+            <div class="col-sm-3 control-label strong">
+                <h4>Thông tin tài khoản</h4>
+                <p class="text-muted">Tất cả thông tin liên quan đến tài khoản.</p>
+            </div>
+            <div class="col-sm-9">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Username, new { @class = "control-label strong bold" })
+                                    @Html.TextBoxFor(model => model.Username, new { @class = "form-control", @placeholder = "Nhập họ" })
+                                    @Html.ValidationMessageFor(model => model.Username)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Email, new { @class = "control-label strong bold" })
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Nhập email" })
+                                    @Html.ValidationMessageFor(model => model.Email)
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserPhone, new { @class = "control-label strong bold" })
+                                    @Html.TextBoxFor(model => model.UserPhone, new { @class = "form-control", @placeholder = "Nhập số điện thoại" })
+                                    @Html.ValidationMessageFor(model => model.UserPhone)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MainPage, new { @class = "control-label strong bold" })
+                                    @Html.TextBoxFor(model => model.MainPage, new { @class = "form-control", @placeholder = "Nhập trang chủ" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.UserDescription, new { @class = "control-label strong bold" })
+                                    @Html.TextAreaFor(model => model.UserDescription, new { @class = "form-control", @placeholder = "Nhập thông tin giới thiệu" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <a onclick="return showChangePass()" style="margin-left: 15px" id="showChangePass">Hiện thay đổi mật khẩu</a>
+                            <div id="changePass" style="display:none">
+                                <div class="col-sm-6">
+                                    @Html.LabelFor(model => model.Password, new { @class = "control-label strong bold" })
+                                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Nhập mật khẩu mới" })
+                                    @Html.ValidationMessageFor(model => model.Password)
+                                </div>
+                                <div class="col-sm-6">
+                                    @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label strong bold" })
+                                    @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Nhập lại mật khẩu" })
+                                    <div class="has-error" id="errorConfirm" style="display: none">
+                                        <span class="help-block jq-validate-error">Vui lòng xác nhận lại mật khẩu</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/assets/js/admin/account.js"></script>
+</form>

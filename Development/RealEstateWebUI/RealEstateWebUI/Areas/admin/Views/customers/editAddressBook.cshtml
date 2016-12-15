@@ -1,0 +1,111 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.AddressBook
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formEditAddressBook", novalidate = "novalidate", autocomplete = "off" }))
+{
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">Sửa địa chỉ</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(x => Model.AddressBookID)
+                        @Html.HiddenFor(x => Model.CustomerID)
+                        @Html.HiddenFor(x => Model.IsDefault)
+                        <div>
+                            @Html.LabelFor(model => model.AddressBookFirstName, new { @class = "control-label strong" })
+                        </div>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.AddressBookFirstName, new { @class = "form-control", @placeholder = "Nhập Họ" })
+                            @Html.ValidationMessageFor(model => model.AddressBookFirstName)
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div>
+                            @Html.LabelFor(model => model.AddressBookLastName, new { @class = "control-label strong" })
+                        </div>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.AddressBookLastName, new { @class = "form-control", @placeholder = "Nhập Tên" })
+                            @Html.ValidationMessageFor(model => model.AddressBookLastName)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6" style="margin-top: 10px">
+                        <div>
+                            @Html.LabelFor(model => model.CompanyName, new { @class = "control-label strong" })
+                        </div>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control", @placeholder = "Nhập Công ty" })
+                            @Html.ValidationMessageFor(model => model.CompanyName)
+                        </div>
+                    </div>
+                    <div class="col-sm-6" style="margin-top: 10px">
+                        <div>
+                            @Html.LabelFor(model => model.Phone, new { @class = "control-label strong" })
+                        </div>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @placeholder = "Nhập Số điện thoại" })
+                            @Html.ValidationMessageFor(model => model.Phone)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12" style="margin-top: 10px">
+                        <div class="" style="margin-top: 10px">
+                            @Html.LabelFor(model => model.HomeAddress, new { @class = "control-label strong" })
+                        </div>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.HomeAddress, new { @class = "form-control", @placeholder = "Nhập Địa chỉ" })
+                            @Html.ValidationMessageFor(model => model.HomeAddress)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6" style="margin-top: 10px">
+                        <div>
+                            @Html.LabelFor(model => model.ProvinceName, new { @class = "control-label strong" })
+                        </div>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.ProvinceName, new { @class = "form-control", @placeholder = "Nhập Tỉnh / Thành phố" })
+                            @Html.ValidationMessageFor(model => model.ProvinceName)
+                        </div>
+                    </div>
+                    <div class="col-sm-6" style="margin-top: 10px">
+                        <div>
+                            @Html.LabelFor(model => model.Postal, new { @class = "control-label strong" })
+                        </div>
+                        <div class="">
+                            @Html.TextBoxFor(model => model.Postal, new { @class = "form-control", @placeholder = "Nhập Postal / Zip Code" })
+                            @Html.ValidationMessageFor(model => model.Postal)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6" style="margin-top: 10px">
+                        <div>
+                            @Html.LabelFor(model => model.CountryID, new { @class = "control-label strong" })
+                        </div>
+                        <div class="">
+                            @Html.DropDownListFor(model => model.CountryID, new SelectList(Model.Countries, "CountryID", "CountryName"), new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CountryID)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @if (!Model.IsDefault)
+                {
+                    <button id="btnDelete" class="btn btn-danger pull-left" type="button" onclick="submitDeleteAddressBook(@Model.AddressBookID, @Model.CustomerID)">Xóa</button>
+                }
+                <button class="btn btn-default" type="button" data-dismiss="modal">Đóng</button>
+                <button class="btn btn-primary" type="button" onclick="submitEditAddressBook(@Model.AddressBookID, @Model.CustomerID)"> Xác nhận</button>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/assets/js/admin/customer.js"></script>
+}

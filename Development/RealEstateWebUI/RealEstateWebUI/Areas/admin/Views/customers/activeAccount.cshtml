@@ -1,0 +1,51 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.ActiveAccountModel
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formActiveAccount", novalidate = "novalidate", autocomplete = "off" }))
+{
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h4 class="modal-title">Kích hoạt tài khoản</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(x => Model.CustomerID)
+                        <div class="col-sm-3 text-right">
+                            @Html.LabelFor(model => model.Password, new { @class = "control-label strong" })
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Nhập Mật khẩu" })
+                            @Html.ValidationMessageFor(model => model.Password)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-3 text-right">
+                            @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label strong" })
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Nhập lại Mật khẩu" })
+                            @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-7 text-center">
+                    @Html.CheckBoxFor(model => model.SendEmail2Customer)
+                    @Html.LabelFor(model => model.SendEmail2Customer, new { @class = "control-label" })
+                </div>
+                <div class="col-sm-4 pull-right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="submitActiveAccount(@Model.CustomerID)">Kích hoạt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/assets/js/admin/customer.js"></script>
+}

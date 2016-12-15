@@ -1,0 +1,14 @@
+- 	Photoshop:
+	+ 	để làm web thì để resolution: 72
+		để in thì để resolution: 300
+		phải thiết lập ngay từ đầu. thiết lập sau không có tác dụng
+	+ chế độ ảnh:
+		ảnh bitmap: chỉ có 2 màu đen trắng:
+		ảnh grayscale: ảnh ko phải đen trắng nhưng chưa có màu.
+		ảnh RGB: ảnh 3 màu: đỏ, xanh lục và xanh lam (màu ánh sáng || màu quang phổ): dùng cho những thiết bị phát quang, cho những bức ảnh in ngoài lab
+		ảnh CMYK: 4 màu(xanh coban, đỏ, vàng, đen), dùng cho in ấn công nghiệp với sách báo, tạp chí,
+	+ chiều sâu màu: 1 bit chỉ có ảnh bitmap mới có. với những ảnh thường thì dùng 8 bit, với những ảnh có chất lượng cao dùng 16bit
+	+ màu nền: 
+		transparent: trong suốt (biểu thị bằng các ô xám và trắng: không có dữ liệu)
+		background color: chọn theo màu nền
+		white: nền trắng

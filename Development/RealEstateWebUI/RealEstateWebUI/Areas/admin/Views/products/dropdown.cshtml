@@ -1,0 +1,20 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.ProductDropdownModel
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id= "productDropdown" }))
+{
+    @Html.HiddenFor(m=>m.CollectionID)
+    <div id="listProduct" class="">
+        @for (int i = 0; i < Model.ListProductDropDown.Count; i++)
+        {
+            <ul class="list-unstyled">
+                <li>
+                    @Html.CheckBoxFor(m => Model.ListProductDropDown[i].Choice)
+                    @Html.DisplayFor(m => Model.ListProductDropDown[i].ProductName)
+                    @Html.HiddenFor(m => Model.ListProductDropDown[i].ProductID)
+                </li>
+            </ul>
+        }
+    </div>
+    <div class="text-muted">
+        Hiện thị @Model.ListProductDropDown.Count kết quả
+    </div>
+}

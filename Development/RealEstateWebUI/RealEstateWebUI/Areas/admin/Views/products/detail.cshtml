@@ -1,0 +1,744 @@
+﻿@model RealEstateWebUI.Areas.admin.Models.Product
+@using RealEstateWebUI.Areas.admin.Models;
+@{
+    ViewBag.Title = Common.StoreName + "|" + @Model.ProductName;
+    Layout = "~/Areas/admin/Views/Shared/_MasterPage.cshtml";
+}
+
+<div class="page-heading page-heading-md">
+    <span>
+        <i class="fa fa-tag fa-2x"></i>
+    </span>
+    <a href="/admin/products"><span class="title">Sản phẩm</span></a> <span class="title"> / @Model.ProductName</span>
+    <div class="pull-right" style="margin-right: 5px">
+        <a href="javascript: void(0)" class="btn btn-danger" data-toggle="modal" data-target="#deleteProduct" onclick="showModalDeleteProduct(@Model.ProductID)">Xóa</a>
+        <input type="submit" id="btnSave" class="btn btn-primary" value="Lưu" onclick="submitSaveProductDetail()" />
+    </div>
+</div>
+<div class="container-fluid-md">
+    <form method="post" autocomplete="off" id="productForm" action="/admin/products/@Model.ProductID" novalidate="novalidate" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-sm-12">
+                @if (!string.IsNullOrEmpty(ViewBag.strSuccess as string))
+                {
+                    <div class="alert alert-success">
+                        <button class="close" data-dismiss="alert">×</button>
+                        @Html.Raw(ViewBag.strSuccess)
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(ViewBag.strError as string))
+                {
+                    <div class="alert alert-danger">
+                        <button class="close" data-dismiss="alert">×</button>
+                        @Html.Raw(ViewBag.strError)
+                    </div>
+                }
+            </div>
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+        </div>
+        <div class="row">
+            @Html.HiddenFor(model => model.ProductID)
+            <div class="col-sm-3">
+                <h4>Thông tin sản phẩm</h4>
+                <p class="text-muted">
+                    Cung cấp thông tin về tên, mô tả loại sản phẩm và nhà sản xuất để phân loại sản phẩm này.
+                </p>
+            </div>
+            <div class="col-sm-9">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @Html.LabelFor(model => model.ProductName, new { @class = "control-label strong" }) <span class="asterisk">*</span>
+                                </div>
+                                <div class="col-sm-12">
+                                    @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.ProductName)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    @Html.LabelFor(model => model.ProductContent, new { @class = "control-label strong" })
+                                </div>
+                                <div class="col-sm-12">
+                                    @Html.TextAreaFor(model => model.ProductContent, new { @class = "form-control" })
+                                    <script>CKEDITOR.replace('ProductContent');</script>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div id="showShortDescription" class="col-sm-12">
+                                    <a href="javascript:;" onclick="showShortDescription();">Thêm mô tả ngắn</a>
+                                </div>
+                                <div class="hide" id="shortDescription">
+                                    <div class="col-sm-12">
+                                        @Html.LabelFor(model => model.ProductShortDescription, new { @class = "control-label strong" })
+                                    </div>
+                                    <div class="col-sm-12">
+                                        @Html.TextAreaFor(model => model.ProductShortDescription)
+                                        <script>CKEDITOR.replace(ProductShortDescription);</script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div>
+                                        @Html.LabelFor(model => model.ProductStyleID, new { @class = "control-label strong" })
+                                        <span class="note">ví dụ: Xe đạp, Áo sơ mi ...</span>
+                                    </div>
+                                    <div>
+                                        @Html.DropDownListFor(model => model.ProductStyleID, Model.ProductStyles, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div>
+                                        @Html.LabelFor(model => model.SupplierID, new { @class = "control-label strong" })
+                                    </div>
+                                    <div>
+                                        @Html.DropDownListFor(model => model.SupplierID, Model.Suppliers, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <h4>Danh mục</h4>
+                <p class="text-muted">Thêm sản phẩm vào danh mục sản phẩm</p>
+                <div id="multiplePruducts">
+                    <a class="btn btn-default" href="javascript: void(0)" data-id="" data-toggle="modal" data-target="#allCollection" onclick="viewCollections(@Model.ProductID)">Thêm vào danh mục</a>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-m-12">
+                                    @if (Model.CollectionProducts == null || Model.CollectionProducts.Count <= 0)
+                                    {
+                                        <div class="form-group text-center text-muted">
+                                            <i class="fa fa-tag fa-5x"></i>
+                                            <h3>Chưa thuộc danh mục nào</h3>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-sm-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover vert-align">
+                                                    <colgroup>
+                                                        <col width="50px" />
+                                                        <col />
+                                                        <col width="15%" />
+                                                    </colgroup>
+                                                    @foreach (var item in Model.CollectionProducts)
+                                                    {
+                                                        <tr>
+                                                            <td style="padding-left: 0px;">
+                                                                @if (!string.IsNullOrEmpty(item.Collection.CollectionImage))
+                                                                {
+                                                                    <img src="@item.Collection.CollectionImage" width="50" height="50" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <img src="/assets/images/no-image-50-50.png" class="product-thumb product-image-is-blank" width="50" height="50" />
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                @if (!string.IsNullOrEmpty(item.Collection.CollectionName))
+                                                                {
+                                                                    @Html.ActionLink(item.Collection.CollectionName, "detail", "collections", new { id = item.CollectionID }, null)
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                @if (item.Collection.CollectionType == "custom")
+                                                                {
+                                                                    <a id="remove-collect-@item.ID" href="javascript:void(0)" onclick="removeCollectionOutProduct(@item.ID,@item.ProductID)">
+                                                                        X
+                                                                    </a>
+                                                                    <input type="hidden" value="@item.ProductID" name="productIds">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="text-muted">TỰ ĐỘNG</label>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </table>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <h4>Ảnh</h4>
+                <p class="text-muted">Đăng và sửa ảnh của sản phẩm</p>
+                <p class="text-muted">Lưu ý: Size mỗi file ảnh không được vượt quá 1 MB.</p>
+            </div>
+            <div class="col-sm-9">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-sm-12 form-group text-right">
+                            @*@using (Html.BeginForm("uploadImageProduct", "image", new { id = Model.ProductID }, FormMethod.Post, new { id = "uploadImage", enctype = "multipart/form-data" }))
+                                {*@
+                            <a style="padding:0 15px;" href="javascript: void(0)" onclick="openUploadImageProductDetail()">Thêm ảnh sản phẩm</a>
+                            <input class="hide" type="file" name="fileProductDetail" id="fileProductDetail" accept="image/*" onchange="UploadFileProductDetail(@Model.ProductID)" />
+                            <a style="padding:0 15px;" href="javascript: void(0)" data-target="#addImageFromUrl" data-toggle="modal">Thêm ảnh từ URL</a>
+                        </div>
+                        <div class="row">
+                            <div id="displayImageProduct">
+                                @if (Model.Images == null || RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(Model.Images.Count) <= 0)
+                                {
+                                    <div class="" id="noImageDisplay" style="text-align: center">
+                                        <i class="fa fa-picture-o fa-5x"></i>
+                                        <h4>Thêm ảnh cho sản phẩm</h4>
+                                    </div>
+                                }
+                                else
+                                {
+                                    for (int i = 0; i < Model.Images.Count; i++)
+                                    {
+                                        <div class="col-sm-3">
+                                            <img src="@Model.Images[i].ImageUrl" height="170" width="170" />
+                                            <div><a id="deleteItem" data-target="#deleteImage" data-toggle="modal" data-id="@Model.Images[i].ImageID" onclick="showDataModal(@Model.Images[i].ImageID, @Model.ProductID)">Xóa ảnh</a></div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <h4>Quản lý kho và tùy chọn</h4>
+                <p class="text-muted">Bạn có thể cấu hình nhiều phiên bản cho sản phẩm này</p>
+            </div>
+            <div class="col-sm-9">
+                <div class="panel panel-default">
+                    @if (Model.Options != null && Model.Options.Count == 1 && Model.Options[0].OptionName == "Title" && Model.Options[0].OptionValue == "Default Title")
+                    {
+                        @Html.HiddenFor(model => model.AutoGenerate)
+                        @Html.HiddenFor(model => model.Variant.VariantID)
+                        <div class="panel-body form-bordered">
+                            <div class="form-group">
+                                <h4><b>Đặt giá</b></h4>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        @Html.LabelFor(model => model.Variant.VariantPrice, new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon">đ</span>
+                                            @Html.TextBoxFor(model => model.Variant.VariantPrice, new { @class = "form-control", @type = "number" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Variant.VariantPrice)
+                                    </div>
+                                    <div class="col-sm-6">
+                                        @Html.LabelFor(model => model.Variant.CompareWithPrice, new { @class = "control-label" })
+                                        <div class="input-group">
+                                            <span class="input-group-addon">đ</span>
+                                            @Html.TextBoxFor(model => model.Variant.CompareWithPrice, new { @class = "form-control", @type = "number" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Variant.CompareWithPrice)
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="checkbox checkbox-inline">
+                                            @Html.CheckBoxFor(model => model.Variant.Textable)
+                                            @Html.LabelFor(model => model.Variant.Textable, new { @class = "control-label" })
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Variant.Textable)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <h4><b>Kho hàng</b></h4>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        @Html.LabelFor(model => model.Variant.VariantSKU, new { @class = "control-label" })
+                                        @Html.TextBoxFor(model => model.Variant.VariantSKU, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Variant.VariantSKU)
+                                    </div>
+                                    <div class="col-sm-6">
+                                        @Html.LabelFor(model => model.Variant.VariantBarcode, new { @class = "control-label" })
+                                        @Html.TextBoxFor(model => model.Variant.VariantBarcode, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Variant.VariantBarcode)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <h4><b>Vận chuyển</b></h4>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        @Html.LabelFor(model => model.Variant.VariantWeight, new { @class = "control-label" })
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(model => model.Variant.VariantWeight, new { @class = "form-control", @type = "number" })
+                                            @Html.HiddenFor(model => model.Variant.WeightUnit)
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">
+                                                    <span id="weight-unit">@Model.Variant.WeightUnit</span>
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    @foreach (var item in Model.Variant.Units)
+                                                    {
+                                                        <li><a href="javascript:void(0)" onclick="changeWeightUnit('@item')">@item</a></li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.Variant.VariantWeight)
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="checkbox checkbox-inline">
+                                            @Html.CheckBoxFor(model => model.Variant.RequireShipping)
+                                            @Html.LabelFor(model => model.Variant.RequireShipping, new { @class = "control-label" })
+                                            @Html.ValidationMessageFor(model => model.Variant.RequireShipping)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <h4><b>Tùy chọn</b></h4>
+                                <div class="row" style="margin-bottom:20px;">
+                                    <div class="col-sm-12">
+                                        Sản phẩm này có nhiều tùy chọn như kích thước, màu sắc?
+                                        <div class="pull-right">
+                                            <button id="btnCreateOption" class="btn btn-primary" type="button" onclick="toggleAutoGenerate()">Thêm tùy chọn</button>
+                                            <button id="btnDisposeOption" class="btn btn-default hide" type="button" onclick="toggleAutoGenerate()">Hủy</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="variants-option" class="row hide" style="background:#f5f6f7; margin-left: -15px; margin-right: -15px; padding: 20px">
+                                    <table id="options" class="table" width="100%">
+                                        <colgroup>
+                                            <col style="width:25%">
+                                            <col style="width:65%">
+                                            <col style="width:10%;">
+                                        </colgroup>
+                                        <thead>
+                                            <tr>
+                                                <th style="">Tên thuộc tính</th>
+                                                <th style="padding-left:10px;">Giá trị</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="options option1">
+                                                <td>
+                                                    @Html.TextBox("Options[0].OptionName", null, new { @class = "form-control optionName" })
+                                                </td>
+                                                <td class="option-value option-value1">
+                                                    <input class="taginput" name="Options[0].OptionValue" type="text" data-role="tagsinput" value="" style="display: none;" onchange="changeListVariant()">
+                                                </td>
+                                                <td class="removeOption_1 hide">
+                                                    <a onclick="removeOption_CreateProduct(0)">
+                                                        <i class="fa fa-trash-o fa-2x"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <a class="btn btn-default addNewOption" href="javascript:void(0)" onclick="addNewOption_CreateProduct()">Thêm option</a>
+                                    <div class="list_variant hide" style="margin-top:20px">
+                                        @Html.LabelForModel("", "Thay đổi những tùy chọn, bỏ tích để không tạo")
+                                        <table class="table" width="100%">
+                                            <colgroup>
+                                                <col style="padding-left: 7px; padding-right: 7px; width: 12px;">
+                                                <col>
+                                                <col style="width:100px;">
+                                                <col style="min-width:100px;">
+                                                <col style="min-width:100px;">
+                                            </colgroup>
+                                            <thead>
+                                                <tr>
+                                                    <th> </th>
+                                                    <th> Tùy chọn </th>
+                                                    <th> Giá </th>
+                                                    <th> Mã sản phẩm </th>
+                                                    <th> Mã barcode </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="padding: 20px 0">
+                            <div class="row text-right">
+                                <div class="col-sm-12">
+                                    @*<a href="#" style="padding:0 15px;">Sắp xếp phiên bản</a>*@
+                                    <a href="javascript: void(0)" data-target="#viewOptions" data-toggle="modal" style="padding:0 15px;" onclick="showViewOpionsModal(@Model.ProductID)">Sửa tùy chọn</a>
+                                    <a href="/admin/products/@Model.ProductID/variants/create" style="padding:0 15px;">Thêm phiên bản</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="table-responsive" style="padding: 10px 20px">
+                                    <div class="col-sm-12 variant-options">
+                                        <table class="table">
+                                            <colgroup>
+                                                <col />
+                                                @if (Model.Options != null && Model.Options.Count > 0)
+                                                {
+                                                    if (Model.Options[0].OptionValue != null && !Model.Options[0].OptionValue.Equals("Default Title"))
+                                                    {
+                                                        for (int i = 0; i < Model.Options.Count; i++)
+                                                        {
+                                                            <col />
+                                                        }
+                                                    }
+                                                }
+                                                <col />
+                                                <col />
+                                                <col style="width:120px;" />
+                                            </colgroup>
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    @if (Model.Options != null && Model.Options.Count > 0)
+                                                    {
+                                                        if (Model.Options[0].OptionValue != null && !Model.Options[0].OptionValue.Equals("Default Title"))
+                                                        {
+                                                            foreach (var item in Model.Options)
+                                                            {
+                                                                <th>@item.OptionName</th>
+                                                            }
+                                                        }
+                                                    }
+                                                    <th>SKU</th>
+                                                    <th>Giá</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int i = 0; i < Model.Variants.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @if (Model.Variants[i].Image != null && !string.IsNullOrEmpty(Model.Variants[i].Image.ImageUrl))
+                                                            {
+                                                                <img src="@Model.Variants[i].Image.ImageUrl" width="30" height="30">
+                                                            }
+                                                            else
+                                                            {
+                                                                <img src="/assets/images/no-image-50-50.png" class="product-thumb product-image-is-blank" width="35" height="35">
+                                                            }
+                                                        </td>
+                                                        @if (Model.Options != null && Model.Options.Count > 0)
+                                                        {
+                                                            if (Model.Options.Count > 0)
+                                                            {
+                                                                <td>
+                                                                    @Html.TextBoxFor(m => Model.Variants[i].Option1, new { @class = "form-control option-value1" })
+                                                                </td>
+                                                                if (Model.Options.Count > 1)
+                                                                {
+                                                                    <td>
+                                                                        @Html.TextBoxFor(m => Model.Variants[i].Option2, new { @class = "form-control option-value2" })
+                                                                    </td>
+                                                                    if (Model.Options.Count > 2)
+                                                                    {
+                                                                        <td>
+                                                                            @Html.TextBoxFor(m => Model.Variants[i].Option3, new { @class = "form-control option-value3" })
+                                                                        </td>
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        <td>@Html.TextBoxFor(m => Model.Variants[i].VariantSKU, new { @class = "form-control" })</td>
+                                                        <td>@Html.TextBoxFor(m => Model.Variants[i].VariantPrice, new { @class = "form-control" })</td>
+                                                        @Html.HiddenFor(m => Model.Variants[i].VariantID)
+                                                        @Html.HiddenFor(m => Model.Variants[i].RequireShipping)
+                                                        @Html.HiddenFor(m => Model.Variants[i].CompareWithPrice)
+                                                        @Html.HiddenFor(m => Model.Variants[i].Textable)
+                                                        @Html.HiddenFor(m => Model.Variants[i].VariantBarcode)
+                                                        @Html.HiddenFor(m => Model.Variants[i].VariantPrice)
+                                                        @Html.HiddenFor(m => Model.Variants[i].VariantSKU)
+                                                        @Html.HiddenFor(m => Model.Variants[i].VariantTittle)
+                                                        @Html.HiddenFor(m => Model.Variants[i].VariantWeight)
+                                                        @Html.HiddenFor(m => Model.Variants[i].WeightUnit)
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <a href="/admin/products/@Model.ProductID/variants/@Model.Variants[i].VariantID" class="btn btn-default">Sửa</a>
+                                                                <a href="javascript: void(0)" class="btn btn-default" data-target="#deleteVariant" data-toggle="modal" data-id="@Model.Variants[i].VariantID" onclick="showDataModalDeleteVariant(@Model.Variants[i].VariantID,@Model.ProductID)"><i class="fa fa-trash-o"></i></a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <h4>Tags</h4>
+                <p class="text-muted">Tag có thể được dùng để phân loại các sản phẩm.</p>
+            </div>
+            <div class="col-sm-9">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12 form-group">
+                                    @Html.LabelFor(m => m.Tags, new { @class = "control-label strong" })
+                                    <input class="taginput" name="Tags" type="text" data-role="tagsinput" value="@Model.Tags" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 form-group">
+                                    Bạn có thể chọn những tag đã được sử dụng
+                                    @if (Model.ListTag != null && Model.ListTag.Count > 0)
+                                    {
+                                        <div class="col-button-colors">
+                                            @foreach (var item in Model.ListTag)
+                                            {
+                                                <a class="btn btn-info" onclick="addTag(this)">@item.TagName</a>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <h4>Tối ưu SEO</h4>
+                <p class="text-muted">Thiết lập thẻ tiêu đề, thẻ mô tả, đường dẫn. Những thông tin này xác định cách danh mục xuất hiện trên công cụ tìm kiếm.</p>
+            </div>
+            <div class="col-sm-9">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12 form-group">
+                                    <div>
+                                        @Html.LabelFor(model => model.ProductTitleCard, new { @class = "control-label strong" })
+                                    </div>
+                                    <div class="">
+                                        @Html.TextBoxFor(model => model.ProductTitleCard, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.ProductTitleCard)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 form-group">
+                                    <div>
+                                        @Html.LabelFor(model => model.ProductDescriptionCard, new { @class = "control-label strong" })
+                                    </div>
+                                    <div class="">
+                                        @Html.TextAreaFor(model => model.ProductDescriptionCard, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(m => m.ProductDescriptionCard)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 form-group">
+                                    <div>
+                                        @Html.LabelFor(model => model.ProductAlias, new { @class = "control-label strong" })
+                                    </div>
+                                    @using RealEstateWebUI.Areas.admin.Models;
+                                    <div class="">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">@Common.UrlHost</span>
+                                            @Html.TextBoxFor(model => model.ProductAlias, new { @class = "form-control" })
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.ProductAlias)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <h4>Trạng thái</h4>
+            </div>
+            <div class="col-sm-9">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="row">@Html.RadioButton("ProductState", "true", @Model.ProductState == true) Hiển thị</div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="row">@Html.RadioButton("ProductState", "false", @Model.ProductState == false) Ẩn </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="deleteImage">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Xóa ảnh</h4>
+            </div>
+            <div class="modal-body">
+                Bạn chắc chắn muốn xóa ảnh
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary" onclick="submitDeleteImageDetailProduct()"> Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewOptions">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="updateOptionsForm" action="/admin/products/updateOptionsOfProduct/@Model.ProductID" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h4 class="modal-title">Sửa tùy chọn</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="updateOptions"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteProduct">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Xóa sản phẩm</h4>
+            </div>
+            <div class="modal-body">
+                Bạn chắc chắn muốn xóa sản phẩm này
+                <div>
+                    <div class="label-warning" style="width: 50px">
+                        Chú ý:
+                    </div>
+                    <div>Tất cả ảnh của sản phẩm sẽ bị xóa</div>
+                    <div>Tất cả phiên bản của sản phẩm sẽ bị xóa</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary" onclick="submitDeleteProduct()"> Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addImageFromUrl">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Thêm ảnh từ đường dẫn</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Nhập đường dẫn của ảnh
+                </p>
+                <p>
+                    @Html.TextBox("src", null, new { @class = "form-control", @placeholder = "http://" })
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary" onclick="submitAddImageFromUrl(@Model.ProductID)"> Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="allCollection">
+    <div class="modal-dialog" role="document" style="width: 400px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Danh sách danh mục</h4>
+            </div>
+            <div class="modal-body">
+                <div id="conditionFind" class="form-group">
+                    <input class="form-control" id="ConditionFindProduct" name="ConditionFindProduct" onkeyup="suggestCollection()" placeholder="Nhập từ khóa tìm kiếm" type="text" value="">
+                </div>
+                <div id="collections"></div>
+            </div>
+            <div class="modal-footer">
+                <div class="pull-right text-right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button class="btn btn-danger" onclick="choiceCollection(@Model.ProductID)" type="button">Chọn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteVariant">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">Xóa phiên bản</h4>
+            </div>
+            <div class="modal-body">
+                Bạn chắc chắn muốn xóa phiên bản này.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="submit" class="btn btn-primary" onclick="submitDeleteVariant()"> Xác nhận</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    if (typeof ProductDetail == "undefined" || typeof ProductDetail != "object") {
+        ProductDetail = {};
+    }
+    ProductDetail.productID = @Model.ProductID;
+    ProductDetail.variantID = 0;
+    ProductDetail.imageIDDelete = 0;
+    ProductDetail.imageAddDelete = 0;
+</script>
+
+<script src="~/assets/js/admin/collection.js"></script>
+<script src="~/assets/js/admin/product.js"></script>

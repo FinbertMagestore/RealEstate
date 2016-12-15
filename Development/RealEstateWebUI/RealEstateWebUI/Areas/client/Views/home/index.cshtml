@@ -1,0 +1,966 @@
+﻿@model RealEstateWebUI.Areas.client.Models.HomeClientViewModel
+@using RealEstateWebUI.Areas.admin.Models;
+
+@{
+    ViewBag.Title = Common.StoreName + " | Trang chủ";
+    Layout = "~/Areas/client/Views/Shared/MasterPageClient.cshtml";
+}
+
+<div class="top-bar">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-6 col-xs-12">
+                <i class="fa fa-phone"></i>
+                012345578
+                <i class="fa fa-envelope-o" style="margin-left: 10px"></i>
+                support@dkt.com.vn
+                <a target="_blank" href="/admin" class="hide">
+                    <i class="ico ico-16 ico-view-storefront"></i>
+                    Trang quản trị
+                </a>
+            </div>
+            <div class="col-lg-5 col-md-6 col-xs-12 top-bar-right">
+                <a class="hide" href="javascript: void(0)" data-toggle="modal" data-target="#bizweb-modal" onclick="showModalNewLetter()">New Letter popup</a>
+                <i class="fa fa-lock"></i>
+                <a href="/client/authorization/login">Đăng nhập</a> / <a href="/client/authorization/register">Đăng ký</a>
+                <a href="/client/cart">
+                    <i class="fa fa-shopping-cart">
+                    </i>
+                    <div class="talkbubble">
+                        <span class="numberCart">0</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/assets/js/client/client.js"></script>
+<div class="modal fade" id="bizweb-modal" style="margin-top:110px;">
+</div>
+
+<div class="slide-header">
+    <div class="span-12 slide-background">
+        <div id="owl-slide" class="owl-carousel" style="height: 100%">
+            <div>
+                <div class="menu-content" style="background: rgba(0, 0, 0, 0) url('/assets/images/home/slide/slide-image.jpg')">
+                    <div class="menu-content-text">
+                        <h1>Xu hướng Nội Thất</h1>
+                        <h1>Phòng khách đa năng</h1>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="menu-content" style="background: rgba(0, 0, 0, 0) url('/assets/images/home/slide/slide-image.jpg')">
+                    <div class="menu-content-text">
+                        <h1>Xu hướng Nội Thất</h1>
+                        <h1>Phòng khách đa năng</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Left and right controls -->
+        <a class="slide-header-prev">
+            <i class="fa fa-angle-left"></i>
+        </a>
+        <a class="slide-header-next">
+            <i class="fa fa-angle-right"></i>
+        </a>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="menu-header">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-6 col-xs-6">
+                                <a href="/" class="menu_list pull-left"><img src="~/assets/images/home/menu/logo.png" alt="" /></a>
+                                <div class="menu_list pull-right hidden-sm hidden-xs">
+                                    <ul>
+                                        <li>
+                                            <a href="/">GIỚI THIỆU</a>
+                                        </li>
+                                        <li>
+                                            <a href="/client/products">SẢN PHẨM</a>
+                                            @Html.Partial("~/Areas/client/Views/Shared/megaMenu.cshtml")
+                                        </li>
+                                        <li>
+                                            <a href="/client/blogs">TIN TỨC</a>
+                                        </li>
+                                        <li>
+                                            <a href="/">BẢN ĐỒ</a>
+                                        </li>
+                                        <li>
+                                            <a href="/">LIÊN HỆ</a>
+                                        </li>
+                                        <li>
+                                            <a href="/"><img src="~/assets/images/home/menu/search-header.png" alt="" /></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-6 hidden-lg hidden-md pull-right">
+                                <div class="dropdown-toggle hidden-md hidden-lg css-sub" aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown">
+                                    Menu
+                                    @*<span class="fa fa-navicon" style="margin-left: 10px;"></span>*@
+                                    <i class="fa fa-navicon"></i>
+                                </div>
+                                <ul class="dropdown-menu sub-menu pull-right">
+                                    <li>
+                                        <a href="/">GIỚI THIỆU</a>
+                                    </li>
+                                    <li>
+                                        <a href="/client/products">SẢN PHẨM</a>
+                                    </li>
+                                    <li>
+                                        <a href="/client/blogs">TIN TỨC</a>
+                                    </li>
+                                    <li>
+                                        <a href="/">BẢN ĐỒ</a>
+                                    </li>
+                                    <li>
+                                        <a href="/">LIÊN HỆ</a>
+                                    </li>
+                                    <li>
+                                        <a href="/"><img src="~/assets/images/home/menu/search-header.png" alt="" /></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="banner-header">
+    <div class="fill" style="background-image: url('/assets/images/home/slide/back-ground.jpg')"></div>
+    <div class="container">
+        <div class="row">
+            <div class="banner-header-content">
+                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <div class="row">
+                        <div class="banner-left pull-left">
+                            <div class="fill" style="background-image: url('/assets/images/home/banner/banner1.jpg')"></div>
+                            <div class="container" style="width:100%">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="bold">
+                                            SÁNG TẠO
+                                        </p>
+                                        <p class="bold">
+                                            KHÔNG GIAN SỐNG
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-default none-border">ĐỌC THÊM</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                    <div class="row">
+                        <div class="banner-right banner-right1 pull-left">
+                            <div class="fill" style="background-image: url('/assets/images/home/banner/banner2.jpg')"></div>
+                            <div class="container" style="width:100%">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="bold">
+                                            NỘI THẤT
+                                        </p>
+                                        <p class="bold">
+                                            PHÒNG KHÁCH
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-default none-border">ĐỌC THÊM</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                    <div class="row">
+                        <div class="banner-right pull-left">
+                            <div class="fill" style="background-image: url('/assets/images/home/banner/banner3.jpg')"></div>
+                            <div class="container" style="width:100%">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="bold">
+                                            TỰ LÀM
+                                        </p>
+                                        <p class="bold">
+                                            GIÁ ĐỂ SÁCH
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-default none-border">ĐỌC THÊM</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-4 col-xs-4">
+                    <div class="row">
+                        <div class="banner-right pull-left">
+                            <div class="fill" style="background-image: url('/assets/images/home/banner/banner4.jpg')"></div>
+                            <div class="container" style="width:100%">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <p class="bold">
+                                            XU HƯỚNG
+                                        </p>
+                                        <p class="bold">
+                                            MÀU SẮC 2015
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-default none-border">ĐỌC THÊM</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using System.Web.Mvc.Html;
+@{Html.RenderAction("getAll", new { controller = "collections", area = "client" }); }
+
+<div class="products-body">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="products-title">
+                    <span>
+                        <a data-toggle="tab" href="#productsCreateDESC" class="productsCreateDESC" style="color: black" onclick="changeColor_ViewProducts('productsCreateDESC')">MỚI NHẤT</a>
+                        <span class="text-muted">X</span>
+                        <a data-toggle="tab" href="#productsBestSelling" class="productsBestSelling" onclick="changeColor_ViewProducts('productsBestSelling')">BÁN CHẠY</a>
+                        <span class="text-muted">X</span>
+                        <a data-toggle="tab" href="#productsDiscountPrice" class="productsDiscountPrice" onclick="changeColor_ViewProducts('productsDiscountPrice')">GIẢM GIÁ</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tab-content">
+        <div id="productsCreateDESC" class="tab-pane fade in active">
+            <div class="products">
+                <div class="row">
+                    <div class="span-12">
+                        <div id="owl-productsCreateDESC" class="owl-carousel">
+                            @if (Model.ProductsCreateDESC != null && Model.ProductsCreateDESC.Count > 0)
+                            {
+                                foreach (var item in Model.ProductsCreateDESC)
+                                {
+                                    <div class="item">
+                                        <div class="product">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    @{
+                                                        var urlImage = "";
+                                                        if (item != null && item.Images != null && item.Images.Count > 0)
+                                                        {
+                                                            urlImage = item.Images[0].ImageUrl;
+                                                        }
+
+                                                        <a href="/client/products/@item.ProductID">
+                                                            <img class="image-product" src="@urlImage" alt="" style="height: 220px;" />
+                                                        </a>
+                                                    }
+                                                    <a href="/client/products/@item.ProductID">
+                                                        <h4>@item.ProductName</h4>
+                                                    </a>
+                                                    <img class="number-star" src="~/assets/images/home/body/product/number-star.jpg" alt="" />
+                                                    <p>
+                                                        @if (item.Variants != null && item.Variants.Count > 0)
+                                                        {
+                                                            <span class="price">
+                                                                @RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(item.Variants[0].VariantPrice) ₫
+                                                            </span>
+                                                            <span class="price-product">
+                                                                @RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(item.Variants[0].CompareWithPrice) ₫
+                                                            </span>
+                                                        }
+                                                    </p>
+
+                                                    @if (item.Variants != null && item.Variants.Count > 0)
+                                                    {
+                                                        <div class="buttons">
+                                                            <button class="btn btn-default">
+                                                                <i class="fa fa-heart"></i>
+                                                            </button>
+                                                            <button class="btn btn-default" onclick="buyProduct(@item.Variants[0].VariantID, 1)">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                                MUA HÀNG
+                                                            </button>
+                                                            <button class="btn btn-default">
+                                                                <i class="fa fa-retweet"></i>
+                                                            </button>
+                                                        </div>
+                                                    }
+
+                                                    <div class="overlay-product">
+                                                        <div class="search-product">
+                                                            <a href="/client/products/@item.ProductID"><i class="fa fa-search"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @if (@item.IsNew)
+                                            {
+                                                <div class="row">
+                                                    <div class="product-new">NEW</div>
+                                                </div>
+                                            }
+                                            @if (@item.IsNew)
+                                            {
+                                                <div class="row">
+                                                    <div class="product-sale">-15%</div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                                            }
+                                                        }
+                        </div>
+                        <a class="previous-slider productsCreateDESC-prev">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        <a class="next-slider productsCreateDESC-next">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="productsBestSelling" class="tab-pane fade">
+            <div class="products">
+                <div class="row">
+                    <div class="span-12">
+                        <div id="owl-productsBestSelling" class="owl-carousel">
+                            @if (Model.ProductsBestSelling != null && Model.ProductsBestSelling.Count > 0)
+                            {
+                                foreach (var item in Model.ProductsBestSelling)
+                                {
+                                    <div class="item">
+                                        <div class="product">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    @{
+                                                        var urlImage = "";
+                                                        if (item != null && item.Images != null && item.Images.Count > 0)
+                                                        {
+                                                            urlImage = item.Images[0].ImageUrl;
+                                                        }
+
+                                                        <a href="/client/products/@item.ProductID">
+                                                            <img class="image-product" src="@urlImage" alt="" style="height: 220px;" />
+                                                        </a>
+                                                    }
+                                                    <a href="/client/products/@item.ProductID">
+                                                        <h4>@item.ProductName</h4>
+                                                    </a>
+                                                    <img class="number-star" src="~/assets/images/home/body/product/number-star.jpg" alt="" />
+                                                    <p>
+                                                        @if (item.Variants != null && item.Variants.Count > 0)
+                                                        {
+                                                            <span class="price">
+                                                                @RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(item.Variants[0].VariantPrice) ₫
+                                                            </span>
+                                                            <span class="price-product">
+                                                            </span>
+                                                        }
+                                                    </p>
+
+                                                    @if (item.Variants != null && item.Variants.Count > 0)
+                                                    {
+                                                        <div class="buttons">
+                                                            <button class="btn btn-default">
+                                                                <i class="fa fa-heart"></i>
+                                                            </button>
+                                                            <button class="btn btn-default" onclick="buyProduct(@item.Variants[0].VariantID, 1)">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                                MUA HÀNG
+                                                            </button>
+                                                            <button class="btn btn-default">
+                                                                <i class="fa fa-retweet"></i>
+                                                            </button>
+                                                        </div>
+                                                    }
+
+                                                    <div class="overlay-product">
+                                                        <div class="search-product">
+                                                            <a href="/client/products/@item.ProductID"><i class="fa fa-search"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                                            }
+                                                        }
+                        </div>
+                        <a class="previous-slider productsBestSelling-prev">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        <a class="next-slider productsBestSelling-next">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="productsDiscountPrice" class="tab-pane fade">
+            <div class="products">
+                <div class="row">
+                    <div class="span-12">
+                        <div id="owl-productsDiscountPrice" class="owl-carousel">
+                            @if (Model.ProductsDiscountPrice != null && Model.ProductsDiscountPrice.Count > 0)
+                            {
+                                foreach (var item in Model.ProductsDiscountPrice)
+                                {
+                                    <div class="item">
+                                        <div class="product">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    @{
+                                                        var urlImage = "";
+                                                        if (item != null && item.Images != null && item.Images.Count > 0)
+                                                        {
+                                                            urlImage = item.Images[0].ImageUrl;
+                                                        }
+
+                                                        <a href="/client/products/@item.ProductID">
+                                                            <img class="image-product" src="@urlImage" alt="" style="height: 220px;" />
+                                                        </a>
+                                                    }
+                                                    <a href="/client/products/@item.ProductID">
+                                                        <h4>@item.ProductName</h4>
+                                                    </a>
+                                                    <img class="number-star" src="~/assets/images/home/body/product/number-star.jpg" alt="" />
+                                                    <p>
+                                                        @if (item.Variants != null && item.Variants.Count > 0)
+                                                        {
+                                                            <span class="price">
+                                                                @RealEstateWebUI.Areas.admin.UtilzGeneral.SNumber.ToNumber(item.Variants[0].VariantPrice) ₫
+                                                            </span>
+                                                            <span class="price-product">
+                                                            </span>
+                                                        }
+                                                    </p>
+
+                                                    @if (item.Variants != null && item.Variants.Count > 0)
+                                                    {
+                                                        <div class="buttons">
+                                                            <button class="btn btn-default">
+                                                                <i class="fa fa-heart"></i>
+                                                            </button>
+                                                            <button class="btn btn-default" onclick="buyProduct(@item.Variants[0].VariantID, 1)">
+                                                                <i class="fa fa-shopping-cart"></i>
+                                                                MUA HÀNG
+                                                            </button>
+                                                            <button class="btn btn-default">
+                                                                <i class="fa fa-retweet"></i>
+                                                            </button>
+                                                        </div>
+                                                    }
+
+                                                    <div class="overlay-product">
+                                                        <div class="search-product">
+                                                            <a href="/client/products/@item.ProductID"><i class="fa fa-search"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                                            }
+                                                        }
+                        </div>
+                        <a class="previous-slider productsDiscountPrice-prev">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        <a class="next-slider productsDiscountPrice-next">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="hightlight-body">
+    <div class="span-12 hightlight-background">
+        <div id="owl-hightlight" class="owl-carousel">
+            <div>
+                <img src="/assets/images/home/body/hightlight/layout1.jpg" alt="" />
+            </div>
+            <div>
+                <img src="/assets/images/home/body/hightlight/layout2.jpg" alt="" />
+            </div>
+            <div>
+                <img src="/assets/images/home/body/hightlight/layout3.jpg" alt="" />
+            </div>
+        </div>
+    </div>
+    <div class="hightlight-content">
+        <div class="container">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="hotdeal">
+                    <div class="container" style="width: 100%">
+                        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                            <div class="container" style="width: 100%">
+                                <div class="countdown-hightlight">
+                                    <div class="countdown countdown1">
+                                        <h5>123</h5>
+                                        <h5>Ngày</h5>
+                                    </div>
+                                    <div class="countdown countdown2">
+                                        <h5>11</h5>
+                                        <h5>Giờ</h5>
+                                    </div>
+                                    <div class="countdown countdown3">
+                                        <h5>30</h5>
+                                        <h5>Phút</h5>
+                                    </div>
+                                    <div class="countdown countdown4">
+                                        <h5>60</h5>
+                                        <h5>Giây</h5>
+                                    </div>
+                                </div>
+                                <div class="hotdeal-left" style="background-image: url('/assets/images/home/body/hightlight/hotdeal/left1.jpg');">
+                                </div>
+                                <div class="info-hotdeal">
+                                    <h4>Ghế tựa văn phòng bọc da</h4>
+                                    <p>
+                                        <span class="price">
+                                            6.250.000 ₫
+                                        </span>
+                                        <span> 6.250.000 ₫</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 hidden-sm hidden-xs">
+                            <div id="carousel-hotdeal" class="carousel slide vertical" data-ride="carousel">
+                                <div class="carousel-inner vertical" role="listbox">
+                                    <div class="item active">
+                                        <div class="row">
+                                            <div class="hotdeal-right">
+                                                <img src="~/assets/images/home/body/hightlight/hotdeal/right1.jpg" class="img-responsive" alt="" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="hotdeal-right">
+                                                <img src="~/assets/images/home/body/hightlight/hotdeal/right2.jpg" class="img-responsive" alt="" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="hotdeal-right">
+                                                <img src="~/assets/images/home/body/hightlight/hotdeal/right3.jpg" class="img-responsive" alt="" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="row">
+                                            <div class="hotdeal-right">
+                                                <img src="~/assets/images/home/body/hightlight/hotdeal/right1.jpg" class="img-responsive" alt="" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="hotdeal-right">
+                                                <img src="~/assets/images/home/body/hightlight/hotdeal/right2.jpg" class="img-responsive" alt="" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="hotdeal-right">
+                                                <img src="~/assets/images/home/body/hightlight/hotdeal/right3.jpg" class="img-responsive" alt="" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a class="previous-slider" href="#carousel-hotdeal" role="button" data-slide="prev">
+                                    <i class="fa fa-angle-up"></i>
+                                </a>
+                                <a class="next-slider" href="#carousel-hotdeal" role="button" data-slide="next">
+                                    <i class="fa fa-angle-down"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="banner-hightlight">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="banner-hightlight-left" style="background-image: url('/assets/images/home/body/hightlight/banner/left1.jpg')">
+                                <div class="container" style="width:100%">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="title-banner">
+                                                    NỘI THẤT
+                                                </div>
+                                                <div class="title-banner">
+                                                    PHÒNG KHÁCH
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="banner-hightlight-right" style="background-image: url('/assets/images/home/body/hightlight/banner/right1.jpg')">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="title-banner">
+                                                    TỦ SÁCH
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="banner-hightlight-right" style="background-image: url('/assets/images/home/body/hightlight/banner/right1.jpg')">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="title-banner">
+                                                    GHẾ ĐẨU
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="brand-body">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+                <img src="~/assets/images/home/body/brand/brand1.jpg" alt="" />
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+                <img src="~/assets/images/home/body/brand/brand2.jpg" alt="" />
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+                <img src="~/assets/images/home/body/brand/brand3.jpg" alt="" />
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+                <img src="~/assets/images/home/body/brand/brand4.jpg" alt="" />
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+                <img src="~/assets/images/home/body/brand/brand5.jpg" alt="" />
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+                <img src="~/assets/images/home/body/brand/brand6.jpg" alt="" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="news-body">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12" style="text-align: center">
+                <h3>TIN TỨC MỚI</h3>
+                <p>Tổng hợp những tin tức mới nhất về xu hướng nội thất 2015</p>
+            </div>
+        </div>
+        <div class="row news">
+            <div class="col-sm-12">
+                <div class="col-sm-6">
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="time-news">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="day-news bold">
+                                            08
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="month-year-news">
+                                            <label>Tháng 7</label>
+                                            <label>2015</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="row news-content">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="control-label bold">
+                                            Sáng tạo không gian sống cho ngôi nhà thân yêu
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-4 text-muted">
+                                        <i class="fa fa-edit"></i>
+                                        Mai Linh
+                                    </div>
+                                    <div class="col-sm-6 text-muted">
+                                        <i class="fa fa-comment-o"></i>
+                                        8 nhận xét
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <img src="~/assets/images/home/body/blog/bolg1.jpg" alt="" width="100%" height="100%" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p>
+                                    i can do everything i can i do. i will do it. everything will done as i think and i do.
+                                </p>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-default none-border">ĐỌC THÊM</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <div class="time-news">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="day-news bold">
+                                            08
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="month-year-news">
+                                            <label>Tháng 7</label>
+                                            <label>2015</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="row news-content">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="control-label bold">
+                                            Sáng tạo không gian sống cho ngôi nhà thân yêu
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-4 text-muted">
+                                        <i class="fa fa-edit"></i>
+                                        Mai Linh
+                                    </div>
+                                    <div class="col-sm-6 text-muted">
+                                        <i class="fa fa-comment-o"></i>
+                                        8 nhận xét
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <img src="~/assets/images/home/body/blog/blog2.jpg" alt="" width="100%" height="100%" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        i can do everything i can i do. i will do it. everything will done as i think and i do.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-default none-border">ĐỌC THÊM</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #owl-products .item {
+        margin: 5px;
+    }
+
+    #owl-productsBestSelling .item {
+        margin: 5px;
+    }
+
+    #owl-productsCreateDESC .item {
+        margin: 5px;
+    }
+
+    #owl-productsDiscountPrice .item {
+        margin: 5px;
+    }
+
+    .dropdown-menu {
+        margin-top: 20px !important;
+        width: 100%;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        var owlSlide = $("#owl-slide");
+        owlSlide.owlCarousel({
+            autoPlay: 10000,
+            stopOnHover: true,
+            navigation: false,
+            paginationSpeed: 5000,
+            goToFirstSpeed: 7000,
+            singleItem: true,
+            autoHeight: true,
+            animateOut: 'slideOutUp',
+            animateIn: 'slideInUp'
+        });
+        $(".slide-header-next").click(function () {
+            owlSlide.trigger('owl.next');
+        })
+        $(".slide-header-prev").click(function () {
+            owlSlide.trigger('owl.prev');
+        })
+
+        var owlProducts = $("#owl-products");
+        owlProducts.owlCarousel({
+            //autoPlay: 10000,
+            items: 5,
+            itemsDesktop: [1199, 3],
+            itemsDesktopSmall: [979, 3],
+            navigation: false
+        });
+        $(".products-next").click(function () {
+            owlProducts.trigger('owl.next');
+        })
+        $(".products-prev").click(function () {
+            owlProducts.trigger('owl.prev');
+        })
+
+        var owlProductsCreateDESC = $("#owl-productsCreateDESC");
+        owlProductsCreateDESC.owlCarousel({
+            //autoPlay: 10000,
+            items: 5,
+            itemsDesktop: [1199, 3],
+            itemsDesktopSmall: [979, 3],
+            navigation: false
+        });
+        $(".productsCreateDESC-next").click(function () {
+            owlProductsCreateDESC.trigger('owl.next');
+        })
+        $(".productsCreateDESC-prev").click(function () {
+            owlProductsCreateDESC.trigger('owl.prev');
+        })
+
+        var owlProductsBestSelling = $("#owl-productsBestSelling");
+        owlProductsBestSelling.owlCarousel({
+            //autoPlay: 10000,
+            items: 5,
+            itemsDesktop: [1199, 3],
+            itemsDesktopSmall: [979, 3],
+            navigation: false
+        });
+        $(".productsBestSelling-next").click(function () {
+            owlProductsBestSelling.trigger('owl.next');
+        })
+        $(".productsBestSelling-prev").click(function () {
+            owlProductsBestSelling.trigger('owl.prev');
+        })
+
+        var owlProductsDiscountPrice = $("#owl-productsDiscountPrice");
+        owlProductsDiscountPrice.owlCarousel({
+            //autoPlay: 10000,
+            items: 5,
+            itemsDesktop: [1199, 3],
+            itemsDesktopSmall: [979, 3],
+            navigation: false
+        });
+        $(".productsDiscountPrice-next").click(function () {
+            owlProductsDiscountPrice.trigger('owl.next');
+        })
+        $(".productsDiscountPrice-prev").click(function () {
+            owlProductsDiscountPrice.trigger('owl.prev');
+        })
+
+        var owlHightLight = $("#owl-hightlight");
+        owlHightLight.owlCarousel({
+            autoPlay: 10000,
+            stopOnHover: true,
+            navigation: false,
+            paginationSpeed: 5000,
+            goToFirstSpeed: 7000,
+            singleItem: true,
+            autoHeight: true
+        });
+        $(".hightlight-next").click(function () {
+            owlHightLight.trigger('owl.next');
+        })
+        $(".hightlight-prev").click(function () {
+            owlHightLight.trigger('owl.prev');
+        })
+    });
+</script>
